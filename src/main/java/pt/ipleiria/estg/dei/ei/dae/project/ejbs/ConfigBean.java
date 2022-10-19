@@ -38,7 +38,6 @@ public class ConfigBean {
                 System.out.println(responseLine);
 
             }
-
             responseReader.close();
         } catch (Exception e) {
             e.printStackTrace();
