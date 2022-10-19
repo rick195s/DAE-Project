@@ -36,6 +36,7 @@ public class ConfigBean {
             String responseLine;
             while ((responseLine = responseReader.readLine()) != null) {
                 System.out.println(responseLine);
+
             }
 
             responseReader.close();
