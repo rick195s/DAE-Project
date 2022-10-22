@@ -1,6 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.enums.Historical_Enum;
+import pt.ipleiria.estg.dei.ei.dae.project.enteties.enums.HistoricalEnum;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,7 +8,7 @@ import java.util.Date;
 public class HistoricalDTO implements Serializable {
     int id;
 
-    Historical_Enum state;
+    HistoricalEnum state;
 
     String description;
 
@@ -17,7 +17,7 @@ public class HistoricalDTO implements Serializable {
     public HistoricalDTO() {
     }
 
-    public HistoricalDTO(int id, Historical_Enum state, String description, Date date) {
+    public HistoricalDTO(int id, HistoricalEnum state, String description, Date date) {
         this.id = id;
         this.state = state;
         this.description = description;
@@ -32,11 +32,11 @@ public class HistoricalDTO implements Serializable {
         this.id = id;
     }
 
-    public Historical_Enum getState() {
+    public HistoricalEnum getState() {
         return state;
     }
 
-    public void setState(Historical_Enum state) {
+    public void setState(HistoricalEnum state) {
         this.state = state;
     }
 

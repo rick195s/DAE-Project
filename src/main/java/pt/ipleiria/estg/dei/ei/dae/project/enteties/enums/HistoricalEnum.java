@@ -1,6 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.enteties.enums;
 
-public enum Historical_Enum {
+public enum HistoricalEnum {
     APROVADO_PELA_SEGURADORA,
     NAO_APROVADO_PELA_SEGURADORA,
     APROVADO_PELO_EXPERT,

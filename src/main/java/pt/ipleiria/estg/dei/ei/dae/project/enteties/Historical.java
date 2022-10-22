@@ -1,6 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.enteties;
 
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.enums.Historical_Enum;
+import pt.ipleiria.estg.dei.ei.dae.project.enteties.enums.HistoricalEnum;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -20,7 +20,7 @@ public class Historical implements Serializable {
     int id;
 
     @Enumerated(EnumType.STRING)
-    Historical_Enum state;
+    HistoricalEnum state;
 
     @NotNull
     String description;
@@ -31,7 +31,7 @@ public class Historical implements Serializable {
     public Historical() {
     }
 
-    public Historical(int id, Historical_Enum state, String description, Date date) {
+    public Historical(int id, HistoricalEnum state, String description, Date date) {
         this.id = id;
         this.state = state;
         this.description = description;
@@ -46,11 +46,11 @@ public class Historical implements Serializable {
         this.id = id;
     }
 
-    public Historical_Enum getState() {
+    public HistoricalEnum getState() {
         return state;
     }
 
-    public void setState(Historical_Enum state) {
+    public void setState(HistoricalEnum state) {
         this.state = state;
     }
 
