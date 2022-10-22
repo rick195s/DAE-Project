@@ -15,7 +15,7 @@ import java.util.Objects;
 })
 @Table(
         name = "users",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"name"})
+        uniqueConstraints = @UniqueConstraint(columnNames = {"email"})
 )
 public class User implements Serializable {
     @Id
