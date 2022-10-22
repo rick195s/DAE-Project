@@ -15,7 +15,7 @@ public class ClientBean {
     public void create(int id, String name, String email, String password, int NIF_NIPC) {
         Client client = findClient(id);
         if (client != null) {
-            throw new IllegalArgumentException("Historical already exists");
+            throw new IllegalArgumentException("Client already exists");
         }
 
         client = new Client(id, name, email, password, NIF_NIPC);
