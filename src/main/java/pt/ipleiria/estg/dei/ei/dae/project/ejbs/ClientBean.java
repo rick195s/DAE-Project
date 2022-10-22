@@ -13,7 +13,12 @@ public class ClientBean {
     EntityManager entityManager;
 
     public void create(int id, String name, String email, String password, int NIF_NIPC) {
-        Client client = new Client(id, name, email, password, NIF_NIPC);
+        Client client = findClient(id);
+        if (client != null) {
+            throw new IllegalArgumentException("Historical already exists");
+        }
+
+        client = new Client(id, name, email, password, NIF_NIPC);
         entityManager.persist(client);
     }
 
