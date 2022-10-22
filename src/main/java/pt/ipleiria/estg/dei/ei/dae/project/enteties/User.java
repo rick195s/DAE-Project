@@ -17,6 +17,7 @@ import java.util.Objects;
         name = "users",
         uniqueConstraints = @UniqueConstraint(columnNames = {"email"})
 )
+@Inheritance(strategy=InheritanceType.JOINED)
 public class User implements Serializable {
     @Id
     int id;

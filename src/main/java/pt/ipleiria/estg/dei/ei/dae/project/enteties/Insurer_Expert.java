@@ -12,6 +12,7 @@ import java.io.Serializable;
         )
 })
 @Table(name = "Insurer_Experts")
+@PrimaryKeyJoinColumn(name = "userId")
 public class Insurer_Expert extends User implements Serializable {
     @NotNull
     @ManyToOne(cascade = CascadeType.ALL)
