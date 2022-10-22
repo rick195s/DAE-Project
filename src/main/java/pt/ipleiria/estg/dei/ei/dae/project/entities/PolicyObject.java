@@ -1,6 +1,6 @@
-package pt.ipleiria.estg.dei.ei.dae.project.enteties;
+package pt.ipleiria.estg.dei.ei.dae.project.entities;
 
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.enums.PolicyObjectType;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

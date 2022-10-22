@@ -1,6 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.InsurerExpert;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.InsurerExpert;
 
 import java.io.Serializable;
 import java.util.LinkedList;

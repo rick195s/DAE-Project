@@ -1,6 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.Client;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

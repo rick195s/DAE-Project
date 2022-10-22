@@ -1,6 +1,6 @@
-package pt.ipleiria.estg.dei.ei.dae.project.enteties;
+package pt.ipleiria.estg.dei.ei.dae.project.entities;
 
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.enums.HistoricalEnum;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

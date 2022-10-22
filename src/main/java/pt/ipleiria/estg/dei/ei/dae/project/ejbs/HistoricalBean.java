@@ -1,7 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.Historical;
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.enums.HistoricalEnum;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Historical;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

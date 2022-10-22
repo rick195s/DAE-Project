@@ -2,7 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.ClientDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.ClientBean;
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.Client;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;

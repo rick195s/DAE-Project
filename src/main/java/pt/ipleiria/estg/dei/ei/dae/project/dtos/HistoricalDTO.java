@@ -1,6 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.enums.HistoricalEnum;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 
 import java.io.Serializable;
 import java.util.Date;

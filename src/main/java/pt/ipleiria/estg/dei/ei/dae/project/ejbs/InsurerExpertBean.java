@@ -1,7 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.Insurer;
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.InsurerExpert;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Insurer;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.InsurerExpert;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

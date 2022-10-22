@@ -1,6 +1,6 @@
-package pt.ipleiria.estg.dei.ei.dae.project.enteties;
+package pt.ipleiria.estg.dei.ei.dae.project.entities;
 
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.enums.ApprovalType;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 
 import javax.persistence.*;
 import java.io.Serializable;
