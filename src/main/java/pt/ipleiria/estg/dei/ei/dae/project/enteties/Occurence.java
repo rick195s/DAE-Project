@@ -20,13 +20,22 @@ import java.util.List;
 public class Occurence implements Serializable {
     @Id
     private int id;
+
+    @Column(name = "policy_id")
     private int policyID;
+
+    @Column(name = "repair_id")
     private int repairID;
     private String description;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "approval_type")
     private ApprovalType approvalType;
+
+    @Column(name = "start_date")
     private Date startDate;
+
+    @Column(name = "end_date")
     private Date endDate;
 
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "occurrence")
