@@ -13,13 +13,15 @@ import java.net.URL;
 @Singleton
 public class ConfigBean {
     @EJB
-    CourseBean courseBean;
+    UserBean userBean;
 
     @PostConstruct
     public void populateDB() {
         System.out.println("Hello Java EE!");
 
-        try {
+        userBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq");
+
+       /* try {
             URL url = new URL("https://634f1183df22c2af7b4a4b38.mockapi.io/Students");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
@@ -42,7 +44,7 @@ public class ConfigBean {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+*/
 
     }
 }
