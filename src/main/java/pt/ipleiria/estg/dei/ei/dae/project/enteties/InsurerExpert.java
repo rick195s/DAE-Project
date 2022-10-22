@@ -7,21 +7,22 @@ import java.io.Serializable;
 @Entity
 @NamedQueries({
         @NamedQuery(
-                name = "getAllInsurer_Experts",
-                query = "SELECT u FROM Insurer_Expert u ORDER BY u.name" // JPQL
+                name = "getAllInsurerExperts",
+                query = "SELECT u FROM InsurerExpert u ORDER BY u.name" // JPQL
         )
 })
-@Table(name = "Insurer_Experts")
-public class Insurer_Expert extends User implements Serializable {
+@Table(name = "insurer_experts")
+@PrimaryKeyJoinColumn(name = "user_id")
+public class InsurerExpert extends User implements Serializable {
     @NotNull
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "insurer_id")
     Insurer insurer;
 
-    public Insurer_Expert() {
+    public InsurerExpert() {
     }
 
-    public Insurer_Expert(int id, String name, String email, String password, Insurer insurer) {
+    public InsurerExpert(int id, String name, String email, String password, Insurer insurer) {
         super(id, name, email, password);
         this.insurer = insurer;
     }
