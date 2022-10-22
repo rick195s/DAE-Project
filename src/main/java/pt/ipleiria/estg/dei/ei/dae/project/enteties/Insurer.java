@@ -27,7 +27,7 @@ public class Insurer implements Serializable {
 
     @NotNull
     @OneToMany(mappedBy = "insurer")
-    List<Insurer_Expert> insurer_experts;
+    List<InsurerExpert> insurer_experts;
 
     public Insurer() {
         insurer_experts = new LinkedList<>();
@@ -55,11 +55,11 @@ public class Insurer implements Serializable {
         this.name = name;
     }
 
-    public List<Insurer_Expert> getInsurer_experts() {
+    public List<InsurerExpert> getInsurer_experts() {
         return insurer_experts;
     }
 
-    public void setInsurer_experts(List<Insurer_Expert> insurer_experts) {
+    public void setInsurer_experts(List<InsurerExpert> insurer_experts) {
         this.insurer_experts = new LinkedList<>(insurer_experts);
     }
 

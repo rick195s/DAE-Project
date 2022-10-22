@@ -11,7 +11,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllOccurrences",
-                query = "SELECT u FROM Occurence u ORDER BY u.id" // JPQL
+                query = "SELECT o FROM Occurrence o ORDER BY o.id" // JPQL
         )
 })
 @Table(
