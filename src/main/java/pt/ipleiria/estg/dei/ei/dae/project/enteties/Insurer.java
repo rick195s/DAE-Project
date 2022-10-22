@@ -27,12 +27,12 @@ public class Insurer implements Serializable {
 
     @NotNull
     @OneToMany(mappedBy = "insurer")
-    List<Insurer_Expert> insurer_experts;
-    
+    List<InsurerExpert> insurer_experts;
+
     @ManyToMany(fetch = FetchType.EAGER,mappedBy = "insurers")
     List<RepairShop> repairShops;
 
-  
+
     public Insurer() {
         insurer_experts = new LinkedList<>();
     }
