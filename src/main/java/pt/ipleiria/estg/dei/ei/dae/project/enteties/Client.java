@@ -1,10 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.enteties;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @NamedQueries({
@@ -16,7 +13,7 @@ import java.util.Objects;
 @Table(
         name = "clients"
 )
-@PrimaryKeyJoinColumn(name = "userId")
+@PrimaryKeyJoinColumn(name = "user_id")
 public class Client extends User implements Serializable {
     int NIF_NIPC;
 
