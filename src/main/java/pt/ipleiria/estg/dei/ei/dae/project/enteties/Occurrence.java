@@ -17,7 +17,7 @@ import java.util.List;
 @Table(
         name = "occurrences"
 )
-public class Occurence implements Serializable {
+public class Occurrence implements Serializable {
     @Id
     private int id;
 
@@ -39,12 +39,12 @@ public class Occurence implements Serializable {
     private Date endDate;
 
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "occurrence")
-    private List<OccurenceFile> occurenceFileList;
+    private List<OccurrenceFile> occurenceFileList;
 
-    public Occurence() {
+    public Occurrence() {
     }
 
-    public Occurence(int id, int policyID, int repairID, String description, ApprovalType approvalType, Date startDate, Date endDate, List<OccurenceFile> occurenceFileList) {
+    public Occurrence(int id, int policyID, int repairID, String description, ApprovalType approvalType, Date startDate, Date endDate, List<OccurrenceFile> occurenceFileList) {
         this.id = id;
         this.policyID = policyID;
         this.repairID = repairID;

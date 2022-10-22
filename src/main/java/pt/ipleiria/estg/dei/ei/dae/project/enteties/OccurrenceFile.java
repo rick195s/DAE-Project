@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Table(
         name = "occurrences_files"
 )
-public class OccurenceFile implements Serializable {
+public class OccurrenceFile implements Serializable {
     @Id
     private int id;
     private String name;
@@ -20,11 +20,11 @@ public class OccurenceFile implements Serializable {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "occurrence_id")
-    private Occurence occurrence;
+    private Occurrence occurrence;
 
-    public OccurenceFile() {
+    public OccurrenceFile() {
     }
-    public OccurenceFile(int id, String name, String path, Occurence occurrence) {
+    public OccurrenceFile(int id, String name, String path, Occurrence occurrence) {
         this.id = id;
         this.name = name;
         this.path = path;
@@ -48,10 +48,10 @@ public class OccurenceFile implements Serializable {
     public void setPath(String path) {
         this.path = path;
     }
-    public Occurence getOccurence() {
+    public Occurrence getOccurence() {
         return this.occurrence;
     }
-    public void setOccurence(Occurence occurrence) {
+    public void setOccurence(Occurrence occurrence) {
         this.occurrence = occurrence;
     }
 }
