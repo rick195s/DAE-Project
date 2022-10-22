@@ -1,4 +1,4 @@
-package pt.ipleiria.estg.dei.ei.dae.project.enteties;
+package pt.ipleiria.estg.dei.ei.dae.project.enteties.enums;
 
 public enum Historical_Enum {
     APROVADO_PELA_SEGURADORA,

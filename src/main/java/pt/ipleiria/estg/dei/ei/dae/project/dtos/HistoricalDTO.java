@@ -1,10 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.Historical_Enum;
+import pt.ipleiria.estg.dei.ei.dae.project.enteties.enums.Historical_Enum;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
