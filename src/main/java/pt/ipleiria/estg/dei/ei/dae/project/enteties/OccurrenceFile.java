@@ -6,7 +6,7 @@ import java.io.Serializable;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllOccurrencesFiles",
-                query = "SELECT u FROM OccurenceFile u ORDER BY u.id" // JPQL
+                query = "SELECT o FROM OccurrenceFile o ORDER BY o.id" // JPQL
         )
 })
 @Table(
