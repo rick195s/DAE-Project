@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class InsurerDTO implements Serializable {
+public class InsurerDTO implements Serializable, DTO {
     int id;
 
     String name;
@@ -47,5 +47,14 @@ public class InsurerDTO implements Serializable {
 
     public void setInsurer_experts(List<Insurer_Expert> insurer_experts) {
         this.insurer_experts = new LinkedList<>(insurer_experts);
+    }
+
+    @Override
+    public String toString() {
+        return "InsurerDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", insurer_experts=" + insurer_experts +
+                '}';
     }
 }

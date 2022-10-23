@@ -13,9 +13,9 @@ public class InsurerBean {
 
     public void create(int id, String name) {
         Insurer insurer = findInsurer(id);
-        if (insurer != null) {
+        /*if (insurer != null) {
             throw new IllegalArgumentException("Insurer already exists");
-        }
+        }*/
         insurer = new Insurer(id, name);
         entityManager.persist(insurer);
     }

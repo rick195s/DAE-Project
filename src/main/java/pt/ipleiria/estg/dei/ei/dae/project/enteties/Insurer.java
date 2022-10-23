@@ -1,5 +1,9 @@
 package pt.ipleiria.estg.dei.ei.dae.project.enteties;
 
+import org.hibernate.type.JacksonJsonFormatMapper;
+
+import javax.json.Json;
+import javax.json.stream.JsonParser;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.BufferedReader;
@@ -63,9 +67,9 @@ public class Insurer implements Serializable {
         this.insurer_experts = new LinkedList<>(insurer_experts);
     }
 
-    public void populateTable() {
+    /*public void populateTable() {
         try {
-            URL url = new URL("https://634f1183df22c2af7b4a4b38.mockapi.io/Insurers");
+            URL url = new URL("https://634f1183df22c2af7b4a4b38.mockapi.io/insurers");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("Content-Type", "application/json");
@@ -76,14 +80,36 @@ public class Insurer implements Serializable {
             System.out.println(con.getResponseCode());
             System.out.println(con.getResponseMessage());
 
+
             BufferedReader responseReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String responseLine;
-            while ((responseLine = responseReader.readLine()) != null) {
-                System.out.println(responseLine);
-            }
+            //while ((responseLine = responseReader.readLine()) != null) {
+                //Insurer insurer = objectMapper.readValue(responseLine, Insurer.class);
+                JsonParser parser = Json.createParser(responseReader);
+                while (parser.hasNext()) {
+                    JsonParser.Event event = parser.next();
+                    if (event == JsonParser.Event.KEY_NAME) {
+                        switch (parser.getString()) {
+                            case "id":
+                                parser.next();
+                                this.id = parser.getInt();
+                                System.out.println(this.id);
+                                break;
+                            case "name":
+                                parser.next();
+                                this.name = parser.getString();
+                                System.out.println(this.name);
+                                break;
+                        }
+                    }
+                }
+
+
+               // System.out.println(responseLine);
+            //}
             responseReader.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }
