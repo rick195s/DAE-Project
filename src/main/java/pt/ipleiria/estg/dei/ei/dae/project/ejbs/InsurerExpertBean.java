@@ -1,11 +1,13 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Insurer;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.InsurerExpert;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Stateless
 public class InsurerExpertBean {
@@ -19,6 +21,10 @@ public class InsurerExpertBean {
         }
         insurer_expert = new InsurerExpert(id, name, email, password, insurer);
         entityManager.persist(insurer_expert);
+    }
+
+    public List<InsurerExpert> getAllInsurerExpert() {
+        return (List<InsurerExpert>) entityManager.createNamedQuery("getAllInsurerExperts").getResultList();
     }
 
     private InsurerExpert findInsurer_Expert(int id) {
