@@ -15,7 +15,7 @@ public class InsurerExpertBean {
     EntityManager entityManager;
 
     public void create(int id, String name, String email, String password, Insurer insurer) {
-        InsurerExpert insurer_expert = findInsurer_Expert(id);
+        InsurerExpert insurer_expert = findInsurerExpert(id);
         if (insurer_expert != null) {
             throw new IllegalArgumentException("Insurer_Expert already exists");
         }
@@ -27,7 +27,7 @@ public class InsurerExpertBean {
         return (List<InsurerExpert>) entityManager.createNamedQuery("getAllInsurerExperts").getResultList();
     }
 
-    private InsurerExpert findInsurer_Expert(int id) {
+    public InsurerExpert findInsurerExpert(int id) {
         return entityManager.find(InsurerExpert.class, id);
     }
 }

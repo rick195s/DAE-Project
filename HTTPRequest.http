@@ -14,3 +14,12 @@ Content-Type: application/json
     "id": 99,
     "name": "Test Insurer"
 }
+
+##############################################################################
+##Get all insurer Experts
+GET http://localhost:8080/project/api/insurerExperts/all
+Accept: application/json
+
+##Get one insurer Experts
+GET http://localhost:8080/project/api/insurerExperts/5
+Accept: application/json

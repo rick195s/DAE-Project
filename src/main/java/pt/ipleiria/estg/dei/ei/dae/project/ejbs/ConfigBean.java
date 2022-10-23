@@ -23,6 +23,9 @@ public class ConfigBean {
     @EJB
     InsurerBean insurerBean;
 
+    @EJB
+    InsurerExpertBean insurerExpertBean;
+
     //@EJB
     //RepairShopBean repairShopBean;
 
@@ -34,6 +37,8 @@ public class ConfigBean {
         System.out.println("Hello Java EE!");
 
         clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
+        //insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", insurerBean.findInsurer(10));  --> Não consegui desta maneira
+        insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", new Insurer(100, "Allianz"));
 
         //Populate Insurers Table
         APIConsumer apiConsumerInsurers = new APIConsumer();
