@@ -44,7 +44,7 @@ public class ConfigBean {
 
             for (JsonValue sticker : jsonArrayInsurers) {
                 Insurer insurer = jsonb.fromJson(sticker.toString(), Insurer.class);
-                System.out.println(insurer.getName());
+                //System.out.println(insurer.getName());
                 insurerBean.create(insurer.getId(), insurer.getName());
             }
         }
@@ -58,7 +58,7 @@ public class ConfigBean {
 
             for (JsonValue sticker : jsonArrayRepairShops) {
                 RepairShop repairShop = jsonb.fromJson(sticker.toString(), RepairShop.class);
-                System.out.println(repairShop.getName());
+                //System.out.println(repairShop.getName());
                 //repairShopsBean.create(insurer.getId(), insurer.getName());
             }
         }
