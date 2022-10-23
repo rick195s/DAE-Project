@@ -1,10 +1,8 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
-import javax.persistence.Id;
 import java.io.Serializable;
 
 public class UserDTO implements Serializable {
-    @Id
     int id;
 
     String name, email;

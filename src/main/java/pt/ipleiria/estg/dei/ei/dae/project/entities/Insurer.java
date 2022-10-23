@@ -1,4 +1,4 @@
-package pt.ipleiria.estg.dei.ei.dae.project.enteties;
+package pt.ipleiria.estg.dei.ei.dae.project.entities;
 
 import org.hibernate.type.JacksonJsonFormatMapper;
 
@@ -31,7 +31,11 @@ public class Insurer implements Serializable {
 
     @NotNull
     @OneToMany(mappedBy = "insurer")
-    List<Insurer_Expert> insurer_experts;
+    List<InsurerExpert> insurer_experts;
+
+    @ManyToMany(fetch = FetchType.EAGER,mappedBy = "insurers")
+    List<RepairShop> repairShops;
+
 
     public Insurer() {
         insurer_experts = new LinkedList<>();
@@ -41,6 +45,7 @@ public class Insurer implements Serializable {
         this.id = id;
         this.name = name;
         insurer_experts = new LinkedList<>();
+        repairShops = new LinkedList<>();
     }
 
     public int getId() {
@@ -59,11 +64,11 @@ public class Insurer implements Serializable {
         this.name = name;
     }
 
-    public List<Insurer_Expert> getInsurer_experts() {
+    public List<InsurerExpert> getInsurer_experts() {
         return insurer_experts;
     }
 
-    public void setInsurer_experts(List<Insurer_Expert> insurer_experts) {
+    public void setInsurer_experts(List<InsurerExpert> insurer_experts) {
         this.insurer_experts = new LinkedList<>(insurer_experts);
     }
 

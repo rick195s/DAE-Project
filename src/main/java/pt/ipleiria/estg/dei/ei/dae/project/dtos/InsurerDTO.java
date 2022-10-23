@@ -1,9 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.Insurer_Expert;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.InsurerExpert;
 
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,7 +11,7 @@ public class InsurerDTO implements Serializable, DTO {
 
     String name;
 
-    List<Insurer_Expert> insurer_experts;
+    List<InsurerExpert> insurer_experts;
 
     public InsurerDTO() {
         insurer_experts = new LinkedList<>();
@@ -41,11 +39,11 @@ public class InsurerDTO implements Serializable, DTO {
         this.name = name;
     }
 
-    public List<Insurer_Expert> getInsurer_experts() {
+    public List<InsurerExpert> getInsurer_experts() {
         return insurer_experts;
     }
 
-    public void setInsurer_experts(List<Insurer_Expert> insurer_experts) {
+    public void setInsurer_experts(List<InsurerExpert> insurer_experts) {
         this.insurer_experts = new LinkedList<>(insurer_experts);
     }
 

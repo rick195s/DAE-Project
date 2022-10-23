@@ -1,26 +1,17 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
-import pt.ipleiria.estg.dei.ei.dae.project.dtos.InsurerDTO;
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.Insurer;
-import pt.ipleiria.estg.dei.ei.dae.project.utils.API;
 import pt.ipleiria.estg.dei.ei.dae.project.utils.JsonParse;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.json.Json;
-import javax.json.stream.JsonParser;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 @Startup
 @Singleton
 public class ConfigBean {
     @EJB
-    UserBean userBean;
+    ClientBean clientBean;
 
     @EJB
     InsurerBean insurerBean;
@@ -29,10 +20,10 @@ public class ConfigBean {
     public void populateDB() {
         System.out.println("Hello Java EE!");
 
-        userBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq");
         String url = "https://634f1183df22c2af7b4a4b38.mockapi.io/insurers";
         JsonParse parse = new JsonParse();
         parse.parse(url, insurerBean);
+        clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
 
 
         /*API api = new API();
