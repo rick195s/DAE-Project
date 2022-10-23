@@ -1,11 +1,17 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
-import pt.ipleiria.estg.dei.ei.dae.project.utils.JsonParse;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Insurer;
+import pt.ipleiria.estg.dei.ei.dae.project.utils.APIConsumer;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.json.JsonArray;
+import javax.json.JsonValue;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
+
 
 @Startup
 @Singleton
@@ -20,99 +26,27 @@ public class ConfigBean {
     public void populateDB() {
         System.out.println("Hello Java EE!");
 
-        String url = "https://634f1183df22c2af7b4a4b38.mockapi.io/insurers";
-        JsonParse parse = new JsonParse();
-        parse.parse(url, insurerBean);
         clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
 
 
-        /*API api = new API();
-        BufferedReader reader = api.getDataFromAPI("https://634f1183df22c2af7b4a4b38.mockapi.io/insurers");
-        JsonParser parser = Json.createParser(reader);
+        String url = "https://634f1183df22c2af7b4a4b38.mockapi.io/insurers";
 
-        while (parser.hasNext()) {
-            JsonParser.Event event = parser.next();
-            if (event == JsonParser.Event.KEY_NAME) {
-                switch (parser.getString()) {
-                    case "id":
-                        parser.next();
-                        //this.id = parser.getInt();
-                        System.out.println(Integer.parseInt(parser.getString()));
-                        break;
-                    case "name":
-                        parser.next();
-                        //this.name = parser.getString();
-                        System.out.println(parser.getString());
-                        break;
-                }
+        APIConsumer apiConsumer = new APIConsumer();
+
+        JsonArray jsonArray = apiConsumer.getDataFromAPI(url);
+
+        if (jsonArray != null){
+            Jsonb jsonb = JsonbBuilder.create();
+
+
+            for (JsonValue sticker : jsonArray) {
+                Insurer insurer = jsonb.fromJson(sticker.toString(), Insurer.class);
+                System.out.println(insurer.getName());
+                insurerBean.create(insurer.getId(), insurer.getName());
             }
-        }*/
 
 
-        /*try {
-            URL url = new URL("https://634f1183df22c2af7b4a4b38.mockapi.io/insurers");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Content-Type", "application/json");
-            con.setRequestProperty("Accept", "application/json");
-            con.setDoOutput(true);
-            con.setDoInput(true);
-            con.connect();
-            System.out.println(con.getResponseCode());
-            System.out.println(con.getResponseMessage());
-
-
-            BufferedReader responseReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            JsonParser parser = Json.createParser(responseReader);
-
-            while (parser.hasNext()) {
-                JsonParser.Event event = parser.next();
-                if (event == JsonParser.Event.KEY_NAME) {
-                    switch (parser.getString()) {
-                        case "id":
-                            parser.next();
-                            //this.id = parser.getInt();
-                            System.out.println(Integer.parseInt(parser.getString()));
-                            break;
-                        case "name":
-                            parser.next();
-                            //this.name = parser.getString();
-                            System.out.println(parser.getString());
-                            break;
-                    }
-                }
-            }
-            responseReader.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-
-
-       /* try {
-            URL url = new URL("https://634f1183df22c2af7b4a4b38.mockapi.io/Students");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Content-Type", "application/json");
-            con.setRequestProperty("Accept", "application/json");
-            con.setDoOutput(true);
-            con.setDoInput(true);
-            con.connect();
-            System.out.println(con.getResponseCode());
-            System.out.println(con.getResponseMessage());
-
-            BufferedReader responseReader = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String responseLine;
-            while ((responseLine = responseReader.readLine()) != null) {
-                System.out.println(responseLine);
-
-            }
-            responseReader.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-*/
 
     }
 }
