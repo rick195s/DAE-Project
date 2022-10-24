@@ -21,14 +21,14 @@ import java.util.Objects;
 @Inheritance(strategy=InheritanceType.JOINED)
 public class User implements Serializable {
     @Id
-    int id;
+    protected int id;
 
     @NotNull
-    String name, password;
+    protected String name, password;
 
     @NotNull
     @Email
-    String email;
+    protected String email;
 
     public User(int id, String name, String email, String password) {
         this.id = id;

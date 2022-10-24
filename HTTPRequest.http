@@ -1,0 +1,25 @@
+### Get all insurers
+GET http://localhost:8080/project/api/insurers/all
+Accept: application/json
+
+### Get one insurer
+GET http://localhost:8080/project/api/insurers/1
+Accept: application/json
+
+### Post a new insurer
+POST http://localhost:8080/project/api/insurers
+Content-Type: application/json
+
+{
+    "id": 99,
+    "name": "Test Insurer"
+}
+
+##############################################################################
+##Get all insurer Experts
+GET http://localhost:8080/project/api/insurer_experts/all
+Accept: application/json
+
+##Get one insurer Experts
+GET http://localhost:8080/project/api/insurer_experts/5
+Accept: application/json

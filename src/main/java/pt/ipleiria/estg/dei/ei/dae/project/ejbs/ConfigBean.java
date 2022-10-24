@@ -23,6 +23,9 @@ public class ConfigBean {
     @EJB
     InsurerBean insurerBean;
 
+    @EJB
+    InsurerExpertBean insurerExpertBean;
+
     //@EJB
     //RepairShopBean repairShopBean;
 
@@ -44,10 +47,15 @@ public class ConfigBean {
 
             for (JsonValue sticker : jsonArrayInsurers) {
                 Insurer insurer = jsonb.fromJson(sticker.toString(), Insurer.class);
-                System.out.println(insurer.getName());
+                //System.out.println(insurer.getName());
                 insurerBean.create(insurer.getId(), insurer.getName());
             }
         }
+
+        // Funciona mas não é melhor opcao passar o objeto Insurer por parametro
+        // insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", insurerBean.findInsurer(10));
+
+        insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", 10);
 
         //Populate RepairShops Table
         APIConsumer apiConsumerRepairShops = new APIConsumer();
@@ -58,7 +66,7 @@ public class ConfigBean {
 
             for (JsonValue sticker : jsonArrayRepairShops) {
                 RepairShop repairShop = jsonb.fromJson(sticker.toString(), RepairShop.class);
-                System.out.println(repairShop.getName());
+                //System.out.println(repairShop.getName());
                 //repairShopsBean.create(insurer.getId(), insurer.getName());
             }
         }
