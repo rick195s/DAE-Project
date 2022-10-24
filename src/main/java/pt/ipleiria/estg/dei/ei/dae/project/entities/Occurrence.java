@@ -1,6 +1,6 @@
-package pt.ipleiria.estg.dei.ei.dae.project.enteties;
+package pt.ipleiria.estg.dei.ei.dae.project.entities;
 
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.enums.ApprovalType;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,31 +11,40 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllOccurrences",
-                query = "SELECT u FROM Occurence u ORDER BY u.id" // JPQL
+                query = "SELECT o FROM Occurrence o ORDER BY o.id" // JPQL
         )
 })
 @Table(
         name = "occurrences"
 )
-public class Occurence implements Serializable {
+public class Occurrence implements Serializable {
     @Id
     private int id;
+
+    @Column(name = "policy_id")
     private int policyID;
+
+    @Column(name = "repair_id")
     private int repairID;
     private String description;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "approval_type")
     private ApprovalType approvalType;
+
+    @Column(name = "start_date")
     private Date startDate;
+
+    @Column(name = "end_date")
     private Date endDate;
 
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "occurrence")
-    private List<OccurenceFile> occurenceFileList;
+    private List<OccurrenceFile> occurenceFileList;
 
-    public Occurence() {
+    public Occurrence() {
     }
 
-    public Occurence(int id, int policyID, int repairID, String description, ApprovalType approvalType, Date startDate, Date endDate, List<OccurenceFile> occurenceFileList) {
+    public Occurrence(int id, int policyID, int repairID, String description, ApprovalType approvalType, Date startDate, Date endDate, List<OccurrenceFile> occurenceFileList) {
         this.id = id;
         this.policyID = policyID;
         this.repairID = repairID;

@@ -1,6 +1,6 @@
-package pt.ipleiria.estg.dei.ei.dae.project.enteties;
+package pt.ipleiria.estg.dei.ei.dae.project.entities;
 
-import pt.ipleiria.estg.dei.ei.dae.project.enteties.enums.PolicyObjectType;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,7 +14,6 @@ import java.io.Serializable;
         )
 })
 @Table(name = "policy_objects")
-
 public class PolicyObject implements Serializable {
     @Id
     int id;

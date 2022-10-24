@@ -1,4 +1,4 @@
-package pt.ipleiria.estg.dei.ei.dae.project.enteties;
+package pt.ipleiria.estg.dei.ei.dae.project.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -17,6 +17,8 @@ import java.util.Objects;
         name = "users",
         uniqueConstraints = @UniqueConstraint(columnNames = {"email"})
 )
+
+@Inheritance(strategy=InheritanceType.JOINED)
 public class User implements Serializable {
     @Id
     int id;

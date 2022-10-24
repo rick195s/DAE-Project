@@ -1,50 +1,66 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Insurer;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.RepairShop;
+import pt.ipleiria.estg.dei.ei.dae.project.utils.APIConsumer;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import javax.json.JsonArray;
+import javax.json.JsonValue;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
+
 
 @Startup
 @Singleton
 public class ConfigBean {
     @EJB
-    UserBean userBean;
+    ClientBean clientBean;
+
+    @EJB
+    InsurerBean insurerBean;
+
+    //@EJB
+    //RepairShopBean repairShopBean;
+
+    String urlInsurers = "https://634f1183df22c2af7b4a4b38.mockapi.io/insurers";
+    String urlRepairShops = "https://634f1183df22c2af7b4a4b38.mockapi.io/repair_shops";
 
     @PostConstruct
     public void populateDB() {
         System.out.println("Hello Java EE!");
 
-        userBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq");
+        clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
 
-       /* try {
-            URL url = new URL("https://634f1183df22c2af7b4a4b38.mockapi.io/Students");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Content-Type", "application/json");
-            con.setRequestProperty("Accept", "application/json");
-            con.setDoOutput(true);
-            con.setDoInput(true);
-            con.connect();
-            System.out.println(con.getResponseCode());
-            System.out.println(con.getResponseMessage());
+        //Populate Insurers Table
+        APIConsumer apiConsumerInsurers = new APIConsumer();
+        JsonArray jsonArrayInsurers = apiConsumerInsurers.getDataFromAPI(urlInsurers);
 
-            BufferedReader responseReader = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String responseLine;
-            while ((responseLine = responseReader.readLine()) != null) {
-                System.out.println(responseLine);
+        if (jsonArrayInsurers != null){
+            Jsonb jsonb = JsonbBuilder.create();
 
+            for (JsonValue sticker : jsonArrayInsurers) {
+                Insurer insurer = jsonb.fromJson(sticker.toString(), Insurer.class);
+                System.out.println(insurer.getName());
+                insurerBean.create(insurer.getId(), insurer.getName());
             }
-            responseReader.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-*/
 
+        //Populate RepairShops Table
+        APIConsumer apiConsumerRepairShops = new APIConsumer();
+        JsonArray jsonArrayRepairShops = apiConsumerRepairShops.getDataFromAPI(urlRepairShops);
+
+        if (jsonArrayRepairShops != null){
+            Jsonb jsonb = JsonbBuilder.create();
+
+            for (JsonValue sticker : jsonArrayRepairShops) {
+                RepairShop repairShop = jsonb.fromJson(sticker.toString(), RepairShop.class);
+                System.out.println(repairShop.getName());
+                //repairShopsBean.create(insurer.getId(), insurer.getName());
+            }
+        }
     }
 }
