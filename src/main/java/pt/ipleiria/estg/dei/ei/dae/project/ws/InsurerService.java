@@ -53,9 +53,9 @@ public class InsurerService {
     // Converts an entity Student to a DTO Student class
     private InsurerDTO toDTO(Insurer insurer) {
         return new InsurerDTO(
-                insurer.getId(),
-                insurer.getName()
-        );
+               insurer.getId(),
+               insurer.getName()
+       );
     }
 
     // converts an entire list of entities into a list of DTOs

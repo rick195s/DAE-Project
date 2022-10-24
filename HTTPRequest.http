@@ -17,9 +17,9 @@ Content-Type: application/json
 
 ##############################################################################
 ##Get all insurer Experts
-GET http://localhost:8080/project/api/insurerExperts/all
+GET http://localhost:8080/project/api/insurer_experts/all
 Accept: application/json
 
 ##Get one insurer Experts
-GET http://localhost:8080/project/api/insurerExperts/5
+GET http://localhost:8080/project/api/insurer_experts/5
 Accept: application/json

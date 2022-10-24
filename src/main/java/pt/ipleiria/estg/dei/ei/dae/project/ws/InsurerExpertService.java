@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Path("insurerExperts") // relative url web path for this service
+@Path("insurer_experts") // relative url web path for this service
 @Produces({MediaType.APPLICATION_JSON}) // injects header “Content-Type: application/json”
 @Consumes({MediaType.APPLICATION_JSON}) // injects header “Accept: application/json”
 public class InsurerExpertService {
@@ -59,8 +59,7 @@ public class InsurerExpertService {
             return new InsurerExpertDTO(
                     insurerExpert.getId(),
                     insurerExpert.getName(),
-                    insurerExpert.getEmail(),
-                    insurerExpert.getInsurer()
+                    insurerExpert.getEmail()
             );
         }
 
