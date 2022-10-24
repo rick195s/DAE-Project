@@ -25,7 +25,9 @@ public class RepairShop implements Serializable {
     String email;
     @NotNull
     String password;
-
+    @NotNull
+    @OneToMany(mappedBy = "repairShop")
+    List<RepairShopExpert> repairShopExperts;
     @ManyToMany
     @JoinTable(
             name = "insurers_repair_shop",
@@ -41,6 +43,7 @@ public class RepairShop implements Serializable {
         this.email = email;
         this.password = password;
         insurers= new LinkedList<>();
+        repairShopExperts = new LinkedList<>();
 
     }
 
