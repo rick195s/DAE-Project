@@ -3,9 +3,9 @@ package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 import java.io.Serializable;
 
 public class UserDTO implements Serializable {
-    int id;
+    protected int id;
 
-    String name, email;
+    protected String name, email;
 
     public UserDTO(int id, String name, String email) {
         this.id = id;
