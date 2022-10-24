@@ -2,14 +2,19 @@ package pt.ipleiria.estg.dei.ei.dae.project.enteties;
 
 import pt.ipleiria.estg.dei.ei.dae.project.enteties.enums.PolicyObjectType;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(
+                name = "getAllPolicyObjects",
+                query = "SELECT p FROM PolicyObject p ORDER BY p.name" // JPQL
+        )
+})
+@Table(name = "policy_objects")
+
 public class PolicyObject implements Serializable {
     @Id
     int id;
