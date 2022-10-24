@@ -37,8 +37,6 @@ public class ConfigBean {
         System.out.println("Hello Java EE!");
 
         clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
-        //insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", insurerBean.findInsurer(10));  --> Não consegui desta maneira
-        insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", new Insurer(100, "Allianz"));
 
         //Populate Insurers Table
         APIConsumer apiConsumerInsurers = new APIConsumer();
@@ -53,6 +51,11 @@ public class ConfigBean {
                 insurerBean.create(insurer.getId(), insurer.getName());
             }
         }
+
+        // Funciona mas não é melhor opcao passar o objeto Insurer por parametro
+        // insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", insurerBean.findInsurer(10));
+
+        insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", 10);
 
         //Populate RepairShops Table
         APIConsumer apiConsumerRepairShops = new APIConsumer();
