@@ -31,4 +31,19 @@ public class HistoricalBean {
     public Historical findHistorical(int id) {
         return entityManager.find(Historical.class, id);
     }
+
+    public void update(int id, HistoricalEnum historicalEnum, String description, Date date) {
+        Historical historical = findHistorical(id);
+        if (historical == null) {
+            throw new IllegalArgumentException("Historical does not exist");
+        }
+        historical.setState(historicalEnum);
+        historical.setDescription(description);
+        historical.setDate(date);
+        entityManager.merge(historical);
+    }
+
+    public void delete(Historical historical) {
+        entityManager.remove(entityManager.contains(historical) ? historical : entityManager.merge(historical));
+    }
 }

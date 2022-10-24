@@ -1,25 +1,51 @@
-### Get all insurers
+################################# Insurer #############################################
+### Get all
 GET http://localhost:8080/project/api/insurers/all
 Accept: application/json
 
-### Get one insurer
+### Get one
 GET http://localhost:8080/project/api/insurers/1
 Accept: application/json
 
-### Post a new insurer
+### Post one
 POST http://localhost:8080/project/api/insurers
 Content-Type: application/json
 
 {
-    "id": 99,
-    "name": "Test Insurer"
+  "id": 99,
+  "name": "Test Insurer"
 }
 
-##############################################################################
-##Get all insurer Experts
+################################# Insurer Experts #############################################
+###Get all
 GET http://localhost:8080/project/api/insurer_experts/all
 Accept: application/json
 
-##Get one insurer Experts
+###Get one
 GET http://localhost:8080/project/api/insurer_experts/5
+Accept: application/json
+
+
+################################# Historicals #############################################
+###Get all
+GET http://localhost:8080/project/api/historical/all
+Accept: application/json
+
+###Get one
+GET http://localhost:8080/project/api/historical/1
+Accept: application/json
+
+###Update one
+PUT http://localhost:8080/project/api/historical/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "state": "APROVADO_PELA_SEGURADORA",
+  "description": "Test description 2.0",
+  "date": "3921-07-01T00:00:00Z[UTC]"
+}
+
+###DELETE one
+DELETE http://localhost:8080/project/api/historical/1
 Accept: application/json
