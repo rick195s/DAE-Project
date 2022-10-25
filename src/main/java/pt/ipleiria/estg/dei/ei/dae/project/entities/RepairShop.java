@@ -24,7 +24,7 @@ public class RepairShop implements Serializable {
     @NotNull
     String email;
     @NotNull
-    String password;
+    String phone;
     @NotNull
     @OneToMany(mappedBy = "repairShop")
     List<RepairShopExpert> repairShopExperts;
@@ -37,11 +37,11 @@ public class RepairShop implements Serializable {
     @NotNull
     List<Insurer> insurers;
 
-    public RepairShop(int id, String name, String email, String password) {
+    public RepairShop(int id, String name, String email, String phone) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.password = password;
+        this.phone = phone;
         insurers= new LinkedList<>();
         repairShopExperts = new LinkedList<>();
 
@@ -74,11 +74,11 @@ public class RepairShop implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPhone(String password) {
+        this.phone = password;
     }
 }

@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "repair_shops_experts")
+@PrimaryKeyJoinColumn(name = "user_id")
 @NamedQueries({
         @NamedQuery(
                 name = "getAllRepairShopsExperts",
@@ -14,25 +15,14 @@ import java.io.Serializable;
         )
 })
 public class RepairShopExpert extends User implements Serializable {
-    @Id
-    int id;
     @NotNull
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "repair_shop")
+    @JoinColumn(name = "repair_shop_id")
     RepairShop repairShop;
 
-    public RepairShopExpert(int id, RepairShop repairShop) {
-        super(id, repairShop.getName(), repairShop.getEmail(), repairShop.getPassword());
+    public RepairShopExpert(int id, String name, String email, String password, RepairShop repairShop) {
+        super(id, name, email, password);
         this.repairShop = repairShop;
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public RepairShopExpert() {
