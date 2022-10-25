@@ -78,7 +78,7 @@ public class RepairShop implements Serializable {
         return phone;
     }
 
-    public void setPhone(String password) {
-        this.phone = password;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
