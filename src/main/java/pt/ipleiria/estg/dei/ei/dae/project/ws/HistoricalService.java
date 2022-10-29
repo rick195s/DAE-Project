@@ -3,8 +3,6 @@ package pt.ipleiria.estg.dei.ei.dae.project.ws;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.HistoricalDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.HistoricalBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Historical;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.InsurerExpert;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
@@ -43,7 +41,7 @@ public class HistoricalService {
     public Response updateHistorical(@PathParam("id") int id, HistoricalDTO historicalDTO) {
         Historical historical = historicalBean.findHistorical(id);
         if (historical != null) {
-            historicalBean.update(historicalDTO.getId(), historicalDTO.getState(), historicalDTO.getDescription(), historicalDTO.getDate());
+            historicalBean.update(historicalDTO.getId(), historicalDTO.getState(), historicalDTO.getDescription(), historicalDTO.getCalendar());
             return Response.ok(toDTO(historical)).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
@@ -70,7 +68,7 @@ public class HistoricalService {
                 historical.getId(),
                 historical.getState(),
                 historical.getDescription(),
-                historical.getDate()
+                historical.getCalendar()
         );
     }
 

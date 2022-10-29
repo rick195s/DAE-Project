@@ -12,8 +12,10 @@ import javax.json.JsonArray;
 import javax.json.JsonValue;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 
 @Startup
@@ -61,7 +63,15 @@ public class ConfigBean {
         // insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", insurerBean.findInsurer(10));
         insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", 10);
 
-        historicalBean.create(1, "teste", "Teste 123", new Date(2021, Calendar.JULY, 1));
+
+
+        Calendar calendar = Calendar.getInstance(
+                TimeZone.getTimeZone("UTC"));
+
+        calendar.set(2021, Calendar.JULY, 1);
+
+
+        historicalBean.create(1, "teste", "Teste 123", (Calendar) calendar.clone());
 
         //Populate RepairShops Table
         APIConsumer apiConsumerRepairShops = new APIConsumer();

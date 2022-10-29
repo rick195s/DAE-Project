@@ -5,13 +5,13 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 
 @Entity
 @NamedQueries({
         @NamedQuery(
                 name = "getAllHistoricals",
-                query = "SELECT u FROM Historical u ORDER BY u.date" // JPQL
+                query = "SELECT u FROM Historical u ORDER BY u.calendar" // JPQL
         )
 })
 @Table(name = "Historicals")
@@ -25,17 +25,19 @@ public class Historical implements Serializable {
     @NotNull
     String description;
 
+    @Column(name = "date")
     @NotNull
-    Date date;
+    @Temporal(TemporalType.TIMESTAMP)
+    Calendar calendar;
 
     public Historical() {
     }
 
-    public Historical(int id, HistoricalEnum state, String description, Date date) {
+    public Historical(int id, HistoricalEnum state, String description, Calendar calendar) {
         this.id = id;
         this.state = state;
         this.description = description;
-        this.date = date;
+        this.calendar = calendar;
     }
 
     public int getId() {
@@ -62,11 +64,11 @@ public class Historical implements Serializable {
         this.description = description;
     }
 
-    public Date getDate() {
-        return date;
+    public Calendar getCalendar() {
+        return calendar;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setCalendar(Calendar calendar) {
+        this.calendar = calendar;
     }
 }
