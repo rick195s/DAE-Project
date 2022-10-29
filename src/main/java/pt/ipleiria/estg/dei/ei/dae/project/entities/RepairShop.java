@@ -18,16 +18,21 @@ import java.util.List;
 public class RepairShop implements Serializable {
     @Id
     int id;
+
     @NotNull
     String name;
+
     @Email
     @NotNull
     String email;
+
     @NotNull
     String phone;
+
     @NotNull
     @OneToMany(mappedBy = "repairShop")
     List<RepairShopExpert> repairShopExperts;
+
     @ManyToMany
     @JoinTable(
             name = "insurers_repair_shop",
