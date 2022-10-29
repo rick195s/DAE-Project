@@ -4,7 +4,6 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Date;
 
 public class HistoricalDTO implements Serializable {
     int id;
@@ -13,16 +12,16 @@ public class HistoricalDTO implements Serializable {
 
     String description;
 
-    Calendar calendar;
+    Calendar date;
 
     public HistoricalDTO() {
     }
 
-    public HistoricalDTO(int id, HistoricalEnum state, String description, Calendar calendar) {
+    public HistoricalDTO(int id, HistoricalEnum state, String description, Calendar date) {
         this.id = id;
         this.state = state;
         this.description = description;
-        this.calendar = calendar;
+        this.date = date;
     }
 
     public int getId() {
@@ -49,11 +48,11 @@ public class HistoricalDTO implements Serializable {
         this.description = description;
     }
 
-    public Calendar getCalendar() {
-        return calendar;
+    public Calendar getDate() {
+        return date;
     }
 
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
+    public void setDate(Calendar date) {
+        this.date = date;
     }
 }

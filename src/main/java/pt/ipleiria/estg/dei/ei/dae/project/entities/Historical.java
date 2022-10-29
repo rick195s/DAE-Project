@@ -11,7 +11,7 @@ import java.util.Calendar;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllHistoricals",
-                query = "SELECT u FROM Historical u ORDER BY u.calendar" // JPQL
+                query = "SELECT u FROM Historical u ORDER BY u.date" // JPQL
         )
 })
 @Table(name = "Historicals")
@@ -25,19 +25,18 @@ public class Historical implements Serializable {
     @NotNull
     String description;
 
-    @Column(name = "date")
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    Calendar calendar;
+    Calendar date;
 
     public Historical() {
     }
 
-    public Historical(int id, HistoricalEnum state, String description, Calendar calendar) {
+    public Historical(int id, HistoricalEnum state, String description, Calendar date) {
         this.id = id;
         this.state = state;
         this.description = description;
-        this.calendar = calendar;
+        this.date = date;
     }
 
     public int getId() {
@@ -65,10 +64,10 @@ public class Historical implements Serializable {
     }
 
     public Calendar getCalendar() {
-        return calendar;
+        return date;
     }
 
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
+    public void setCalendar(Calendar date) {
+        this.date = date;
     }
 }

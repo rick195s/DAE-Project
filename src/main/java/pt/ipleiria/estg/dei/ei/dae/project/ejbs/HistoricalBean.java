@@ -14,12 +14,12 @@ public class HistoricalBean {
     @PersistenceContext
     EntityManager entityManager;
 
-    public void create(int id, String name, String description, Calendar calendar) {
+    public void create(int id, String name, String description, Calendar date) {
         Historical historical = findHistorical(id);
         if (historical != null) {
             throw new IllegalArgumentException("Historical already exists");
         }
-        historical = new Historical(id, HistoricalEnum.A_AGUARDAR_APROVACAO_PELA_SEGURADORA, description, calendar);
+        historical = new Historical(id, HistoricalEnum.A_AGUARDAR_APROVACAO_PELA_SEGURADORA, description, date);
         entityManager.persist(historical);
     }
 
@@ -31,14 +31,14 @@ public class HistoricalBean {
         return entityManager.find(Historical.class, id);
     }
 
-    public void update(int id, HistoricalEnum historicalEnum, String description, Calendar calendar) {
+    public void update(int id, HistoricalEnum historicalEnum, String description, Calendar date) {
         Historical historical = findHistorical(id);
         if (historical == null) {
             throw new IllegalArgumentException("Historical does not exist");
         }
         historical.setState(historicalEnum);
         historical.setDescription(description);
-        historical.setCalendar(calendar);
+        historical.setCalendar(date);
         entityManager.merge(historical);
     }
 
