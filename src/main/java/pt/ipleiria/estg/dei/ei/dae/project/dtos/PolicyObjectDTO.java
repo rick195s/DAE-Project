@@ -1,43 +1,31 @@
-package pt.ipleiria.estg.dei.ei.dae.project.entities;
+package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
 
-import javax.persistence.*;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-@Entity
-@NamedQueries({
-        @NamedQuery(
-                name = "getAllPolicyObjects",
-                query = "SELECT p FROM PolicyObject p ORDER BY p.name" // JPQL
-        )
-})
-@Table(name = "policy_objects")
-public class PolicyObject implements Serializable {
-    @Id
+public class PolicyObjectDTO implements Serializable {
+
     int id;
-    @NotNull
     String name;
-   /* @JoinColumn(name = "policy_id")
-    private Policies policies;*/
-    @NotNull
     String filePath;
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private PolicyObjectType type;
+    PolicyObjectType type;
     //@NotNull
     //Policy policy;
 
 
-    public PolicyObject(int id, String name, String filePath, PolicyObjectType type) {
+    public PolicyObjectDTO(int id, String name, String filePath, PolicyObjectType type) {
         this.id = id;
         this.name = name;
         this.filePath = filePath;
         this.type = type;
     }
 
-    public PolicyObject() {
+    public PolicyObjectDTO() {
     }
 
     public int getId() {
