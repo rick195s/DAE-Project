@@ -63,11 +63,11 @@ public class Historical implements Serializable {
         this.description = description;
     }
 
-    public Calendar getCalendar() {
+    public Calendar getDate() {
         return date;
     }
 
-    public void setCalendar(Calendar date) {
+    public void setDate(Calendar date) {
         this.date = date;
     }
 }

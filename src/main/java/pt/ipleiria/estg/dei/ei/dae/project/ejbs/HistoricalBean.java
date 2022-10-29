@@ -38,7 +38,7 @@ public class HistoricalBean {
         }
         historical.setState(historicalEnum);
         historical.setDescription(description);
-        historical.setCalendar(date);
+        historical.setDate(date);
         entityManager.merge(historical);
     }
 

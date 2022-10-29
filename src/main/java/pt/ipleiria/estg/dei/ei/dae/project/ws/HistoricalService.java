@@ -41,7 +41,7 @@ public class HistoricalService {
     public Response updateHistorical(@PathParam("id") int id, HistoricalDTO historicalDTO) {
         Historical historical = historicalBean.findHistorical(id);
         if (historical != null) {
-            historicalBean.update(historicalDTO.getId(), historicalDTO.getState(), historicalDTO.getDescription(), historicalDTO.getCalendar());
+            historicalBean.update(historicalDTO.getId(), historicalDTO.getState(), historicalDTO.getDescription(), historicalDTO.getDate());
             return Response.ok(toDTO(historical)).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
@@ -68,7 +68,7 @@ public class HistoricalService {
                 historical.getId(),
                 historical.getState(),
                 historical.getDescription(),
-                historical.getCalendar()
+                historical.getDate()
         );
     }
 
