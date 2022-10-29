@@ -4,6 +4,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -33,10 +34,10 @@ public class Occurrence implements Serializable {
     private ApprovalType approvalType;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private Calendar startDate;
 
     @Column(name = "end_date")
-    private Date endDate;
+    private Calendar endDate;
 
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "occurrence")
     private List<OccurrenceFile> occurenceFileList;
@@ -44,7 +45,7 @@ public class Occurrence implements Serializable {
     public Occurrence() {
     }
 
-    public Occurrence(int id, int policyID, int repairID, String description, ApprovalType approvalType, Date startDate, Date endDate, List<OccurrenceFile> occurenceFileList) {
+    public Occurrence(int id, int policyID, int repairID, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate, List<OccurrenceFile> occurenceFileList) {
         this.id = id;
         this.policyID = policyID;
         this.repairID = repairID;
@@ -95,19 +96,19 @@ public class Occurrence implements Serializable {
         this.approvalType = approvalType;
     }
 
-    public Date getStartDate() {
+    public Calendar getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Calendar startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public Calendar getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Calendar endDate) {
         this.endDate = endDate;
     }
 }

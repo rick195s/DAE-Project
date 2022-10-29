@@ -12,6 +12,8 @@ import javax.json.JsonArray;
 import javax.json.JsonValue;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 
 @Startup
@@ -25,6 +27,9 @@ public class ConfigBean {
 
     @EJB
     InsurerExpertBean insurerExpertBean;
+
+    @EJB
+    HistoricalBean historicalBean;
 
     //@EJB
     //RepairShopBean repairShopBean;
@@ -42,7 +47,7 @@ public class ConfigBean {
         APIConsumer apiConsumerInsurers = new APIConsumer();
         JsonArray jsonArrayInsurers = apiConsumerInsurers.getDataFromAPI(urlInsurers);
 
-        if (jsonArrayInsurers != null){
+        if (jsonArrayInsurers != null) {
             Jsonb jsonb = JsonbBuilder.create();
 
             for (JsonValue sticker : jsonArrayInsurers) {
@@ -54,14 +59,23 @@ public class ConfigBean {
 
         // Funciona mas não é melhor opcao passar o objeto Insurer por parametro
         // insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", insurerBean.findInsurer(10));
-
         insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", 10);
+
+
+
+        Calendar calendar = Calendar.getInstance(
+                TimeZone.getTimeZone("UTC"));
+
+        calendar.set(2021, Calendar.JULY, 1);
+
+
+        historicalBean.create(1, "teste", "Teste 123", (Calendar) calendar.clone());
 
         //Populate RepairShops Table
         APIConsumer apiConsumerRepairShops = new APIConsumer();
         JsonArray jsonArrayRepairShops = apiConsumerRepairShops.getDataFromAPI(urlRepairShops);
 
-        if (jsonArrayRepairShops != null){
+        if (jsonArrayRepairShops != null) {
             Jsonb jsonb = JsonbBuilder.create();
 
             for (JsonValue sticker : jsonArrayRepairShops) {

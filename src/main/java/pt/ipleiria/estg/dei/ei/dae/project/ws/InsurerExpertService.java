@@ -45,6 +45,8 @@ public class InsurerExpertService {
                     insurerExpertDTO.getId(),
                     insurerExpertDTO.getName(),
                     insurerExpertDTO.getEmail(),
+                    "adsd",
+                    insurerExpertDTO.getInsurerId()
 
             );
             InsurerExpert newInsurerExpert = insurerExpertBean.findInsurerExpert(insurerExpertDTO.getId());

@@ -5,7 +5,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 
 @Entity
 @NamedQueries({
@@ -26,12 +26,13 @@ public class Historical implements Serializable {
     String description;
 
     @NotNull
-    Date date;
+    @Temporal(TemporalType.TIMESTAMP)
+    Calendar date;
 
     public Historical() {
     }
 
-    public Historical(int id, HistoricalEnum state, String description, Date date) {
+    public Historical(int id, HistoricalEnum state, String description, Calendar date) {
         this.id = id;
         this.state = state;
         this.description = description;
@@ -62,11 +63,11 @@ public class Historical implements Serializable {
         this.description = description;
     }
 
-    public Date getDate() {
+    public Calendar getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Calendar date) {
         this.date = date;
     }
 }
