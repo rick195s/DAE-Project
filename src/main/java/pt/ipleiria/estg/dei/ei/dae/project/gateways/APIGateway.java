@@ -1,4 +1,4 @@
-package pt.ipleiria.estg.dei.ei.dae.project.utils;
+package pt.ipleiria.estg.dei.ei.dae.project.gateways;
 
 
 import javax.json.JsonArray;
@@ -8,16 +8,18 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-public class APIConsumer {
 
-    public JsonArray getDataFromAPI(String urlAPI) {
+public class APIGateway {
 
+
+    public static JsonArray getDataFromAPI(String urlAPI) {
+
+        // don't mismatch this client with the insurer client
         Client apiClient = ClientBuilder.newClient();
         Response response = null;
         JsonArray jsonArray = null;
 
         try {
-            // don't mismatch this client with the insurer client
             WebTarget target = apiClient.target(urlAPI);
             response = target.request(MediaType.APPLICATION_JSON).get();
             jsonArray = response.readEntity(JsonArray.class);

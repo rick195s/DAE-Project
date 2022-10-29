@@ -2,19 +2,17 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Insurer;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.RepairShop;
-import pt.ipleiria.estg.dei.ei.dae.project.utils.APIConsumer;
+import pt.ipleiria.estg.dei.ei.dae.project.gateways.APIGateway;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.json.JsonArray;
-import javax.json.JsonValue;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import java.util.Calendar;
 import java.util.TimeZone;
-
 
 @Startup
 @Singleton
@@ -31,11 +29,11 @@ public class ConfigBean {
     @EJB
     HistoricalBean historicalBean;
 
-    //@EJB
-    //RepairShopBean repairShopBean;
+    @EJB
+    RepairShopBean repairShopBean;
 
-    String urlInsurers = "https://634f1183df22c2af7b4a4b38.mockapi.io/insurers";
-    String urlRepairShops = "https://634f1183df22c2af7b4a4b38.mockapi.io/repair_shops";
+    final String URI_INSURERS = "https://634f1183df22c2af7b4a4b38.mockapi.io/insurers";
+    final String URI_REPAIR_SHOPS = "https://634f1183df22c2af7b4a4b38.mockapi.io/repair_shops";
 
     @PostConstruct
     public void populateDB() {
@@ -43,46 +41,32 @@ public class ConfigBean {
 
         clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
 
-        //Populate Insurers Table
-        APIConsumer apiConsumerInsurers = new APIConsumer();
-        JsonArray jsonArrayInsurers = apiConsumerInsurers.getDataFromAPI(urlInsurers);
 
-        if (jsonArrayInsurers != null) {
+        JsonArray jsonArrayInsurers = APIGateway.getDataFromAPI(URI_INSURERS);
+        jsonArrayInsurers.forEach(insurer -> {
             Jsonb jsonb = JsonbBuilder.create();
+            Insurer insurerObj = jsonb.fromJson(insurer.toString(), Insurer.class);
+            insurerBean.create(insurerObj.getId(), insurerObj.getName());
+        });
 
-            for (JsonValue sticker : jsonArrayInsurers) {
-                Insurer insurer = jsonb.fromJson(sticker.toString(), Insurer.class);
-                //System.out.println(insurer.getName());
-                insurerBean.create(insurer.getId(), insurer.getName());
-            }
-        }
+        JsonArray jsonArrayRepairShops = APIGateway.getDataFromAPI(URI_REPAIR_SHOPS);
+        jsonArrayRepairShops.forEach(repairShop -> {
+            Jsonb jsonb = JsonbBuilder.create();
+            RepairShop repairShopObj = jsonb.fromJson(repairShop.toString(), RepairShop.class);
+            repairShopBean.create(repairShopObj.getId(), repairShopObj.getName(), repairShopObj.getEmail(), repairShopObj.getPhone());
+        });
+
 
         // Funciona mas não é melhor opcao passar o objeto Insurer por parametro
         // insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", insurerBean.findInsurer(10));
         insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", 10);
-
-
 
         Calendar calendar = Calendar.getInstance(
                 TimeZone.getTimeZone("UTC"));
 
         calendar.set(2021, Calendar.JULY, 1);
 
-
         historicalBean.create(1, "teste", "Teste 123", (Calendar) calendar.clone());
-
-        //Populate RepairShops Table
-        APIConsumer apiConsumerRepairShops = new APIConsumer();
-        JsonArray jsonArrayRepairShops = apiConsumerRepairShops.getDataFromAPI(urlRepairShops);
-
-        if (jsonArrayRepairShops != null) {
-            Jsonb jsonb = JsonbBuilder.create();
-
-            for (JsonValue sticker : jsonArrayRepairShops) {
-                RepairShop repairShop = jsonb.fromJson(sticker.toString(), RepairShop.class);
-                //System.out.println(repairShop.getName());
-                //repairShopsBean.create(insurer.getId(), insurer.getName());
-            }
-        }
     }
+
 }
