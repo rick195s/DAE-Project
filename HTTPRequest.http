@@ -4,7 +4,7 @@ GET http://localhost:8080/project/api/insurers/all
 Accept: application/json
 
 ### Get one
-GET http://localhost:8080/project/api/insurers/1
+GET http://localhost:8080/project/api/insurers/3
 Accept: application/json
 
 ### Post one
@@ -13,6 +13,15 @@ Content-Type: application/json
 
 {
   "id": 99,
+  "name": "Test Insurer"
+}
+
+### Put one
+PUT http://localhost:8080/project/api/insurers/3
+Content-Type: application/json
+
+{
+  "id": 3,
   "name": "Test Insurer"
 }
 

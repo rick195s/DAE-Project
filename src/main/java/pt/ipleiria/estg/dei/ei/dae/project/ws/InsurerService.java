@@ -50,6 +50,20 @@ public class InsurerService {
         return Response.status(Response.Status.CREATED).entity(toDTO(newInsurer)).build();
     }
 
+    @PUT
+    @Path("{id}")
+    public Response updateInsurer(@PathParam("id") int id, InsurerDTO insurerDTO) {
+        insurerBean.update(
+                id,
+                insurerDTO.getName()
+        );
+        Insurer updatedInsurer = insurerBean.findInsurer(id);
+        if (updatedInsurer == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.status(Response.Status.OK).entity(toDTO(updatedInsurer)).build();
+    }
+
     // Converts an entity Student to a DTO Student class
     private InsurerDTO toDTO(Insurer insurer) {
         return new InsurerDTO(

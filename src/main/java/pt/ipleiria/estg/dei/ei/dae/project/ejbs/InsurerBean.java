@@ -29,4 +29,13 @@ public class InsurerBean {
     public Insurer findInsurer(int id) {
         return entityManager.find(Insurer.class, id);
     }
+
+    public void update(int id, String name) {
+        Insurer insurer = findInsurer(id);
+        if (insurer == null) {
+            throw new IllegalArgumentException("Insurer does not exist");
+        }
+        insurer.setName(name);
+        entityManager.merge(insurer);
+    }
 }
