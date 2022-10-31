@@ -35,4 +35,12 @@ public class InsurerExpertBean {
     public InsurerExpert findInsurerExpert(int id) {
         return entityManager.find(InsurerExpert.class, id);
     }
+
+    public void delete(int id) {
+        InsurerExpert insurer_expert = findInsurerExpert(id);
+        if (insurer_expert == null) {
+            throw new IllegalArgumentException("Insurer_Expert does not exist");
+        }
+        entityManager.remove(insurer_expert);
+    }
 }

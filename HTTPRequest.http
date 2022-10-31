@@ -38,6 +38,9 @@ Accept: application/json
 GET http://localhost:8080/project/api/insurer_experts/5
 Accept: application/json
 
+###Delete one
+DELETE http://localhost:8080/project/api/insurer_experts/5
+Accept: application/json
 
 ################################# Historicals #############################################
 ###Get all

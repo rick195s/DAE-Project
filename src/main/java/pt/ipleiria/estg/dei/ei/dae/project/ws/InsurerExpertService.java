@@ -56,6 +56,34 @@ public class InsurerExpertService {
             return Response.status(Response.Status.CREATED).entity(toDTO(newInsurerExpert)).build();
         }*/
 
+    /*@PUT
+    @Path("{id}")
+    public Response updateInsurerExpert(@PathParam("id") int id, InsurerExpertDTO insurerExpertDTO) {
+        InsurerExpert insurerExpert = insurerExpertBean.findInsurerExpert(id);
+        if (insurerExpert == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        insurerExpertBean.update(
+                insurerExpertDTO.getId(),
+                insurerExpertDTO.getName(),
+                insurerExpertDTO.getEmail(),
+                "adsd",
+                insurerExpertDTO.getInsurerId()
+        );
+        return Response.ok(toDTO(insurerExpert)).build();
+    }*/
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteInsurerExpert(@PathParam("id") int id) {
+        InsurerExpert insurerExpert = insurerExpertBean.findInsurerExpert(id);
+        if (insurerExpert == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        insurerExpertBean.delete(id);
+        return Response.ok().build();
+    }
+
         // Converts an entity Student to a DTO Student class
         private InsurerExpertDTO toDTO(InsurerExpert insurerExpert) {
             return new InsurerExpertDTO(
