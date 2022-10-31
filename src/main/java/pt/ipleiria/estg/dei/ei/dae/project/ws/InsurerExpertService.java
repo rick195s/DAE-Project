@@ -38,7 +38,8 @@ public class InsurerExpertService {
                     .build();
         }
 
-        /*@POST
+        //TODO: change the password (Acho que é devido a isso o erro)
+        @POST
         @Path("/")
         public Response createNewInsurerExpert(InsurerExpertDTO insurerExpertDTO) {
             insurerExpertBean.create(
@@ -54,9 +55,10 @@ public class InsurerExpertService {
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
             return Response.status(Response.Status.CREATED).entity(toDTO(newInsurerExpert)).build();
-        }*/
+        }
 
-    /*@PUT
+    //TODO: change the password (Acho que é devido a isso o erro)
+    @PUT
     @Path("{id}")
     public Response updateInsurerExpert(@PathParam("id") int id, InsurerExpertDTO insurerExpertDTO) {
         InsurerExpert insurerExpert = insurerExpertBean.findInsurerExpert(id);
@@ -67,11 +69,11 @@ public class InsurerExpertService {
                 insurerExpertDTO.getId(),
                 insurerExpertDTO.getName(),
                 insurerExpertDTO.getEmail(),
-                "adsd",
+                "asd",
                 insurerExpertDTO.getInsurerId()
         );
         return Response.ok(toDTO(insurerExpert)).build();
-    }*/
+    }
 
     @DELETE
     @Path("{id}")
