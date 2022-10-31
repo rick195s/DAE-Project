@@ -25,6 +25,10 @@ Content-Type: application/json
   "name": "Test Insurer"
 }
 
+### Delete one
+DELETE http://localhost:8080/project/api/insurers/3
+Accept: application/json
+
 ################################# Insurer Experts #############################################
 ###Get all
 GET http://localhost:8080/project/api/insurer_experts/all

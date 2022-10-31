@@ -38,4 +38,12 @@ public class InsurerBean {
         insurer.setName(name);
         entityManager.merge(insurer);
     }
+
+    public void delete(int id) {
+        Insurer insurer = findInsurer(id);
+        if (insurer == null) {
+            throw new IllegalArgumentException("Insurer does not exist");
+        }
+        entityManager.remove(insurer);
+    }
 }
