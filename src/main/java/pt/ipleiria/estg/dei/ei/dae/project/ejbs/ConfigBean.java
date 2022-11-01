@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Insurer;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.RepairShop;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.APIGateway;
 
 import javax.annotation.PostConstruct;
@@ -32,6 +33,9 @@ public class ConfigBean {
     @EJB
     RepairShopBean repairShopBean;
 
+    @EJB
+    PolicyBean policyBean;
+
     final String URI_INSURERS = "https://634f1183df22c2af7b4a4b38.mockapi.io/insurers";
     final String URI_REPAIR_SHOPS = "https://634f1183df22c2af7b4a4b38.mockapi.io/repair_shops";
 
@@ -39,7 +43,7 @@ public class ConfigBean {
     public void populateDB() {
         System.out.println("Hello Java EE!");
 
-        // clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
+        clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
 
 
         JsonArray jsonArrayInsurers = APIGateway.getDataFromAPI(URI_INSURERS);
@@ -61,12 +65,19 @@ public class ConfigBean {
         // insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", insurerBean.findInsurer(10));
         insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", 10);
 
+
+
         Calendar calendar = Calendar.getInstance(
                 TimeZone.getTimeZone("UTC"));
 
         calendar.set(2021, Calendar.JULY, 1);
 
         historicalBean.create(1, "teste", "Teste 123", (Calendar) calendar.clone());
+
+        Calendar calendar2 = Calendar.getInstance(
+                TimeZone.getTimeZone("UTC"));
+        calendar2.set(2021, Calendar.DECEMBER, 2);
+        //policyBean.create(1, 1,1, PolicyType.ACCIDENT, (Calendar) calendar.clone(), (Calendar) calendar2.clone());
     }
 
 }
