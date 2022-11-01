@@ -67,8 +67,6 @@ public class ConfigBean {
 
         calendar.set(2021, Calendar.JULY, 1);
 
-        historicalBean.create(1, "teste", "Teste 123", (Calendar) calendar.clone());
-
 
         Calendar calendar2 = Calendar.getInstance(
                 TimeZone.getTimeZone("UTC"));

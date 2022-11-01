@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Historical;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 
 import javax.ejb.Stateless;
@@ -14,12 +15,18 @@ public class HistoricalBean {
     @PersistenceContext
     EntityManager entityManager;
 
-    public void create(int id, String name, String description, Calendar date) {
+    public void create(int id, String description, int occurrenceId , Calendar date) {
         Historical historical = findHistorical(id);
         if (historical != null) {
             throw new IllegalArgumentException("Historical already exists");
         }
-        historical = new Historical(id, HistoricalEnum.A_AGUARDAR_APROVACAO_PELA_SEGURADORA, description, date);
+
+        Occurrence occurrence = entityManager.find(Occurrence.class, occurrenceId);
+        if (occurrence == null) {
+            throw new IllegalArgumentException("Occurrence does not exist");
+        }
+
+        historical = new Historical(id, HistoricalEnum.A_AGUARDAR_APROVACAO_PELA_SEGURADORA, description, occurrence, date);
         entityManager.persist(historical);
     }
 

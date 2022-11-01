@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -42,10 +43,15 @@ public class Occurrence implements Serializable {
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "occurrence")
     private List<OccurrenceFile> occurenceFileList;
 
+    @OneToMany(fetch=FetchType.LAZY,mappedBy = "occurrence")
+    private List<Historical> occurenceHistoricalList;
+
     public Occurrence() {
+        this.occurenceFileList = new LinkedList<>();
+        this.occurenceHistoricalList = new LinkedList<>();
     }
 
-    public Occurrence(int id, int policyID, int repairID, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate, List<OccurrenceFile> occurenceFileList) {
+    public Occurrence(int id, int policyID, int repairID, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate) {
         this.id = id;
         this.policyID = policyID;
         this.repairID = repairID;
@@ -53,7 +59,8 @@ public class Occurrence implements Serializable {
         this.approvalType = approvalType;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.occurenceFileList = occurenceFileList;
+        this.occurenceFileList = new LinkedList<>();
+        this.occurenceHistoricalList = new LinkedList<>();
     }
 
     public int getId() {
@@ -110,5 +117,33 @@ public class Occurrence implements Serializable {
 
     public void setEndDate(Calendar endDate) {
         this.endDate = endDate;
+    }
+
+    public List<OccurrenceFile> getOccurenceFileList() {
+        return occurenceFileList;
+    }
+
+    public void setOccurenceFileList(List<OccurrenceFile> occurenceFileList) {
+        this.occurenceFileList = occurenceFileList;
+    }
+
+    public List<Historical> getOccurenceHistoricalList() {
+        return occurenceHistoricalList;
+    }
+
+    public void setOccurenceHistoricalList(List<Historical> occurenceHistoricalList) {
+        this.occurenceHistoricalList = occurenceHistoricalList;
+    }
+
+    public void addOccurenceFile(OccurrenceFile occurrenceFile) {
+        this.occurenceFileList.add(occurrenceFile);
+    }
+
+    public void addOccurenceHistorical(Historical historical) {
+        this.occurenceHistoricalList.add(historical);
+    }
+
+    public void removeOccurenceFile(OccurrenceFile occurrenceFile) {
+        this.occurenceFileList.remove(occurrenceFile);
     }
 }

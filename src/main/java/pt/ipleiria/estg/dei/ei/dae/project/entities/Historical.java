@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
 
 @Entity
 @NamedQueries({
@@ -26,17 +27,23 @@ public class Historical implements Serializable {
     String description;
 
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
+    // @Temporal(TemporalType.TIMESTAMP)
     Calendar date;
 
-    public Historical() {
-    }
+    @NotNull
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "occurrence_id")
+    Occurrence occurrence;
 
-    public Historical(int id, HistoricalEnum state, String description, Calendar date) {
+    public Historical(int id, HistoricalEnum state, String description, Occurrence occurrence, Calendar date) {
         this.id = id;
         this.state = state;
         this.description = description;
+        this.occurrence = occurrence;
         this.date = date;
+    }
+
+    public Historical() {
     }
 
     public int getId() {
@@ -69,5 +76,13 @@ public class Historical implements Serializable {
 
     public void setDate(Calendar date) {
         this.date = date;
+    }
+
+    public Occurrence getOccurrence() {
+        return occurrence;
+    }
+
+    public void setOccurrence(Occurrence occurrence) {
+        this.occurrence = occurrence;
     }
 }
