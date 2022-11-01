@@ -39,7 +39,7 @@ public class ConfigBean {
     public void populateDB() {
         System.out.println("Hello Java EE!");
 
-        clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
+        // clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
 
 
         JsonArray jsonArrayInsurers = APIGateway.getDataFromAPI(URI_INSURERS);

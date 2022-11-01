@@ -26,19 +26,29 @@ public class Insurer implements Serializable {
 
     @NotNull
     @OneToMany(mappedBy = "insurer")
+    List<Policy> policies;
+
+    @NotNull
+    @OneToMany(mappedBy = "insurer")
     List<InsurerExpert> insurer_experts;
 
     @ManyToMany(fetch = FetchType.EAGER,mappedBy = "insurers")
     List<RepairShop> repairShops;
 
 
-    public Insurer() {
-        insurer_experts = new LinkedList<>();
-    }
-
     public Insurer(int id, String name) {
         this.id = id;
         this.name = name;
+        this.policies = policies;
+        this.insurer_experts = insurer_experts;
+        this.repairShops = repairShops;
+        policies = new LinkedList<>();
+        insurer_experts = new LinkedList<>();
+        repairShops = new LinkedList<>();
+    }
+
+    public Insurer() {
+        policies = new LinkedList<>();
         insurer_experts = new LinkedList<>();
         repairShops = new LinkedList<>();
     }
@@ -59,11 +69,52 @@ public class Insurer implements Serializable {
         this.name = name;
     }
 
+    public List<Policy> getPolicies() {
+        return policies;
+    }
+
+    public void setPolicies(List<Policy> policies) {
+        this.policies = policies;
+    }
+
     public List<InsurerExpert> getInsurer_experts() {
         return insurer_experts;
     }
 
     public void setInsurer_experts(List<InsurerExpert> insurer_experts) {
-        this.insurer_experts = new LinkedList<>(insurer_experts);
+        this.insurer_experts = insurer_experts;
     }
+
+    public List<RepairShop> getRepairShops() {
+        return repairShops;
+    }
+
+    public void setRepairShops(List<RepairShop> repairShops) {
+        this.repairShops = repairShops;
+    }
+
+    public void addPolicy(Policy policy) {
+        this.policies.add(policy);
+    }
+
+    public void removePolicy(Policy policy) {
+        this.policies.remove(policy);
+    }
+
+    public void addInsurerExpert(InsurerExpert insurerExpert) {
+        this.insurer_experts.add(insurerExpert);
+    }
+
+    public void removeInsurerExpert(InsurerExpert insurerExpert) {
+        this.insurer_experts.remove(insurerExpert);
+    }
+
+    public void addRepairShop(RepairShop repairShop) {
+        this.repairShops.add(repairShop);
+    }
+
+    public void removeRepairShop(RepairShop repairShop) {
+        this.repairShops.remove(repairShop);
+    }
+
 }

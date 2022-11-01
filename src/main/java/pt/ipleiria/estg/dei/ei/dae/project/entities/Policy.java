@@ -24,6 +24,17 @@ public class Policy implements Serializable {
     int id;
 
     @NotNull
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "client_id")
+    Client client;
+
+    @NotNull
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "insurer_id")
+    Insurer insurer;
+
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     PolicyState state;
 
@@ -37,7 +48,10 @@ public class Policy implements Serializable {
     @NotNull
     Calendar endDate;
 
-    public Policy(PolicyState state, PolicyType type, Calendar startDate, Calendar endDate) {
+    public Policy(int id, Client client, Insurer insurer, PolicyState state, PolicyType type, Calendar startDate, Calendar endDate) {
+        this.id = id;
+        this.client = client;
+        this.insurer = insurer;
         this.state = state;
         this.type = type;
         this.startDate = startDate;
@@ -45,6 +59,30 @@ public class Policy implements Serializable {
     }
 
     public Policy() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Insurer getInsurer() {
+        return insurer;
+    }
+
+    public void setInsurer(Insurer insurer) {
+        this.insurer = insurer;
     }
 
     public PolicyState getState() {
