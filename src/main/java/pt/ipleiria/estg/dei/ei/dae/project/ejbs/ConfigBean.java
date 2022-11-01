@@ -43,6 +43,9 @@ public class ConfigBean {
     @EJB
     PolicyTypeDetailBean policyTypeDetailBean;
 
+    @EJB
+    RepairShopExpertBean repairShopExpertBean;
+
     final String URI_INSURERS = "https://634f1183df22c2af7b4a4b38.mockapi.io/insurers";
     final String URI_REPAIR_SHOPS = "https://634f1183df22c2af7b4a4b38.mockapi.io/repair_shops";
 
@@ -56,11 +59,10 @@ public class ConfigBean {
 
         clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
 
-
+        repairShopExpertBean.create(31423, "João", "yau@mail.pt", "123", 1);
         // Funciona mas não é melhor opcao passar o objeto Insurer por parametro
         // insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", insurerBean.findInsurer(10));
         insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", 10);
-
 
         Calendar calendar = Calendar.getInstance(
                 TimeZone.getTimeZone("UTC"));
