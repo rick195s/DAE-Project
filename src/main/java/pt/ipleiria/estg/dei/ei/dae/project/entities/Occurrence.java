@@ -24,8 +24,6 @@ public class Occurrence implements Serializable {
     @Id
     private int id;
 
-    @Column(name = "repair_id")
-    private int repairID;
     private String description;
 
     @Enumerated(EnumType.STRING)
@@ -43,6 +41,11 @@ public class Occurrence implements Serializable {
     @JoinColumn(name = "policy_id")
     private Policy policy;
 
+    @NotNull
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "repair_shop_id")
+    private RepairShop repairShop;
+
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "occurrence")
     private List<OccurrenceFile> occurenceFileList;
 
@@ -54,9 +57,9 @@ public class Occurrence implements Serializable {
         this.occurenceHistoricalList = new LinkedList<>();
     }
 
-    public Occurrence(int id, Policy policy, int repairID, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate) {
+    public Occurrence(int id, Policy policy, RepairShop repairShop, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate) {
         this.id = id;
-        this.repairID = repairID;
+        this.repairShop = repairShop;
         this.description = description;
         this.approvalType = approvalType;
         this.startDate = startDate;
@@ -82,12 +85,12 @@ public class Occurrence implements Serializable {
         this.policy = policy;
     }
 
-    public int getRepairID() {
-        return repairID;
+    public RepairShop getRepairShop() {
+        return repairShop;
     }
 
-    public void setRepairID(int repairID) {
-        this.repairID = repairID;
+    public void setRepairShop(RepairShop repairShop) {
+        this.repairShop = repairShop;
     }
 
     public String getDescription() {

@@ -33,6 +33,11 @@ public class RepairShop implements Serializable {
     @OneToMany(mappedBy = "repairShop")
     List<RepairShopExpert> repairShopExperts;
 
+
+    @NotNull
+    @OneToMany(mappedBy = "repairShop")
+    List<Occurrence> occurrences;
+
     @ManyToMany
     @JoinTable(
             name = "insurers_repair_shop",
@@ -49,10 +54,13 @@ public class RepairShop implements Serializable {
         this.phone = phone;
         insurers= new LinkedList<>();
         repairShopExperts = new LinkedList<>();
-
+        occurrences = new LinkedList<>();
     }
 
     public RepairShop() {
+        insurers= new LinkedList<>();
+        repairShopExperts = new LinkedList<>();
+        occurrences = new LinkedList<>();
     }
 
     public int getId() {
