@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.entities;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,9 +24,6 @@ public class Occurrence implements Serializable {
     @Id
     private int id;
 
-    @Column(name = "policy_id")
-    private int policyID;
-
     @Column(name = "repair_id")
     private int repairID;
     private String description;
@@ -40,6 +38,11 @@ public class Occurrence implements Serializable {
     @Column(name = "end_date")
     private Calendar endDate;
 
+    @NotNull
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "policy_id")
+    private Policy policy;
+
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "occurrence")
     private List<OccurrenceFile> occurenceFileList;
 
@@ -51,14 +54,14 @@ public class Occurrence implements Serializable {
         this.occurenceHistoricalList = new LinkedList<>();
     }
 
-    public Occurrence(int id, int policyID, int repairID, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate) {
+    public Occurrence(int id, Policy policy, int repairID, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate) {
         this.id = id;
-        this.policyID = policyID;
         this.repairID = repairID;
         this.description = description;
         this.approvalType = approvalType;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.policy = policy;
         this.occurenceFileList = new LinkedList<>();
         this.occurenceHistoricalList = new LinkedList<>();
     }
@@ -71,12 +74,12 @@ public class Occurrence implements Serializable {
         this.id = id;
     }
 
-    public int getPolicyID() {
-        return policyID;
+    public Policy getPolicy() {
+        return policy;
     }
 
-    public void setPolicyID(int policyID) {
-        this.policyID = policyID;
+    public void setPolicy(Policy policy) {
+        this.policy = policy;
     }
 
     public int getRepairID() {

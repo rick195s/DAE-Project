@@ -39,9 +39,6 @@ public class Insurer implements Serializable {
     public Insurer(int id, String name) {
         this.id = id;
         this.name = name;
-        this.policies = policies;
-        this.insurer_experts = insurer_experts;
-        this.repairShops = repairShops;
         policies = new LinkedList<>();
         insurer_experts = new LinkedList<>();
         repairShops = new LinkedList<>();

@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @NamedQueries({
@@ -39,6 +41,10 @@ public class Policy implements Serializable {
     PolicyTypeDetail policyTypeDetail;
 
     @NotNull
+    @OneToMany(mappedBy = "policy")
+    List<Occurrence> occurrences;
+
+    @NotNull
     @OneToOne
     @JoinColumn(name = "policy_object_id")
     PolicyObject policyObject;
@@ -64,9 +70,11 @@ public class Policy implements Serializable {
         this.policyObject = policyObject;
         this.startDate = startDate;
         this.endDate = endDate;
+        occurrences = new LinkedList<>();
     }
 
     public Policy() {
+        occurrences = new LinkedList<>();
     }
 
     public int getId() {
@@ -131,5 +139,17 @@ public class Policy implements Serializable {
 
     public void setPolicyObject(PolicyObject policyObject) {
         this.policyObject = policyObject;
+    }
+
+    public List<Occurrence> getOccurrences() {
+        return occurrences;
+    }
+
+    public void setOccurrences(List<Occurrence> occurrences) {
+        this.occurrences = occurrences;
+    }
+
+    public void addOccurrence(Occurrence occurrence) {
+        occurrences.add(occurrence);
     }
 }
