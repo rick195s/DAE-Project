@@ -2,7 +2,6 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -41,7 +40,7 @@ public class PolicyBean {
             throw new IllegalArgumentException("PolicyObject does not exist");
         }
 
-        policy = new Policy(id, client, insurer, PolicyState.WAITING_FOR_VALIDATION, policyTypeDetail, policyObject, startDate, endDate);
+        policy = new Policy(id, client, insurer, PolicyState.WAITING_FOR_APPROVAL, policyTypeDetail, policyObject, startDate, endDate);
         entityManager.persist(policy);
     }
 
