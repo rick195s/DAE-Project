@@ -1,9 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Insurer;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Policy;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.PolicyTypeDetail;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
 
@@ -18,7 +15,7 @@ public class PolicyBean {
     @PersistenceContext
     EntityManager entityManager;
 
-    public void create(int id, int clientId, int insurerId, PolicyTypeDetail policyTypeDetail, Calendar startDate, Calendar endDate) {
+    public void create(int id, int clientId, int insurerId, int policyTypeDetailId, int policyObjectId, Calendar startDate, Calendar endDate) {
         Policy policy = findPolicy(id);
         if (policy != null) {
             throw new IllegalArgumentException("Policy already exists");
@@ -34,7 +31,17 @@ public class PolicyBean {
             throw new IllegalArgumentException("Insurer does not exist");
         }
 
-        policy = new Policy(id, client, insurer, PolicyState.WAITING_FOR_VALIDATION, policyTypeDetail, startDate, endDate);
+        PolicyTypeDetail policyTypeDetail = entityManager.find(PolicyTypeDetail.class, policyTypeDetailId);
+        if (policyTypeDetail == null) {
+            throw new IllegalArgumentException("PolicyTypeDetail does not exist");
+        }
+
+        PolicyObject policyObject = entityManager.find(PolicyObject.class, policyObjectId);
+        if (policyObject == null) {
+            throw new IllegalArgumentException("PolicyObject does not exist");
+        }
+
+        policy = new Policy(id, client, insurer, PolicyState.WAITING_FOR_VALIDATION, policyTypeDetail, policyObject, startDate, endDate);
         entityManager.persist(policy);
     }
 

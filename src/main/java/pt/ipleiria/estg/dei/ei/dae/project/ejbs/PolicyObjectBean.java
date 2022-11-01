@@ -25,7 +25,7 @@ public class PolicyObjectBean {
         if (policyObject != null) {
             throw new IllegalArgumentException("PolicyObject already exists");
         }
-        policyObject= new PolicyObject(id, name, description, type);
+        policyObject= new PolicyObject(id, name, description);
         entityManager.persist(policyObject);
     }
 }

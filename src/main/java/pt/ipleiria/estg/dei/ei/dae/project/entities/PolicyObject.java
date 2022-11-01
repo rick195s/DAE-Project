@@ -17,24 +17,17 @@ import java.io.Serializable;
 public class PolicyObject implements Serializable {
     @Id
     int id;
+
     @NotNull
     String name;
-   /* @JoinColumn(name = "policy_id")
-    private Policies policies;*/
+
     @NotNull
     String filePath;
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private PolicyObjectType type;
-    //@NotNull
-    //Policy policy;
 
-
-    public PolicyObject(int id, String name, String filePath, PolicyObjectType type) {
+    public PolicyObject(int id, String name, String filePath) {
         this.id = id;
         this.name = name;
         this.filePath = filePath;
-        this.type = type;
     }
 
     public PolicyObject() {
@@ -62,13 +55,5 @@ public class PolicyObject implements Serializable {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
-    }
-
-    public PolicyObjectType getType() {
-        return type;
-    }
-
-    public void setType(PolicyObjectType type) {
-        this.type = type;
     }
 }

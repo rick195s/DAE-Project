@@ -39,6 +39,11 @@ public class Policy implements Serializable {
     PolicyTypeDetail policyTypeDetail;
 
     @NotNull
+    @OneToOne
+    @JoinColumn(name = "policy_object_id")
+    PolicyObject policyObject;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     PolicyState state;
 
@@ -50,12 +55,13 @@ public class Policy implements Serializable {
     @Column(name = "end_date")
     Calendar endDate;
 
-    public Policy(int id, Client client, Insurer insurer, PolicyState state, PolicyTypeDetail policyTypeDetail, Calendar startDate, Calendar endDate) {
+    public Policy(int id, Client client, Insurer insurer, PolicyState state, PolicyTypeDetail policyTypeDetail, PolicyObject policyObject, Calendar startDate, Calendar endDate) {
         this.id = id;
         this.client = client;
         this.insurer = insurer;
         this.state = state;
         this.policyTypeDetail = policyTypeDetail;
+        this.policyObject = policyObject;
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -117,5 +123,13 @@ public class Policy implements Serializable {
 
     public void setEndDate(Calendar endDate) {
         this.endDate = endDate;
+    }
+
+    public PolicyObject getPolicyObject() {
+        return policyObject;
+    }
+
+    public void setPolicyObject(PolicyObject policyObject) {
+        this.policyObject = policyObject;
     }
 }
