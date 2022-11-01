@@ -3,8 +3,8 @@ package pt.ipleiria.estg.dei.ei.dae.project.entities.enums;
 
 public enum PolicyObjectType {
     HOUSE,
-    VEICLE,
-    ELETRODOMESTIC,
+    VEHICLE,
+    HOME_ELETRONICS,
     COMPUTER,
     PHONE
 }

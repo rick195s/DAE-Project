@@ -1,7 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.PolicyObject;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -20,12 +19,15 @@ public class PolicyObjectBean {
     public PolicyObject findPolicyObject(int id) {
         return entityManager.find(PolicyObject.class, id);
     }
-    public void create(int id, String name, String description, PolicyObjectType type) {
+
+
+    public void create(int id, String name, String filepath) {
         PolicyObject policyObject = findPolicyObject(id);
         if (policyObject != null) {
             throw new IllegalArgumentException("PolicyObject already exists");
         }
-        policyObject= new PolicyObject(id, name, description);
+
+        policyObject= new PolicyObject(id, name, filepath);
         entityManager.persist(policyObject);
     }
 }
