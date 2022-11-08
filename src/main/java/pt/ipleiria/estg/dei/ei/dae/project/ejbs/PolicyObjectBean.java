@@ -30,4 +30,22 @@ public class PolicyObjectBean {
         policyObject= new PolicyObject(id, name, filepath);
         entityManager.persist(policyObject);
     }
+    public void update(int id, String name, String filepath) {
+        PolicyObject policyObject = findPolicyObject(id);
+        if (policyObject == null) {
+            throw new IllegalArgumentException("PolicyObject does not exist");
+        }
+
+        policyObject.setName(name);
+        policyObject.setFilePath(filepath);
+        entityManager.persist(policyObject);
+    }
+    public void delete(int id) {
+        PolicyObject policyObject = findPolicyObject(id);
+        if (policyObject == null) {
+            throw new IllegalArgumentException("PolicyObject does not exist");
+        }
+
+        entityManager.remove(policyObject);
+    }
 }

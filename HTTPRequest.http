@@ -89,3 +89,38 @@ Content-Type: application/json
 ###DELETE one
 DELETE http://localhost:8080/project/api/historical/1
 Accept: application/json
+
+################################# PolicyObject #############################################
+
+###Get all
+GET http://localhost:8080/project/api/policy_objects/all
+Accept: application/json
+
+###Get one
+GET http://localhost:8080/project/api/policy_objects/1
+Accept: application/json
+
+###Create one
+POST http://localhost:8080/project/api/policy_objects/
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "Test Policy Object",
+  "filePath": "C:\\Users\\filipe\\Desktop\\telefone.jpg"
+}
+
+###Update one
+PUT http://localhost:8080/project/api/policy_objects/1
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "Test Policy Object-Updated",
+  "filePath": "C:\\Users\\filipe\\Desktop\\GRRR.jpg"
+}
+
+###Delete one
+DELETE http://localhost:8080/project/api/policy_objects/2
+Accept: application/json
+
