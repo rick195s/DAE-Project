@@ -28,5 +28,24 @@ public class RepairShopBean {
     public RepairShop findRepairShop(int id) {
         return entityManager.find(RepairShop.class, id);
     }
+
+    public void update(int id, String name, String email, String phone) {
+        RepairShop repairShop = findRepairShop(id);
+        if (repairShop == null) {
+            throw new IllegalArgumentException("RepairShop does not exist");
+        }
+        repairShop.setName(name);
+        repairShop.setEmail(email);
+        repairShop.setPhone(phone);
+        entityManager.persist(repairShop);
+    }
+
+    public void delete(int id) {
+        RepairShop repairShop = findRepairShop(id);
+        if (repairShop == null) {
+            throw new IllegalArgumentException("RepairShop does not exist");
+        }
+        entityManager.remove(repairShop);
+    }
 }
 

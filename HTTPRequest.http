@@ -124,3 +124,38 @@ Content-Type: application/json
 DELETE http://localhost:8080/project/api/policy_objects/2
 Accept: application/json
 
+################################# RepairShop #############################################
+
+###Get all
+GET http://localhost:8080/project/api/repair_shops/all
+Accept: application/json
+
+###Get one
+GET http://localhost:8080/project/api/repair_shops/100
+Accept: application/json
+
+###Create one
+POST http://localhost:8080/project/api/repair_shops/
+Content-Type: application/json
+
+{
+  "id": 100,
+  "name": "Test Repair Shop",
+  "email": "teste@mail.pt",
+  "phone": "123456789"
+}
+
+###Update one
+PUT http://localhost:8080/project/api/repair_shops/100
+Content-Type: application/json
+
+{
+  "id": 100,
+  "name": "Test Repair Shop- Updated",
+  "email": "teste@mail.pt",
+  "phone": "999999999"
+}
+
+###Delete one
+DELETE http://localhost:8080/project/api/repair_shops/100
+Accept: application/json
