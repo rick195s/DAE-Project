@@ -18,7 +18,7 @@ public class ClientService {
     private ClientBean clientBean;
 
     @GET // means: to call this endpoint, we need to use the HTTP GET method
-    @Path("/all") // means: the relative url path is “/api/students/all”
+    @Path("/") // means: the relative url path is “/api/students/all”
     public List<ClientDTO> getAllUsersWS() {
         return toDTOs(clientBean.getAllClients());
     }

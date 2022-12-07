@@ -21,7 +21,7 @@ public class InsurerExpertService {
         private InsurerExpertBean insurerExpertBean;
 
         @GET // means: to call this endpoint, we need to use the HTTP GET method
-        @Path("/all") // means: the relative url path is “/api/insurerExperts/all”
+        @Path("/") // means: the relative url path is “/api/insurerExperts/all”
         public List<InsurerExpertDTO> getAllInsurerExpertsWS() {
             return toDTOs(insurerExpertBean.getAllInsurerExpert());
         }
