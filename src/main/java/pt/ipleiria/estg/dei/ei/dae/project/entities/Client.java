@@ -1,5 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.entities;
 
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -20,8 +22,7 @@ import java.util.List;
 public class Client extends User implements Serializable {
     int NIF_NIPC;
 
-    @NotNull
-    @OneToMany(mappedBy = "client")
+    @Transient
     List<Policy> policies;
 
     public Client(int id, String name, String email, String password, int NIF_NIPC) {

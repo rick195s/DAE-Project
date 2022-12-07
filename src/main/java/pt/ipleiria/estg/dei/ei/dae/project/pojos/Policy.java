@@ -1,7 +1,8 @@
-package pt.ipleiria.estg.dei.ei.dae.project.entities;
+package pt.ipleiria.estg.dei.ei.dae.project.pojos;
 
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -10,55 +11,23 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
-@Entity
-@NamedQueries({
-        @NamedQuery(
-                name = "getAllPolicies",
-                query = "SELECT p FROM Policy p ORDER BY p.startDate" // JPQL
-        )
-})
-@Table(
-        name = "policies"
-)
-
 public class Policy implements Serializable {
-    @Id
     int id;
 
-    @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id")
     Client client;
 
-    @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "insurer_id")
     Insurer insurer;
 
-    @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "policy_type_details_id")
     PolicyTypeDetail policyTypeDetail;
 
-    @NotNull
-    @OneToMany(mappedBy = "policy")
     List<Occurrence> occurrences;
 
-    @NotNull
-    @OneToOne
-    @JoinColumn(name = "policy_object_id")
     PolicyObject policyObject;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
     PolicyState state;
 
-    @NotNull
-    @Column(name = "start_date")
     Calendar startDate;
 
-    @NotNull
-    @Column(name = "end_date")
     Calendar endDate;
 
     public Policy(int id, Client client, Insurer insurer, PolicyState state, PolicyTypeDetail policyTypeDetail, PolicyObject policyObject, Calendar startDate, Calendar endDate) {

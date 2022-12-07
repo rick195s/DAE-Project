@@ -1,4 +1,4 @@
-package pt.ipleiria.estg.dei.ei.dae.project.entities;
+package pt.ipleiria.estg.dei.ei.dae.project.pojos;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
 
@@ -6,22 +6,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-@Entity
-@NamedQueries({
-        @NamedQuery(
-                name = "getAllPolicyObjects",
-                query = "SELECT p FROM PolicyObject p ORDER BY p.name" // JPQL
-        )
-})
-@Table(name = "policy_objects")
 public class PolicyObject implements Serializable {
-    @Id
     int id;
 
-    @NotNull
     String name;
 
-    @NotNull
     String filePath;
 
     public PolicyObject(int id, String name, String filePath) {

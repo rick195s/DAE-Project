@@ -1,38 +1,18 @@
-package pt.ipleiria.estg.dei.ei.dae.project.entities;
+package pt.ipleiria.estg.dei.ei.dae.project.pojos;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-@Entity
-@NamedQueries({
-        @NamedQuery(
-                name = "getAllInsurers",
-                query = "SELECT u FROM Insurer u ORDER BY u.name" // JPQL
-        )
-})
-@Table(name = "Insurers")
 public class Insurer implements Serializable {
-    @Id
     int id;
 
-    // if the name of the property in the JSON is different
-    // from the name of the attribute in the class, we can do mapping:
-    // @JsonbProperty("first-name")
-    @NotNull
     String name;
 
-    @NotNull
-    @OneToMany(mappedBy = "insurer")
     List<Policy> policies;
 
-    @NotNull
-    @OneToMany(mappedBy = "insurer")
     List<InsurerExpert> insurer_experts;
 
-    @ManyToMany(fetch = FetchType.EAGER,mappedBy = "insurers")
     List<RepairShop> repairShops;
 
 

@@ -1,22 +1,14 @@
-package pt.ipleiria.estg.dei.ei.dae.project.entities;
+package pt.ipleiria.estg.dei.ei.dae.project.pojos;
+
+import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-@Entity
-@NamedQueries({
-        @NamedQuery(
-                name = "getAllInsurerExperts",
-                query = "SELECT u FROM InsurerExpert u ORDER BY u.name" // JPQL
-        )
-})
-@Table(name = "insurer_experts")
-@PrimaryKeyJoinColumn(name = "user_id")
+
 public class InsurerExpert extends User implements Serializable {
-    @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "insurer_id")
+
     Insurer insurer;
 
     public InsurerExpert() {

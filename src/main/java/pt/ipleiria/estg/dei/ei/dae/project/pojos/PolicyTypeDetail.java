@@ -1,4 +1,4 @@
-package pt.ipleiria.estg.dei.ei.dae.project.entities;
+package pt.ipleiria.estg.dei.ei.dae.project.pojos;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
@@ -10,32 +10,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-@Entity
-@NamedQueries({
-        @NamedQuery(
-                name = "getAllPolicyTypesDetail",
-                query = "SELECT p FROM PolicyTypeDetail p" // JPQL
-        )
-})
-@Table(name = "policy_type_details")
 public class PolicyTypeDetail implements Serializable {
-    @Id
     int id;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
     PolicyType type;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "object_type")
     PolicyObjectType objectType;
 
-    @NotNull
     String description;
 
-    @NotNull
-    @OneToMany(mappedBy = "policyTypeDetail")
     List<Policy> policies;
 
 

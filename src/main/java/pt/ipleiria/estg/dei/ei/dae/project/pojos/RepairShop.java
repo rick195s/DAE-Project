@@ -1,4 +1,6 @@
-package pt.ipleiria.estg.dei.ei.dae.project.entities;
+package pt.ipleiria.estg.dei.ei.dae.project.pojos;
+
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -7,44 +9,19 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-@Entity
-@Table(name = "repair_shops")
-@NamedQueries({
-        @NamedQuery(
-                name = "getAllRepairShops",
-                query = "SELECT r FROM RepairShop r ORDER BY r.name" // JPQL
-        )
-})
 public class RepairShop implements Serializable {
-    @Id
     int id;
 
-    @NotNull
     String name;
 
-    @Email
-    @NotNull
     String email;
 
-    @NotNull
     String phone;
 
-    @NotNull
-    @OneToMany(mappedBy = "repairShop")
     List<RepairShopExpert> repairShopExperts;
 
-
-    @NotNull
-    @OneToMany(mappedBy = "repairShop")
     List<Occurrence> occurrences;
 
-    @ManyToMany
-    @JoinTable(
-            name = "insurers_repair_shop",
-            joinColumns = @JoinColumn(name = "repair_shop_id"),
-            inverseJoinColumns = @JoinColumn(name = "insurer_id")
-    )
-    @NotNull
     List<Insurer> insurers;
 
     public RepairShop(int id, String name, String email, String phone) {

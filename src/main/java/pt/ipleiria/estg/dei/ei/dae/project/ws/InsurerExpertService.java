@@ -3,7 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.InsurerExpertDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.InsurerExpertBean;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.InsurerExpert;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.InsurerExpert;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;

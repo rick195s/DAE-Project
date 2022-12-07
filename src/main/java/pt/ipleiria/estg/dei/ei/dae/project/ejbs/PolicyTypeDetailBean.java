@@ -1,6 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
-import pt.ipleiria.estg.dei.ei.dae.project.entities.PolicyTypeDetail;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyTypeDetail;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
 

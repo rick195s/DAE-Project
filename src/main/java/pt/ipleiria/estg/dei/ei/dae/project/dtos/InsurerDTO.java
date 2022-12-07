@@ -1,7 +1,5 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
-import pt.ipleiria.estg.dei.ei.dae.project.entities.InsurerExpert;
-
 import java.io.Serializable;
 
 public class InsurerDTO implements Serializable {

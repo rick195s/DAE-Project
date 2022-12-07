@@ -2,6 +2,10 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyObject;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyTypeDetail;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

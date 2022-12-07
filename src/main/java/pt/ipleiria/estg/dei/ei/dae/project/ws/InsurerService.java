@@ -2,7 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.InsurerDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.InsurerBean;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Insurer;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;

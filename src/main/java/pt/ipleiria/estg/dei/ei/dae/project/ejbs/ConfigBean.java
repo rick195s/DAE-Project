@@ -1,7 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Insurer;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.RepairShop;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.APIGateway;
@@ -49,19 +49,20 @@ public class ConfigBean {
     @PostConstruct
     public void populateDB() {
         System.out.println("Hello Java EE!");
-
+/*
         populateInsurersViaAPI();
         populateRepairShopsViaAPI();
         populatePolicyTypeDetails();
-
+*/
         clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
 
 
+
         // Funciona mas não é melhor opcao passar o objeto Insurer por parametro
-        // insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", insurerBean.findInsurer(10));
-        insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", 10);
+       //  insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", insurerBean.findInsurer(10));
+     //   insurerExpertBean.create(5, "Jose", "jose@asdsda.com", "123123", 10);
 
-
+/*
         Calendar calendar = Calendar.getInstance(
                 TimeZone.getTimeZone("UTC"));
 
@@ -75,6 +76,8 @@ public class ConfigBean {
         policyObjectBean.create(1, "Carro Ze Manel", "C:\\Users\\joaop\\Desktop\\carro.jpg");
 
         policyBean.create(1, 1,1, 1, 1, (Calendar) calendar.clone(), (Calendar) calendar2.clone());
+
+ */
     }
 
 

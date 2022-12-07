@@ -1,6 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
-import pt.ipleiria.estg.dei.ei.dae.project.entities.PolicyObject;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyObject;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

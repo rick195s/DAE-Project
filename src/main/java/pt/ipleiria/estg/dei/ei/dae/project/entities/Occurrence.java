@@ -1,12 +1,13 @@
 package pt.ipleiria.estg.dei.ei.dae.project.entities;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,14 +38,10 @@ public class Occurrence implements Serializable {
     private Calendar endDate;
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "policy_id")
-    private Policy policy;
+    private int policy;
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "repair_shop_id")
-    private RepairShop repairShop;
+    private String repairShop;
 
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "occurrence")
     private List<OccurrenceFile> occurenceFileList;
@@ -57,7 +54,7 @@ public class Occurrence implements Serializable {
         this.occurenceHistoricalList = new LinkedList<>();
     }
 
-    public Occurrence(int id, Policy policy, RepairShop repairShop, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate) {
+    public Occurrence(int id, int policy, String repairShop, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate) {
         this.id = id;
         this.repairShop = repairShop;
         this.description = description;
@@ -77,19 +74,19 @@ public class Occurrence implements Serializable {
         this.id = id;
     }
 
-    public Policy getPolicy() {
+    public int getPolicy() {
         return policy;
     }
 
-    public void setPolicy(Policy policy) {
+    public void setPolicy(int policy) {
         this.policy = policy;
     }
 
-    public RepairShop getRepairShop() {
+    public String getRepairShop() {
         return repairShop;
     }
 
-    public void setRepairShop(RepairShop repairShop) {
+    public void setRepairShop(String repairShop) {
         this.repairShop = repairShop;
     }
 
