@@ -1,13 +1,33 @@
-# DAE-Project
+# Wildfly + PostgreSQL with Docker & Docker Compose
 
-[JSON Binding (JSON-B) - Getting started](https://javaee.github.io/jsonb-spec/getting-started.html)
+## Setup
 
-Usado para converter Resposta em JSON da mockapi para classes em java. 
+1. Copy the .env.example file to a .env file:
+```bash
+$ cp .env.example .env
+```
 
-Não é preciso alterar maven
+Make the adjustments you need, to match your needs.
+
+2. Start the containers
+```bash
+$ docker compose up -d
+```
+
+## Stoping / Pausing / Restarting the containers
+Please, check the documentation for more useful command tips [here](https://docs.docker.com/compose/reference/)
 
 
+## How to clear everything from your Computer
 
-### Funcionalidades:
+To stop and remove all the containers, images, volumes and network, run:
+```bash
+$ docker compose down --rmi all --volumes
+```
 
-- [ ] Client create a policy and associate an insurer, after creation customer needs to wait for insurer approval.
+## Alternative: remove only local (custom) images:
+
+```bash
+# Only removes the custom wildfly image, if you need to rebuild it again.
+$ docker compose down --rmi local
+```
