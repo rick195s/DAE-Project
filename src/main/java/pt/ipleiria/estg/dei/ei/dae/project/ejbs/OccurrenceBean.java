@@ -17,7 +17,7 @@ public class OccurrenceBean {
     @PersistenceContext
     EntityManager entityManager;
 
-    public void create(int id, Policy policy, RepairShop repairShop, String description, int clientId) {
+    public void create(int id, int policyId, int repairShopId, String description, int clientId) {
         Occurrence occurrence = findOccurrence(id);
         if (occurrence != null) {
             throw new IllegalArgumentException("Occurrence already exists");
@@ -28,7 +28,9 @@ public class OccurrenceBean {
             throw new IllegalArgumentException("Client dont exists");
         }
 
-        occurrence = new Occurrence(id, policy, repairShop, description, ApprovalType.WAITING_FOR_APPROVAL, Calendar.getInstance(), null, client);
+        //Policy policy = new Policy(policyId, client, ApprovalType.APPROVED, Calendar.getInstance(), Calendar.getInstance());
+
+       // occurrence = new Occurrence(id, policy, repairShop, description, ApprovalType.WAITING_FOR_APPROVAL, Calendar.getInstance(), null, client);
         entityManager.persist(occurrence);
     }
 

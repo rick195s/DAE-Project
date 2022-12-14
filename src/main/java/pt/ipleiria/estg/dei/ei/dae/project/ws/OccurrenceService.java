@@ -5,11 +5,9 @@ import pt.ipleiria.estg.dei.ei.dae.project.ejbs.OccurrenceBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 
 import javax.ejb.EJB;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +23,24 @@ public class OccurrenceService {
     public List<OccurrenceDTO> getAllOccurrencesWS() {
         return toDTOs(occurrenceBean.getAllOccurrences());
     }
+
+    @POST
+    @Path("/")
+    public Response createOccurrence(OccurrenceDTO occurrenceDTO) {
+        occurrenceBean.create(
+                occurrenceDTO.getId(),
+                occurrenceDTO.getPolicyId(),
+                occurrenceDTO.getRepairShopId(),
+                occurrenceDTO.getDescription(),
+                occurrenceDTO.getClientId()
+
+        );
+
+        Occurrence occurrence = occurrenceBean.findOccurrence(occurrenceDTO.getId());
+
+        return Response.status(Response.Status.CREATED).entity(toDTO(occurrence)).build();
+    }
+
     // Converts an entity Student to a DTO Student class
     private OccurrenceDTO toDTO(Occurrence occurrence) {
         return new OccurrenceDTO(
