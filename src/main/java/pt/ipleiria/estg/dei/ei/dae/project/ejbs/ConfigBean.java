@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
@@ -21,6 +22,9 @@ import java.util.TimeZone;
 public class ConfigBean {
     @EJB
     ClientBean clientBean;
+
+    @EJB
+    OccurrenceBean occurrenceBean;
 
     @EJB
     InsurerBean insurerBean;
@@ -56,6 +60,7 @@ public class ConfigBean {
 */
         clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
 
+        occurrenceBean.create(1, new Policy(), new RepairShop(), "example", 1);
 
 
         // Funciona mas não é melhor opcao passar o objeto Insurer por parametro

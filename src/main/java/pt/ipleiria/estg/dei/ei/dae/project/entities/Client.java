@@ -25,14 +25,20 @@ public class Client extends User implements Serializable {
     @Transient
     List<Policy> policies;
 
+    @OneToMany(fetch=FetchType.LAZY,mappedBy = "client")
+    private List<Occurrence> occurrences;
+
+
     public Client(int id, String name, String email, String password, int NIF_NIPC) {
         super(id, name, email, password);
         this.NIF_NIPC = NIF_NIPC;
         this.policies = new ArrayList<>();
+        this.occurrences = new ArrayList<>();
     }
 
     public Client() {
         this.policies = new ArrayList<>();
+        this.occurrences = new ArrayList<>();
     }
 
     public int getNIF_NIPC() {

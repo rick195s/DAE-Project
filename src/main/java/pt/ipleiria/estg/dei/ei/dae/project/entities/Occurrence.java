@@ -37,11 +37,20 @@ public class Occurrence implements Serializable {
     @Column(name = "end_date")
     private Calendar endDate;
 
-    @NotNull
-    private int policy;
+    // Policy in memory
+    @Transient
+    private Policy policy;
 
-    @NotNull
-    private String repairShop;
+    // Persist just policy id to maintain relation
+    // to external resource
+    @Column(name = "policy_id")
+    private int policyId;
+
+    @Transient
+    private RepairShop repairShop;
+
+    @Column(name = "repair_shop_id")
+    private int repairShopId;
 
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "occurrence")
     private List<OccurrenceFile> occurenceFileList;
@@ -49,21 +58,54 @@ public class Occurrence implements Serializable {
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "occurrence")
     private List<Historical> occurenceHistoricalList;
 
+    @NotNull
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "client_id")
+    Client client;
+
+
     public Occurrence() {
         this.occurenceFileList = new LinkedList<>();
         this.occurenceHistoricalList = new LinkedList<>();
     }
 
-    public Occurrence(int id, int policy, String repairShop, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate) {
+    public Occurrence(int id, Policy policy,  RepairShop repairShop, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate, Client client) {
         this.id = id;
         this.repairShop = repairShop;
+        this.repairShopId = repairShop.getId();
         this.description = description;
         this.approvalType = approvalType;
         this.startDate = startDate;
         this.endDate = endDate;
         this.policy = policy;
+        this.policyId = policy.getId();
+        this.client = client;
         this.occurenceFileList = new LinkedList<>();
         this.occurenceHistoricalList = new LinkedList<>();
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public int getPolicyId() {
+        return policyId;
+    }
+
+    public void setPolicyId(int policyId) {
+        this.policyId = policyId;
+    }
+
+    public int getRepairShopId() {
+        return repairShopId;
+    }
+
+    public void setRepairShopId(int repairShopId) {
+        this.repairShopId = repairShopId;
     }
 
     public int getId() {
@@ -74,19 +116,19 @@ public class Occurrence implements Serializable {
         this.id = id;
     }
 
-    public int getPolicy() {
+    public Policy getPolicy() {
         return policy;
     }
 
-    public void setPolicy(int policy) {
+    public void setPolicy(Policy policy) {
         this.policy = policy;
     }
 
-    public String getRepairShop() {
+    public RepairShop getRepairShop() {
         return repairShop;
     }
 
-    public void setRepairShop(String repairShop) {
+    public void setRepairShop(RepairShop repairShop) {
         this.repairShop = repairShop;
     }
 
