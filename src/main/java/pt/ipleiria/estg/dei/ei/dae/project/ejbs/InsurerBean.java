@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.APIGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.json.JsonArray;
 import javax.json.bind.Jsonb;
@@ -19,6 +20,7 @@ public class InsurerBean {
 
     EntityManager entityManager;
 
+    @PostConstruct
     private void populateInsurersViaAPI(){
         JsonArray jsonArrayInsurers = APIGateway.getDataFromAPI(URI_INSURERS);
         jsonArrayInsurers.forEach(insurer -> {
@@ -39,7 +41,6 @@ public class InsurerBean {
     }
 
     public List<Insurer> getAllInsurers() {
-        populateInsurersViaAPI();
         return insurers;
     }
 
