@@ -14,7 +14,9 @@ import javax.ejb.Startup;
 import javax.json.JsonArray;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 @Startup
@@ -47,15 +49,14 @@ public class ConfigBean {
     @EJB
     PolicyTypeDetailBean policyTypeDetailBean;
 
-    final String URI_INSURERS = "https://634f1183df22c2af7b4a4b38.mockapi.io/insurers";
     final String URI_REPAIR_SHOPS = "https://634f1183df22c2af7b4a4b38.mockapi.io/repair_shops";
+
 
     @PostConstruct
     public void populateDB() {
         System.out.println("Hello Java EE!");
-/*
-        populateInsurersViaAPI();
-        populateRepairShopsViaAPI();
+
+/*        populateRepairShopsViaAPI();
         populatePolicyTypeDetails();
 */
         clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
@@ -118,12 +119,5 @@ public class ConfigBean {
         });
     }
 
-    private void populateInsurersViaAPI(){
-        JsonArray jsonArrayInsurers = APIGateway.getDataFromAPI(URI_INSURERS);
-        jsonArrayInsurers.forEach(insurer -> {
-            Jsonb jsonb = JsonbBuilder.create();
-            Insurer insurerObj = jsonb.fromJson(insurer.toString(), Insurer.class);
-            insurerBean.create(insurerObj.getId(), insurerObj.getName());
-        });
-    }
+
 }

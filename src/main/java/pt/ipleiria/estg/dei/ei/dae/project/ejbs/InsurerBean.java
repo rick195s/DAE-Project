@@ -1,16 +1,33 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
+import pt.ipleiria.estg.dei.ei.dae.project.gateways.APIGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
 
 import javax.ejb.Stateless;
+import javax.json.JsonArray;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
 public class InsurerBean {
-    @PersistenceContext
+    final String URI_INSURERS = "https://634f1183df22c2af7b4a4b38.mockapi.io/insurers";
+
+    final List<Insurer> insurers = new ArrayList<Insurer>();
+
     EntityManager entityManager;
+
+    private void populateInsurersViaAPI(){
+        JsonArray jsonArrayInsurers = APIGateway.getDataFromAPI(URI_INSURERS);
+        jsonArrayInsurers.forEach(insurer -> {
+            Jsonb jsonb = JsonbBuilder.create();
+            Insurer insurerObj = jsonb.fromJson(insurer.toString(), Insurer.class);
+
+            insurers.add(insurerObj);
+        });
+    }
 
     public void create(int id, String name) {
         Insurer insurer = findInsurer(id);
@@ -21,8 +38,9 @@ public class InsurerBean {
         entityManager.persist(insurer);
     }
 
-    public List<Insurer> getAllInsurer() {
-        return (List<Insurer>) entityManager.createNamedQuery("getAllInsurers").getResultList();
+    public List<Insurer> getAllInsurers() {
+        populateInsurersViaAPI();
+        return insurers;
     }
 
     public Insurer findInsurer(int id) {
