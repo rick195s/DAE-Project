@@ -2,14 +2,19 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
+import pt.ipleiria.estg.dei.ei.dae.project.gateways.APIGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyObject;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyTypeDetail;
 
 import javax.ejb.Stateless;
+import javax.json.JsonArray;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -18,42 +23,35 @@ public class PolicyBean {
     @PersistenceContext
     EntityManager entityManager;
 
-    public void create(int id, int clientId, int insurerId, int policyTypeDetailId, int policyObjectId, Calendar startDate, Calendar endDate) {
-        Policy policy = findPolicy(id);
-        if (policy != null) {
-            throw new IllegalArgumentException("Policy already exists");
-        }
+    final List<Policy> policies = new ArrayList<Policy>();
 
-        Client client = entityManager.find(Client.class, clientId);
-        if (client == null) {
-            throw new IllegalArgumentException("Client does not exist");
-        }
+    private void populatePoliciesViaAPI(){
+        int occurrenceId = 1;
+        entityManager.find(Occurrence.class, occurrenceId);
 
-        Insurer insurer = entityManager.find(Insurer.class, insurerId);
-        if (insurer == null) {
-            throw new IllegalArgumentException("Insurer does not exist");
-        }
+        Client client =  entityManager.find(Client.class, 1);
 
-        PolicyTypeDetail policyTypeDetail = entityManager.find(PolicyTypeDetail.class, policyTypeDetailId);
-        if (policyTypeDetail == null) {
-            throw new IllegalArgumentException("PolicyTypeDetail does not exist");
-        }
+        Insurer insurer = new Insurer(1, "Allianz");
 
-        PolicyObject policyObject = entityManager.find(PolicyObject.class, policyObjectId);
-        if (policyObject == null) {
-            throw new IllegalArgumentException("PolicyObject does not exist");
-        }
+        Policy policy1 = new Policy(1,client, insurer, PolicyState.APPROVED, new PolicyTypeDetail(), new PolicyObject(),
+                Calendar.getInstance(), Calendar.getInstance());
 
-        policy = new Policy(id, client, insurer, PolicyState.WAITING_FOR_APPROVAL, policyTypeDetail, policyObject, startDate, endDate);
-        entityManager.persist(policy);
+        policies.add(policy1);
+
     }
 
     public List<Policy> getAllPolicies() {
+        populatePoliciesViaAPI();
         // remember, maps to: “SELECT c FROM Courses c ORDER BY c.name”
-        return (List<Policy>) entityManager.createNamedQuery("getAllPolicies").getResultList();
+        return policies;
     }
 
     public Policy findPolicy(int id) {
-        return entityManager.find(Policy.class, id);
+        for (Policy policy : policies) {
+            if (policy.getId() == id) {
+                return policy;
+            }
+        }
+        return null;
     }
 }
