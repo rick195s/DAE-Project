@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
 
@@ -27,11 +28,11 @@ public class OccurrenceBean {
             throw new IllegalArgumentException("Client dont exists");
         }
 
-        occurrence = new Occurrence(id, policy, repairShop, description, null, Calendar.getInstance(), null, client);
+        occurrence = new Occurrence(id, policy, repairShop, description, ApprovalType.WAITING_FOR_APPROVAL, Calendar.getInstance(), null, client);
         entityManager.persist(occurrence);
     }
 
-    public List<Occurrence> getAllClients() {
+    public List<Occurrence> getAllOccurrences() {
         // remember, maps to: “SELECT c FROM Courses c ORDER BY c.name”
         return (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrences").getResultList();
     }
