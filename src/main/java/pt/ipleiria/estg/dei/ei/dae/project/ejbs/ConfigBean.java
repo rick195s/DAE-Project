@@ -61,6 +61,15 @@ public class ConfigBean {
         return policies;
     }
 
+    public Policy getPolicy(int id){
+        for (Policy policy : policies) {
+            if(policy.getId() == id){
+                return policy;
+            }
+        }
+        return null;
+    }
+
     public  void setPolicies(List<Policy> policies) {
         this.policies = policies;
     }

@@ -6,6 +6,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,6 +17,9 @@ import java.util.List;
 public class OccurrenceBean {
     @PersistenceContext
     EntityManager entityManager;
+
+    @EJB
+    ConfigBean configBean;
 
     public void create(int id, int policyId, int repairShopId, String description, int clientId) {
         Occurrence occurrence = findOccurrence(id);
@@ -28,9 +32,10 @@ public class OccurrenceBean {
             throw new IllegalArgumentException("Client dont exists");
         }
 
-        //Policy policy = new Policy(policyId, client, ApprovalType.APPROVED, Calendar.getInstance(), Calendar.getInstance());
+        Policy policy = configBean.getPolicy(policyId);
 
-       // occurrence = new Occurrence(id, policy, repairShop, description, ApprovalType.WAITING_FOR_APPROVAL, Calendar.getInstance(), null, client);
+
+        occurrence = new Occurrence(id, policy, new RepairShop(), description, ApprovalType.WAITING_FOR_APPROVAL, Calendar.getInstance(), null, client);
         entityManager.persist(occurrence);
     }
 

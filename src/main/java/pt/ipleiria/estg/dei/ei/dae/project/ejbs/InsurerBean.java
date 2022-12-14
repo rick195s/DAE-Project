@@ -1,16 +1,10 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
-import pt.ipleiria.estg.dei.ei.dae.project.gateways.APIGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.json.JsonArray;
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
