@@ -8,6 +8,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyObject;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyTypeDetail;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.json.JsonArray;
 import javax.json.bind.Jsonb;
@@ -25,6 +26,7 @@ public class PolicyBean {
 
     final List<Policy> policies = new ArrayList<Policy>();
 
+    @PostConstruct
     private void populatePoliciesViaAPI(){
         int occurrenceId = 1;
         entityManager.find(Occurrence.class, occurrenceId);
@@ -41,7 +43,6 @@ public class PolicyBean {
     }
 
     public List<Policy> getAllPolicies() {
-        populatePoliciesViaAPI();
         // remember, maps to: “SELECT c FROM Courses c ORDER BY c.name”
         return policies;
     }

@@ -1,11 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
-import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
-import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyObject;
-import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyTypeDetail;
 
 import java.util.ArrayList;
 import java.util.Calendar;
