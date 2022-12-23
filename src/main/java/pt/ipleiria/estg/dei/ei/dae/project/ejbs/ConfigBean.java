@@ -52,8 +52,6 @@ public class ConfigBean {
 
         populatePolicies();
 
-        // occurrenceBean.create(1, new Policy(), new RepairShop(), "example", 1);
-
     }
 
     public  List<Policy> getPolicies(){
@@ -75,6 +73,7 @@ public class ConfigBean {
     }
 
     public  List<Insurer> getInsurers() {
+        populateInsurersViaAPI();
         return insurers;
     }
 
@@ -120,6 +119,7 @@ public class ConfigBean {
     }
 
     private void populateInsurersViaAPI(){
+        insurers = new ArrayList<>();
         JsonArray jsonArrayInsurers = APIGateway.getDataFromAPI(URI_INSURERS);
         jsonArrayInsurers.forEach(insurer -> {
             Jsonb jsonb = JsonbBuilder.create();
