@@ -27,16 +27,13 @@ public class OccurrenceService {
     @POST
     @Path("/")
     public Response createOccurrence(OccurrenceDTO occurrenceDTO) {
-        occurrenceBean.create(
-                occurrenceDTO.getId(),
+        Occurrence occurrence = occurrenceBean.create(
                 occurrenceDTO.getPolicyId(),
                 occurrenceDTO.getRepairShopId(),
                 occurrenceDTO.getDescription(),
                 occurrenceDTO.getClientId()
 
         );
-
-        Occurrence occurrence = occurrenceBean.findOccurrence(occurrenceDTO.getId());
 
         return Response.status(Response.Status.CREATED).entity(toDTO(occurrence)).build();
     }

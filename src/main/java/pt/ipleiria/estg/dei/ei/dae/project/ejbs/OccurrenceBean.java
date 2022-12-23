@@ -21,12 +21,7 @@ public class OccurrenceBean {
     @EJB
     ConfigBean configBean;
 
-    public void create(int id, int policyId, int repairShopId, String description, int clientId) {
-        Occurrence occurrence = findOccurrence(id);
-        if (occurrence != null) {
-            throw new IllegalArgumentException("Occurrence already exists");
-        }
-
+    public Occurrence create(int policyId, int repairShopId, String description, int clientId) {
         Client client = entityManager.find(Client.class, clientId);
         if (client == null) {
             throw new IllegalArgumentException("Client dont exists");
@@ -35,8 +30,12 @@ public class OccurrenceBean {
         Policy policy = configBean.getPolicy(policyId);
 
 
-        occurrence = new Occurrence(id, policy, new RepairShop(), description, ApprovalType.WAITING_FOR_APPROVAL, Calendar.getInstance(), null, client);
+        Occurrence occurrence = new Occurrence(policy, new RepairShop(), description, ApprovalType.WAITING_FOR_APPROVAL, Calendar.getInstance(), null, client);
         entityManager.persist(occurrence);
+        // flushing to get the generated Id
+        entityManager.flush();
+
+        return occurrence;
     }
 
     public List<Occurrence> getAllOccurrences() {

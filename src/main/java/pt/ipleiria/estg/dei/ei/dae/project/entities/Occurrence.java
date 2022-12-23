@@ -23,6 +23,7 @@ import java.util.List;
 )
 public class Occurrence implements Serializable {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     private String description;
@@ -69,8 +70,8 @@ public class Occurrence implements Serializable {
         this.occurenceHistoricalList = new LinkedList<>();
     }
 
-    public Occurrence(int id, Policy policy,  RepairShop repairShop, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate, Client client) {
-        this.id = id;
+    public Occurrence( Policy policy,  RepairShop repairShop, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate, Client client) {
+
         this.repairShop = repairShop;
         this.repairShopId = repairShop.getId();
         this.description = description;
@@ -110,10 +111,6 @@ public class Occurrence implements Serializable {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Policy getPolicy() {
