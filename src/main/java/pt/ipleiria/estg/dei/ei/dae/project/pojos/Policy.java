@@ -1,11 +1,8 @@
 package pt.ipleiria.estg.dei.ei.dae.project.pojos;
 
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.LinkedList;
@@ -14,15 +11,15 @@ import java.util.List;
 public class Policy implements Serializable {
     int id;
 
-    Client client;
+    int clientId;
 
-    Insurer insurer;
+    int insurerId;
 
-    PolicyTypeDetail policyTypeDetail;
+    int policyTypeDetailId;
 
     List<Occurrence> occurrences;
 
-    PolicyObject policyObject;
+    int policyObjectId;
 
     PolicyState state;
 
@@ -30,13 +27,13 @@ public class Policy implements Serializable {
 
     Calendar endDate;
 
-    public Policy(int id, Client client, Insurer insurer, PolicyState state, PolicyTypeDetail policyTypeDetail, PolicyObject policyObject, Calendar startDate, Calendar endDate) {
+    public Policy(int id, int clientId, int insurerId, PolicyState state, int policyTypeDetailId, int policyObjectId, Calendar startDate, Calendar endDate) {
         this.id = id;
-        this.client = client;
-        this.insurer = insurer;
+        this.clientId = clientId;
+        this.insurerId = insurerId;
         this.state = state;
-        this.policyTypeDetail = policyTypeDetail;
-        this.policyObject = policyObject;
+        this.policyTypeDetailId = policyTypeDetailId;
+        this.policyObjectId = policyObjectId;
         this.startDate = startDate;
         this.endDate = endDate;
         occurrences = new LinkedList<>();
@@ -54,20 +51,20 @@ public class Policy implements Serializable {
         this.id = id;
     }
 
-    public Client getClient() {
-        return client;
+    public int getClientId() {
+        return clientId;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
     }
 
-    public Insurer getInsurer() {
-        return insurer;
+    public int getInsurerId() {
+        return insurerId;
     }
 
-    public void setInsurer(Insurer insurer) {
-        this.insurer = insurer;
+    public void setInsurerId(int insurerId) {
+        this.insurerId = insurerId;
     }
 
     public PolicyState getState() {
@@ -78,12 +75,12 @@ public class Policy implements Serializable {
         this.state = state;
     }
 
-    public PolicyTypeDetail getPolicyTypeDetail() {
-        return policyTypeDetail;
+    public int getPolicyTypeDetailId() {
+        return policyTypeDetailId;
     }
 
-    public void setPolicyTypeDetail(PolicyTypeDetail policyTypeDetail) {
-        this.policyTypeDetail = policyTypeDetail;
+    public void setPolicyTypeDetailId(int policyTypeDetailId) {
+        this.policyTypeDetailId = policyTypeDetailId;
     }
 
     public Calendar getStartDate() {
@@ -102,12 +99,12 @@ public class Policy implements Serializable {
         this.endDate = endDate;
     }
 
-    public PolicyObject getPolicyObject() {
-        return policyObject;
+    public int getPolicyObjectId() {
+        return policyObjectId;
     }
 
-    public void setPolicyObject(PolicyObject policyObject) {
-        this.policyObject = policyObject;
+    public void setPolicyObjectId(int policyObjectId) {
+        this.policyObjectId = policyObjectId;
     }
 
     public List<Occurrence> getOccurrences() {

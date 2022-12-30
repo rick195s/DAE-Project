@@ -32,7 +32,8 @@ public class ConfigBean {
     PolicyObjectBean policyObjectBean;
 
     final String URI_REPAIR_SHOPS = "https://634f1183df22c2af7b4a4b38.mockapi.io/repair_shops";
-    final String URI_INSURERS = "https://634f1183df22c2af7b4a4b38.mockapi.io/insurers";
+    final String URI_INSURERS = "https://63af23e6649c73f572b64917.mockapi.io/insurers";
+    final String URI_POLICIES = "https://63af23e6649c73f572b64917.mockapi.io/policies";
 
 
      private List<Policy> policies = new ArrayList<>();
@@ -47,10 +48,10 @@ public class ConfigBean {
         populatePolicyTypeDetails();
         populatePolicyObejcts();
         populateInsurersViaAPI();
+        populatePoliciesViaAPI();
 
         clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
 
-        populatePolicies();
 
     }
 
@@ -129,33 +130,14 @@ public class ConfigBean {
         });
     }
 
-    private void populatePolicies(){
+    private void populatePoliciesViaAPI(){
+        policies = new ArrayList<>();
+        JsonArray jsonArrayPolicies = APIGateway.getDataFromAPI(URI_POLICIES);
+        jsonArrayPolicies.forEach(policy -> {
+            Jsonb jsonb = JsonbBuilder.create();
+            Policy policyObj = jsonb.fromJson(policy.toString(), Policy.class);
 
-        Client client = clientBean.findClient(1);
-
-
-        Calendar calendar = Calendar.getInstance(
-                TimeZone.getTimeZone("UTC"));
-
-        calendar.set(2021, Calendar.JULY, 1);
-        Calendar calendar2 = Calendar.getInstance(
-                TimeZone.getTimeZone("UTC"));
-        calendar2.set(2021, Calendar.DECEMBER, 2);
-
-
-        policies.add(
-                new Policy(
-                        1,
-                        client,
-                        insurers.get(0),
-                        PolicyState.APPROVED,
-                        policyTypeDetails.get(0),
-                        policyObjects.get(0),
-                        calendar,
-                        calendar2
-                )
-        );
+            policies.add(policyObj);
+        });
     }
-
-
 }

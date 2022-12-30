@@ -31,11 +31,11 @@ public class PolicyService {
     private PolicyDTO toDTO(Policy policy) {
         return new PolicyDTO(
                 policy.getId(),
-                policy.getClient().getId(),
-                policy.getInsurer().getId(),
-                policy.getPolicyTypeDetail().getId(),
+                policy.getClientId(),
+                policy.getInsurerId(),
+                policy.getPolicyTypeDetailId(),
                 occurencesToDTOs(policy.getOccurrences()),
-                policy.getPolicyObject().getId(),
+                policy.getPolicyObjectId(),
                 policy.getState(),
                 policy.getStartDate(),
                 policy.getEndDate()
