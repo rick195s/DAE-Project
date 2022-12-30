@@ -2,8 +2,10 @@ package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class PolicyDTO {
@@ -21,9 +23,9 @@ public class PolicyDTO {
 
     PolicyState state;
 
-    Calendar startDate;
+    String startDate;
 
-    Calendar endDate;
+    String endDate;
 
     public PolicyDTO() {
         occurrences = new ArrayList<>();
@@ -37,8 +39,10 @@ public class PolicyDTO {
         this.occurrences = occurrences;
         this.policyObjectId = policyObjectId;
         this.state = state;
-        this.startDate = startDate;
-        this.endDate = endDate;
+
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.startDate = formatter.format(startDate.getTime());
+        this.endDate = formatter.format(endDate.getTime());
     }
 
     public int getId() {
@@ -97,19 +101,19 @@ public class PolicyDTO {
         this.state = state;
     }
 
-    public Calendar getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Calendar startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Calendar getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Calendar endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 }

@@ -22,13 +22,19 @@ public class OccurrenceBean {
     ConfigBean configBean;
 
     public Occurrence create(int policyId, int repairShopId, String description, int clientId) {
+        if (description.length() < 10) {
+            throw new IllegalArgumentException("Description must be at least 10 characters long");
+        }
+
         Client client = entityManager.find(Client.class, clientId);
         if (client == null) {
             throw new IllegalArgumentException("Client dont exists");
         }
 
         Policy policy = configBean.getPolicy(policyId);
-
+        if (policy == null) {
+            throw new IllegalArgumentException("Policy dont exists");
+        }
 
         Occurrence occurrence = new Occurrence(policy, new RepairShop(), description, ApprovalType.WAITING_FOR_APPROVAL, Calendar.getInstance(), null, client);
         entityManager.persist(occurrence);
