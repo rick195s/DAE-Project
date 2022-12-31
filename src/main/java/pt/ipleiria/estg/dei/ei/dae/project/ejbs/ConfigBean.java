@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
+import com.github.javafaker.Faker;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyGateway;
@@ -43,15 +44,20 @@ public class ConfigBean {
     public void populateDB() {
         System.out.println("Hello Java EE!");
 
-        clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
-
+        createClients();
         populatePolicyTypeDetails();
         populatePolicyObejcts();
         refreshInsurersViaAPI();
         refreshPoliciesViaAPI();
 
         //populateMockAPI();
+    }
 
+    private void createClients(){
+        Faker faker = new Faker(new Locale("pt-PT"));
+        for (int i = 0; i < 20; i++) {
+            clientBean.create(faker.name().fullName(), faker.internet().emailAddress(), "dwqdwqdwqdwdede", ((int) faker.number().randomNumber(9, true)));
+        }
     }
 
     public  List<Policy> getPolicies(){
@@ -68,17 +74,9 @@ public class ConfigBean {
         return null;
     }
 
-    public  void setPolicies(List<Policy> policies) {
-        this.policies = policies;
-    }
-
     public  List<Insurer> getInsurers() {
         refreshInsurersViaAPI();
         return insurers;
-    }
-
-    public  void setInsurers(List<Insurer> insurers) {
-        this.insurers = insurers;
     }
 
     private void populatePolicyTypeDetails(){
@@ -145,7 +143,6 @@ public class ConfigBean {
 
     private void populatePoliciesInAPI() {
         Client client = clientBean.findClient(1);
-
 
         Calendar calendar = Calendar.getInstance(
                 TimeZone.getTimeZone("UTC"));

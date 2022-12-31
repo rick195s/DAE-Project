@@ -33,6 +33,11 @@
           <element id="library" level="project" name="Maven: com.sun.istack:istack-commons-runtime:4.0.1" />
           <element id="library" level="project" name="Maven: org.hibernate.validator:hibernate-validator:7.0.4.Final" />
           <element id="library" level="project" name="Maven: jakarta.validation:jakarta.validation-api:3.0.0" />
+          <element id="library" level="project" name="Maven: com.github.javafaker:javafaker:0.15" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.5" />
+          <element id="library" level="project" name="Maven: org.yaml:snakeyaml:android:1.20" />
+          <element id="library" level="project" name="Maven: com.github.mifmif:generex:1.0.2" />
+          <element id="library" level="project" name="Maven: dk.brics.automaton:automaton:1.11-8" />
         </element>
       </element>
       <element id="directory" name="META-INF">
