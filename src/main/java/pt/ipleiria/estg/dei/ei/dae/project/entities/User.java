@@ -40,6 +40,10 @@ public class User implements Serializable {
     public User() {
     }
 
+    public User(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

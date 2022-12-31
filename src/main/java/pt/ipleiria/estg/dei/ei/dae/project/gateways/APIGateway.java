@@ -42,7 +42,7 @@ public class APIGateway {
     public static Response postDataToAPI(String urlAPI, String jsonBody) {
         // don't mismatch this client with the insurer client
         Client apiClient = ClientBuilder.newClient();
-        System.out.println(Entity.entity(jsonBody, MediaType.APPLICATION_JSON));
+
         try {
             WebTarget target = apiClient.target(urlAPI);
             return target.request().post(Entity.entity(jsonBody, MediaType.APPLICATION_JSON));

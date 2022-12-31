@@ -41,6 +41,10 @@ public class Client extends User implements Serializable {
         this.occurrences = new ArrayList<>();
     }
 
+    public Client(int id) {
+        super(id);
+    }
+
     public int getNIF_NIPC() {
         return NIF_NIPC;
     }

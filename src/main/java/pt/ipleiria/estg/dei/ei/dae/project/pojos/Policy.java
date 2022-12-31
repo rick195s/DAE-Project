@@ -1,6 +1,5 @@
 package pt.ipleiria.estg.dei.ei.dae.project.pojos;
 
-import pt.ipleiria.estg.dei.ei.dae.project.ejbs.ConfigBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
@@ -25,11 +24,11 @@ public class Policy implements Serializable {
 
     PolicyState state;
 
-    Calendar startDate;
+    String startDate;
 
-    Calendar endDate;
+    String endDate;
 
-    public Policy(int id, Client client, int insurerId, PolicyState state, int policyTypeDetailId, int policyObjectId, Calendar startDate, Calendar endDate) {
+    public Policy(int id, Client client, int insurerId, PolicyState state, int policyTypeDetailId, int policyObjectId, String startDate, String endDate) {
         this.id = id;
         this.client = client;
         this.insurerId = insurerId;
@@ -54,10 +53,13 @@ public class Policy implements Serializable {
     }
 
     public int getClientId() {
+        if (client == null){
+            return 0;
+        }
         return client.getId();
     }
 
-    public void setClientId(Client client) {
+    public void setClient(Client client) {
         this.client = client;
     }
 
@@ -85,19 +87,19 @@ public class Policy implements Serializable {
         this.policyTypeDetailId = policyTypeDetailId;
     }
 
-    public Calendar getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Calendar startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Calendar getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Calendar endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 

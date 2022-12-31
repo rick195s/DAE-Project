@@ -1,6 +1,5 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
-import pt.ipleiria.estg.dei.ei.dae.project.dtos.PolicyDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyGateway;
@@ -16,10 +15,8 @@ import javax.ejb.Startup;
 import javax.json.JsonArray;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.TimeZone;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Startup
 @Singleton
@@ -35,7 +32,6 @@ public class ConfigBean {
 
     final String URI_REPAIR_SHOPS = "https://634f1183df22c2af7b4a4b38.mockapi.io/repair_shops";
     final String URI_INSURERS = "https://63af23e6649c73f572b64917.mockapi.io/insurers";
-    final String URI_POLICIES = "https://63af23e6649c73f572b64917.mockapi.io/policies";
 
 
      private List<Policy> policies = new ArrayList<>();
@@ -47,14 +43,14 @@ public class ConfigBean {
     public void populateDB() {
         System.out.println("Hello Java EE!");
 
+        clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
+
         populatePolicyTypeDetails();
         populatePolicyObejcts();
         refreshInsurersViaAPI();
         refreshPoliciesViaAPI();
 
-        clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
-
-        populateMockAPI();
+        //populateMockAPI();
 
     }
 
@@ -135,6 +131,10 @@ public class ConfigBean {
     private void refreshPoliciesViaAPI(){
         PolicyGateway gateway = new PolicyGateway();
         policies = gateway.getFromMockAPI();
+
+        for (Policy policy : policies) {
+            policy.setClient(clientBean.findClient(policy.getClientId()));
+        }
     }
 
     private void populateMockAPI(){
@@ -155,6 +155,7 @@ public class ConfigBean {
                 TimeZone.getTimeZone("UTC"));
         calendar2.set(2021, Calendar.DECEMBER, 2);
 
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         policies.add(
                 new Policy(
@@ -164,8 +165,8 @@ public class ConfigBean {
                         PolicyState.APPROVED,
                         policyTypeDetails.get(0).getId(),
                         policyObjects.get(0).getId(),
-                        calendar,
-                        calendar2
+                        formatter.format(calendar.getTime()),
+                        formatter.format(calendar2.getTime())
                 )
         );
 

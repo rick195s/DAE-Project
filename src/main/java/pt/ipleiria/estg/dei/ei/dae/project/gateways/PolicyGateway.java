@@ -1,26 +1,18 @@
 package pt.ipleiria.estg.dei.ei.dae.project.gateways;
 
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.PolicyDTO;
-import pt.ipleiria.estg.dei.ei.dae.project.ejbs.ClientBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 
 import javax.json.JsonArray;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import javax.ws.rs.core.Response;
-import javax.ejb.EJB;
 
 public class PolicyGateway {
     final String URI_POLICIES = "https://63af23e6649c73f572b64917.mockapi.io/policies";
-
-    @EJB
-    ClientBean clientBean;
-
 
     public void postToMockAPI( List<Policy> policies) {
         List<PolicyDTO> policyDTOS = toDTOs(policies);
@@ -51,31 +43,15 @@ public class PolicyGateway {
             Jsonb jsonb = JsonbBuilder.create();
             PolicyDTO policyDTOObj = jsonb.fromJson(policy.toString(), PolicyDTO.class);
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date startDate = null;
-            Date endDate = null;
-            try {
-                startDate = dateFormat.parse(policyDTOObj.getStartDate());
-                endDate = dateFormat.parse(policyDTOObj.getEndDate());
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-
-            Calendar startDateCalendar = Calendar.getInstance();
-            startDateCalendar.setTime(startDate);
-            Calendar endDateCalendar = Calendar.getInstance();
-            startDateCalendar.setTime(endDate);
-
-
             Policy policyObj = new Policy(
                     policyDTOObj.getId(),
-                    new Client(),
+                    new Client(policyDTOObj.getClientId()),
                     policyDTOObj.getInsurerId(),
                     policyDTOObj.getState(),
                     policyDTOObj.getPolicyTypeDetailId(),
                     policyDTOObj.getPolicyObjectId(),
-                    startDateCalendar,
-                    endDateCalendar
+                    policyDTOObj.getStartDate(),
+                    policyDTOObj.getEndDate()
                 );
 
             policies.add(policyObj);

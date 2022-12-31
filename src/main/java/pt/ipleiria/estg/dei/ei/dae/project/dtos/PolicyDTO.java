@@ -30,7 +30,7 @@ public class PolicyDTO {
         occurrences = new ArrayList<>();
     }
 
-    public PolicyDTO(int id, int clientId, int insurerId, int policyTypeDetailId, List<OccurrenceDTO> occurrences, int policyObjectId, PolicyState state, Calendar startDate, Calendar endDate) {
+    public PolicyDTO(int id, int clientId, int insurerId, int policyTypeDetailId, List<OccurrenceDTO> occurrences, int policyObjectId, PolicyState state, String startDate, String endDate) {
         this.id = id;
         this.clientId = clientId;
         this.insurerId = insurerId;
@@ -38,10 +38,8 @@ public class PolicyDTO {
         this.occurrences = occurrences;
         this.policyObjectId = policyObjectId;
         this.state = state;
-
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        this.startDate = formatter.format(startDate.getTime());
-        this.endDate = formatter.format(endDate.getTime());
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public int getId() {
