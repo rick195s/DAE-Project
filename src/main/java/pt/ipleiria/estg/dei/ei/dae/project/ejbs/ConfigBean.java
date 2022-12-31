@@ -47,14 +47,17 @@ public class ConfigBean {
     public void populateDB() {
         System.out.println("Hello Java EE!");
 
+
         createClients();
         populatePolicyTypeDetails();
         populatePolicyObejcts();
+        populateMockAPI();
+
+
         refreshInsurersViaAPI();
         refreshPoliciesViaAPI();
         createOccurrences();
 
-        //populateMockAPI();
     }
 
     private void createClients(){
@@ -177,6 +180,8 @@ public class ConfigBean {
         );
 
         PolicyGateway gateway = new PolicyGateway();
-        gateway.postToMockAPI(policies);
+        for (Policy policy : policies) {
+            gateway.postToMockAPI(policy);
+        }
     }
 }
