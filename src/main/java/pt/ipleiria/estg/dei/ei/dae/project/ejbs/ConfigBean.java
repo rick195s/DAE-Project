@@ -26,6 +26,9 @@ public class ConfigBean {
     ClientBean clientBean;
 
     @EJB
+    OccurrenceBean occurrenceBean;
+
+    @EJB
     RepairShopBean repairShopBean;
 
     @EJB
@@ -34,7 +37,7 @@ public class ConfigBean {
     final String URI_REPAIR_SHOPS = "https://634f1183df22c2af7b4a4b38.mockapi.io/repair_shops";
     final String URI_INSURERS = "https://63af23e6649c73f572b64917.mockapi.io/insurers";
 
-
+    private Faker faker = new Faker(new Locale("pt-PT"));
      private List<Policy> policies = new ArrayList<>();
      private List<Insurer> insurers = new ArrayList<>();
      private List<PolicyTypeDetail> policyTypeDetails = new ArrayList<>();
@@ -49,14 +52,20 @@ public class ConfigBean {
         populatePolicyObejcts();
         refreshInsurersViaAPI();
         refreshPoliciesViaAPI();
+        createOccurrences();
 
         //populateMockAPI();
     }
 
     private void createClients(){
-        Faker faker = new Faker(new Locale("pt-PT"));
         for (int i = 0; i < 20; i++) {
             clientBean.create(faker.name().fullName(), faker.internet().emailAddress(), "dwqdwqdwqdwdede", ((int) faker.number().randomNumber(9, true)));
+        }
+    }
+
+    private void createOccurrences(){
+        for (int i = 0; i < 20; i++) {
+            occurrenceBean.create(1,1,faker.lorem().sentence(10),1, this);
         }
     }
 

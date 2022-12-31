@@ -31,8 +31,8 @@ public class OccurrenceService {
                 occurrenceDTO.getPolicyId(),
                 occurrenceDTO.getRepairShopId(),
                 occurrenceDTO.getDescription(),
-                occurrenceDTO.getClientId()
-
+                occurrenceDTO.getClientId(),
+                null
         );
 
         return Response.status(Response.Status.CREATED).entity(toDTO(occurrence)).build();
