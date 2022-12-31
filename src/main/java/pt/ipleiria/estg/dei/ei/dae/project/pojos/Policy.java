@@ -1,5 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.pojos;
 
+import pt.ipleiria.estg.dei.ei.dae.project.ejbs.ConfigBean;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
 
@@ -11,7 +13,7 @@ import java.util.List;
 public class Policy implements Serializable {
     int id;
 
-    int clientId;
+    Client client;
 
     int insurerId;
 
@@ -27,9 +29,9 @@ public class Policy implements Serializable {
 
     Calendar endDate;
 
-    public Policy(int id, int clientId, int insurerId, PolicyState state, int policyTypeDetailId, int policyObjectId, Calendar startDate, Calendar endDate) {
+    public Policy(int id, Client client, int insurerId, PolicyState state, int policyTypeDetailId, int policyObjectId, Calendar startDate, Calendar endDate) {
         this.id = id;
-        this.clientId = clientId;
+        this.client = client;
         this.insurerId = insurerId;
         this.state = state;
         this.policyTypeDetailId = policyTypeDetailId;
@@ -52,11 +54,11 @@ public class Policy implements Serializable {
     }
 
     public int getClientId() {
-        return clientId;
+        return client.getId();
     }
 
-    public void setClientId(int clientId) {
-        this.clientId = clientId;
+    public void setClientId(Client client) {
+        this.client = client;
     }
 
     public int getInsurerId() {

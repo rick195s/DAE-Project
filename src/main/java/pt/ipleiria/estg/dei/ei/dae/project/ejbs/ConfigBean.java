@@ -1,7 +1,9 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.PolicyDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
+import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.*;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
@@ -47,16 +49,17 @@ public class ConfigBean {
 
         populatePolicyTypeDetails();
         populatePolicyObejcts();
-        populateInsurersViaAPI();
-        populatePoliciesViaAPI();
+        refreshInsurersViaAPI();
+        refreshPoliciesViaAPI();
 
         clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
 
+        populateMockAPI();
 
     }
 
     public  List<Policy> getPolicies(){
-
+        refreshPoliciesViaAPI();
         return policies;
     }
 
@@ -74,7 +77,7 @@ public class ConfigBean {
     }
 
     public  List<Insurer> getInsurers() {
-        populateInsurersViaAPI();
+        refreshInsurersViaAPI();
         return insurers;
     }
 
@@ -105,12 +108,11 @@ public class ConfigBean {
 
     }
 
-
     private void populatePolicyObejcts() {
         policyObjects.add(new PolicyObject(1, "Carro Ze Manel", "C:\\Users\\joaop\\Desktop\\carro.jpg"));
     }
 
-    private void populateRepairShopsViaAPI() {
+    private void refreshRepairShopsViaAPI() {
         JsonArray jsonArrayRepairShops = APIGateway.getDataFromAPI(URI_REPAIR_SHOPS);
         jsonArrayRepairShops.forEach(repairShop -> {
             Jsonb jsonb = JsonbBuilder.create();
@@ -119,7 +121,7 @@ public class ConfigBean {
         });
     }
 
-    private void populateInsurersViaAPI(){
+    private void refreshInsurersViaAPI(){
         insurers = new ArrayList<>();
         JsonArray jsonArrayInsurers = APIGateway.getDataFromAPI(URI_INSURERS);
         jsonArrayInsurers.forEach(insurer -> {
@@ -130,14 +132,44 @@ public class ConfigBean {
         });
     }
 
-    private void populatePoliciesViaAPI(){
-        policies = new ArrayList<>();
-        JsonArray jsonArrayPolicies = APIGateway.getDataFromAPI(URI_POLICIES);
-        jsonArrayPolicies.forEach(policy -> {
-            Jsonb jsonb = JsonbBuilder.create();
-            Policy policyObj = jsonb.fromJson(policy.toString(), Policy.class);
+    private void refreshPoliciesViaAPI(){
+        PolicyGateway gateway = new PolicyGateway();
+        policies = gateway.getFromMockAPI();
+    }
 
-            policies.add(policyObj);
-        });
+    private void populateMockAPI(){
+        //populateRepairShopsInAPI();
+        //populateInsurersInAPI();
+        populatePoliciesInAPI();
+    }
+
+    private void populatePoliciesInAPI() {
+        Client client = clientBean.findClient(1);
+
+
+        Calendar calendar = Calendar.getInstance(
+                TimeZone.getTimeZone("UTC"));
+
+        calendar.set(2021, Calendar.JULY, 1);
+        Calendar calendar2 = Calendar.getInstance(
+                TimeZone.getTimeZone("UTC"));
+        calendar2.set(2021, Calendar.DECEMBER, 2);
+
+
+        policies.add(
+                new Policy(
+                        1,
+                        client,
+                        2,
+                        PolicyState.APPROVED,
+                        policyTypeDetails.get(0).getId(),
+                        policyObjects.get(0).getId(),
+                        calendar,
+                        calendar2
+                )
+        );
+
+        PolicyGateway gateway = new PolicyGateway();
+        gateway.postToMockAPI(policies);
     }
 }

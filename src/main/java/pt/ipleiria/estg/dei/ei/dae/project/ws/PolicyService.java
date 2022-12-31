@@ -27,7 +27,7 @@ public class PolicyService {
     public List<PolicyDTO> getAllPoliciesWS() {
         return toDTOs(policyBean.getAllPolicies());
     }
-    // Converts an entity Student to a DTO Student class
+
     private PolicyDTO toDTO(Policy policy) {
         return new PolicyDTO(
                 policy.getId(),

@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class OccurrenceDTO implements Serializable {
@@ -12,9 +13,9 @@ public class OccurrenceDTO implements Serializable {
 
      ApprovalType approvalType;
 
-     Calendar startDate;
+     String startDate;
 
-     Calendar endDate;
+     String endDate;
 
      int policyId;
 
@@ -26,11 +27,16 @@ public class OccurrenceDTO implements Serializable {
         this.id = id;
         this.description = description;
         this.approvalType = approvalType;
-        this.startDate = startDate;
-        this.endDate = endDate;
         this.policyId = policyId;
         this.repairShopId = repairShopId;
         this.clientId = clientId;
+
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.startDate = formatter.format(startDate.getTime());
+
+        if (endDate != null) {
+            this.endDate = formatter.format(endDate.getTime());
+        }
     }
 
     public OccurrenceDTO() {
@@ -60,19 +66,19 @@ public class OccurrenceDTO implements Serializable {
         this.approvalType = approvalType;
     }
 
-    public Calendar getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Calendar startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Calendar getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Calendar endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 

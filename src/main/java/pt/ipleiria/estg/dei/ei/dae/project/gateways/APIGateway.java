@@ -4,6 +4,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.gateways;
 import javax.json.JsonArray;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -36,5 +37,21 @@ public class APIGateway {
         }
 
         return jsonArray;
+    }
+
+    public static Response postDataToAPI(String urlAPI, String jsonBody) {
+        // don't mismatch this client with the insurer client
+        Client apiClient = ClientBuilder.newClient();
+        System.out.println(Entity.entity(jsonBody, MediaType.APPLICATION_JSON));
+        try {
+            WebTarget target = apiClient.target(urlAPI);
+            return target.request().post(Entity.entity(jsonBody, MediaType.APPLICATION_JSON));
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            apiClient.close();
+        }
+
+        return null;
     }
 }
