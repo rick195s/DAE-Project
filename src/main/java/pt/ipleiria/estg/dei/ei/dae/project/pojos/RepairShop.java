@@ -16,7 +16,7 @@ public class RepairShop implements Serializable {
 
     String email;
 
-    String phone;
+    long phone;
 
     List<RepairShopExpert> repairShopExperts;
 
@@ -24,7 +24,7 @@ public class RepairShop implements Serializable {
 
     List<Insurer> insurers;
 
-    public RepairShop(int id, String name, String email, String phone) {
+    public RepairShop(int id, String name, String email, long phone) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -64,11 +64,11 @@ public class RepairShop implements Serializable {
         this.email = email;
     }
 
-    public String getPhone() {
+    public long getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(long phone) {
         this.phone = phone;
     }
 }

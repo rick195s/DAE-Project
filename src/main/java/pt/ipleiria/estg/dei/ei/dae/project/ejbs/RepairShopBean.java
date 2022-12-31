@@ -12,7 +12,7 @@ public class RepairShopBean {
 
     @PersistenceContext
     EntityManager entityManager;
-    public void create(int id, String name, String email, String phone) {
+    public void create(int id, String name, String email, long phone) {
         RepairShop repairShop = findRepairShop(id);
         if (repairShop != null) {
             throw new IllegalArgumentException("RepairShop already exists");

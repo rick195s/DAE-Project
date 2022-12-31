@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyGateway;
+import pt.ipleiria.estg.dei.ei.dae.project.gateways.RepairShopGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.*;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
@@ -50,7 +51,15 @@ public class ConfigBean {
         refreshInsurersViaAPI();
         refreshPoliciesViaAPI();
 
-        //populateMockAPI();
+        //testar mockAPI
+        populateMockAPI();
+
+        //get all repair shops from mockAPI
+        RepairShopGateway repairShopGateway = new RepairShopGateway();
+        List<RepairShop> repairShops = repairShopGateway.getFromMockAPI();
+        for (RepairShop repairShop : repairShops) {
+            System.out.println(repairShop);
+        }
 
     }
 
@@ -140,7 +149,15 @@ public class ConfigBean {
     private void populateMockAPI(){
         //populateRepairShopsInAPI();
         //populateInsurersInAPI();
-        populatePoliciesInAPI();
+        //populatePoliciesInAPI();
+        //populateRepairShopsInAPI();
+    }
+
+    private void populateRepairShopsInAPI() {
+        RepairShop repairShop1 = new RepairShop(1, "Oficina do Ze Manel", "zemanel99@gmail.com", 912345678);
+
+        RepairShopGateway gateway = new RepairShopGateway();
+        gateway.postToMockAPI(repairShop1);
     }
 
     private void populatePoliciesInAPI() {
