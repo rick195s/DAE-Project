@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ws;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.OccurrenceBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
@@ -18,10 +19,22 @@ public class OccurrenceService {
     @EJB
     private OccurrenceBean occurrenceBean;
 
-    @GET // means: to call this endpoint, we need to use the HTTP GET method
-    @Path("/") // means: the relative url path is “/api/students/all”
+    @GET
+    @Path("/")
     public List<OccurrenceDTO> getAllOccurrencesWS() {
         return toDTOs(occurrenceBean.getAllOccurrences());
+    }
+
+    @GET
+    @Path("/{id}")
+    public Response getOccurrence(@PathParam("id") int id) {
+        Occurrence occurrence = occurrenceBean.findOccurrence(id);
+        if (occurrence != null) {
+            return Response.ok(toDTO(occurrence)).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_OCCURRENCE")
+                .build();
     }
 
     @POST
