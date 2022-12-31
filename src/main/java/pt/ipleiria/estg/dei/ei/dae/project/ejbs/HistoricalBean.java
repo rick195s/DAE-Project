@@ -15,18 +15,13 @@ public class HistoricalBean {
     @PersistenceContext
     EntityManager entityManager;
 
-    public void create(int id, String description, int occurrenceId , Calendar date) {
-        Historical historical = findHistorical(id);
-        if (historical != null) {
-            throw new IllegalArgumentException("Historical already exists");
-        }
-
+    public void create(String description, int occurrenceId , String date) {
         Occurrence occurrence = entityManager.find(Occurrence.class, occurrenceId);
         if (occurrence == null) {
             throw new IllegalArgumentException("Occurrence does not exist");
         }
 
-        historical = new Historical(id, HistoricalEnum.A_AGUARDAR_APROVACAO_PELA_SEGURADORA, description, occurrence, date);
+        Historical historical = new Historical(HistoricalEnum.A_AGUARDAR_APROVACAO_PELA_SEGURADORA, description, occurrence, date);
         entityManager.persist(historical);
     }
 
@@ -38,7 +33,7 @@ public class HistoricalBean {
         return entityManager.find(Historical.class, id);
     }
 
-    public void update(int id, HistoricalEnum historicalEnum, String description, Calendar date) {
+    public void update(int id, HistoricalEnum historicalEnum, String description, String date) {
         Historical historical = findHistorical(id);
         if (historical == null) {
             throw new IllegalArgumentException("Historical does not exist");

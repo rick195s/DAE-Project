@@ -12,12 +12,12 @@ public class HistoricalDTO implements Serializable {
 
     String description;
 
-    Calendar date;
+    String date;
 
     public HistoricalDTO() {
     }
 
-    public HistoricalDTO(int id, HistoricalEnum state, String description, Calendar date) {
+    public HistoricalDTO(int id, HistoricalEnum state, String description, String date) {
         this.id = id;
         this.state = state;
         this.description = description;
@@ -48,11 +48,11 @@ public class HistoricalDTO implements Serializable {
         this.description = description;
     }
 
-    public Calendar getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Calendar date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }

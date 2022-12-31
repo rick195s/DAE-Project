@@ -18,6 +18,7 @@ import java.util.List;
 @Table(name = "Historicals")
 public class Historical implements Serializable {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     int id;
 
     @Enumerated(EnumType.STRING)
@@ -28,15 +29,14 @@ public class Historical implements Serializable {
 
     @NotNull
     // @Temporal(TemporalType.TIMESTAMP)
-    Calendar date;
+    String date;
 
     @NotNull
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "occurrence_id")
     Occurrence occurrence;
 
-    public Historical(int id, HistoricalEnum state, String description, Occurrence occurrence, Calendar date) {
-        this.id = id;
+    public Historical(HistoricalEnum state, String description, Occurrence occurrence, String date) {
         this.state = state;
         this.description = description;
         this.occurrence = occurrence;
@@ -70,11 +70,11 @@ public class Historical implements Serializable {
         this.description = description;
     }
 
-    public Calendar getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Calendar date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

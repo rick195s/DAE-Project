@@ -10,6 +10,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -20,6 +21,9 @@ public class OccurrenceBean {
 
     @EJB
     ConfigBean configBean;
+
+    @EJB
+    HistoricalBean historicalBean;
 
     public Occurrence create(int policyId, int repairShopId, String description, int clientId, ConfigBean configBeanArg) {
         if (description.length() < 10) {
@@ -41,9 +45,13 @@ public class OccurrenceBean {
         }
 
         Occurrence occurrence = new Occurrence(policy, new RepairShop(), description, ApprovalType.WAITING_FOR_APPROVAL, Calendar.getInstance(), null, client);
+
         entityManager.persist(occurrence);
         // flushing to get the generated Id
         entityManager.flush();
+
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        historicalBean.create("Occurrence Created", occurrence.getId(), formatter.format(Calendar.getInstance().getTime()));
 
         return occurrence;
     }
