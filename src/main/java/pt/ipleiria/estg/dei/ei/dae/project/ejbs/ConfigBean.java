@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
+import com.github.javafaker.Faker;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyGateway;
@@ -26,6 +27,9 @@ public class ConfigBean {
     ClientBean clientBean;
 
     @EJB
+    OccurrenceBean occurrenceBean;
+
+    @EJB
     RepairShopBean repairShopBean;
 
     @EJB
@@ -34,7 +38,7 @@ public class ConfigBean {
     final String URI_REPAIR_SHOPS = "https://63af1f07cb0f90e5146dbd21.mockapi.io/api/insurers/Repair_Shops";
     final String URI_INSURERS = "https://63af23e6649c73f572b64917.mockapi.io/insurers";
 
-
+    private Faker faker = new Faker(new Locale("pt-PT"));
      private List<Policy> policies = new ArrayList<>();
      private List<Insurer> insurers = new ArrayList<>();
      private List<PolicyTypeDetail> policyTypeDetails = new ArrayList<>();
@@ -45,10 +49,13 @@ public class ConfigBean {
     public void populateDB() {
         System.out.println("Hello Java EE!");
 
-        clientBean.create(1, "João", "sdwqdwq@dwqdwq.cqwd", "dwqdwq", 213123);
 
+        createClients();
         populatePolicyTypeDetails();
         populatePolicyObejcts();
+        populateMockAPI();
+
+
         refreshInsurersViaAPI();
         refreshPoliciesViaAPI();
         refreshRepairShopsViaAPI();
@@ -56,7 +63,21 @@ public class ConfigBean {
         //testar mockAPI
         populateMockAPI();
         getAllRepairShopsByName();
+        
+        createOccurrences();
 
+    }
+
+    private void createClients(){
+        for (int i = 0; i < 20; i++) {
+            clientBean.create(faker.name().fullName(), faker.internet().emailAddress(), "dwqdwqdwqdwdede", ((int) faker.number().randomNumber(9, true)));
+        }
+    }
+
+    private void createOccurrences(){
+        for (int i = 0; i < 20; i++) {
+            occurrenceBean.create(1,1,faker.lorem().sentence(10),1, this);
+        }
     }
 
     //get all repair shops from mockAPI
@@ -100,17 +121,9 @@ public class ConfigBean {
         return null;
     }
 
-    public  void setPolicies(List<Policy> policies) {
-        this.policies = policies;
-    }
-
     public  List<Insurer> getInsurers() {
         refreshInsurersViaAPI();
         return insurers;
-    }
-
-    public  void setInsurers(List<Insurer> insurers) {
-        this.insurers = insurers;
     }
 
     private void populatePolicyTypeDetails(){
@@ -187,7 +200,6 @@ public class ConfigBean {
     private void populatePoliciesInAPI() {
         Client client = clientBean.findClient(1);
 
-
         Calendar calendar = Calendar.getInstance(
                 TimeZone.getTimeZone("UTC"));
 
@@ -212,6 +224,8 @@ public class ConfigBean {
         );
 
         PolicyGateway gateway = new PolicyGateway();
-        gateway.postToMockAPI(policies);
+        for (Policy policy : policies) {
+            gateway.postToMockAPI(policy);
+        }
     }
 }

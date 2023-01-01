@@ -36,19 +36,6 @@ public class HistoricalService {
                 .build();
     }
 
-    @PUT
-    @Path("{id}")
-    public Response updateHistorical(@PathParam("id") int id, HistoricalDTO historicalDTO) {
-        Historical historical = historicalBean.findHistorical(id);
-        if (historical != null) {
-            historicalBean.update(historicalDTO.getId(), historicalDTO.getState(), historicalDTO.getDescription(), historicalDTO.getDate());
-            return Response.ok(toDTO(historical)).build();
-        }
-        return Response.status(Response.Status.NOT_FOUND)
-                .entity("ERROR_FINDING_STUDENT")
-                .build();
-    }
-
     @DELETE
     @Path("{id}")
     public Response deleteHistorical(@PathParam("id") int id) {

@@ -1,7 +1,10 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
+import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Historical;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.OccurrenceFile;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
@@ -10,6 +13,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -21,7 +25,10 @@ public class OccurrenceBean {
     @EJB
     ConfigBean configBean;
 
-    public Occurrence create(int policyId, int repairShopId, String description, int clientId) {
+    @EJB
+    HistoricalBean historicalBean;
+
+    public Occurrence create(int policyId, int repairShopId, String description, int clientId, ConfigBean configBeanArg) {
         if (description.length() < 10) {
             throw new IllegalArgumentException("Description must be at least 10 characters long");
         }
@@ -31,15 +38,23 @@ public class OccurrenceBean {
             throw new IllegalArgumentException("Client dont exists");
         }
 
+        if (configBeanArg != null){
+            configBean = configBeanArg;
+        }
+
         Policy policy = configBean.getPolicy(policyId);
         if (policy == null) {
             throw new IllegalArgumentException("Policy dont exists");
         }
 
         Occurrence occurrence = new Occurrence(policy, new RepairShop(), description, ApprovalType.WAITING_FOR_APPROVAL, Calendar.getInstance(), null, client);
+
         entityManager.persist(occurrence);
         // flushing to get the generated Id
         entityManager.flush();
+
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        historicalBean.create("Occurrence Created", occurrence.getId(), formatter.format(Calendar.getInstance().getTime()));
 
         return occurrence;
     }
@@ -51,5 +66,25 @@ public class OccurrenceBean {
 
     public Occurrence findOccurrence(int id) {
         return entityManager.find(Occurrence.class, id);
+    }
+
+    public List<OccurrenceFile> getOccurrenceFiles(int id) {
+        Occurrence occurrence = entityManager.find(Occurrence.class, id);
+        if (occurrence == null) {
+            throw new IllegalArgumentException("Occurrence dont exists");
+        }
+
+        Hibernate.initialize(occurrence.getOccurenceFileList());
+        return occurrence.getOccurenceFileList();
+    }
+
+    public List<Historical> getHistorical(int id) {
+        Occurrence occurrence = entityManager.find(Occurrence.class, id);
+        if (occurrence == null) {
+            throw new IllegalArgumentException("Occurrence dont exists");
+        }
+
+        Hibernate.initialize(occurrence.getOccurenceHistoricalList());
+        return occurrence.getOccurenceHistoricalList();
     }
 }

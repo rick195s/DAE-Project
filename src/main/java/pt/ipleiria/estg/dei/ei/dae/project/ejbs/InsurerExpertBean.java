@@ -13,18 +13,13 @@ public class InsurerExpertBean {
     @PersistenceContext
     EntityManager entityManager;
 
-    public void create(int id, String name, String email, String password, int insurerId) {
-        InsurerExpert insurer_expert = findInsurerExpert(id);
-        if (insurer_expert != null) {
-            throw new IllegalArgumentException("Insurer_Expert already exists");
-        }
-
+    public void create(String name, String email, String password, int insurerId) {
         Insurer insurer = entityManager.find(Insurer.class, insurerId);
         if (insurer == null) {
             throw new IllegalArgumentException("Insurer does not exist");
         }
 
-        insurer_expert = new InsurerExpert(id, name, email, password, insurer);
+        InsurerExpert insurer_expert = new InsurerExpert(name, email, password, insurer);
         entityManager.persist(insurer_expert);
     }
 

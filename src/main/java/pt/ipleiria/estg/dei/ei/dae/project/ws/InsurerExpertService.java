@@ -43,7 +43,6 @@ public class InsurerExpertService {
         @Path("/")
         public Response createNewInsurerExpert(InsurerExpertDTO insurerExpertDTO) {
             insurerExpertBean.create(
-                    insurerExpertDTO.getId(),
                     insurerExpertDTO.getName(),
                     insurerExpertDTO.getEmail(),
                     "adsd",

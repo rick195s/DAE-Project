@@ -21,6 +21,7 @@ import java.util.Objects;
 @Inheritance(strategy=InheritanceType.JOINED)
 public class User implements Serializable {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     protected int id;
 
     @NotNull
@@ -30,8 +31,7 @@ public class User implements Serializable {
     @Email
     protected String email;
 
-    public User(int id, String name, String email, String password) {
-        this.id = id;
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;

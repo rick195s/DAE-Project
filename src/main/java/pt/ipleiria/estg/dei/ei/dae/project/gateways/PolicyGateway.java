@@ -14,16 +14,14 @@ import javax.ws.rs.core.Response;
 public class PolicyGateway {
     final String URI_POLICIES = "https://63af23e6649c73f572b64917.mockapi.io/policies";
 
-    public void postToMockAPI( List<Policy> policies) {
-        List<PolicyDTO> policyDTOS = toDTOs(policies);
+    public void postToMockAPI(Policy policy) {
+        PolicyDTO policyDTO = toDTO(policy);
 
         Jsonb jsonb = JsonbBuilder.create();
         Response response = null;
 
         try{
-            for (PolicyDTO policyDTO:policyDTOS){
-                response = APIGateway.postDataToAPI(URI_POLICIES, jsonb.toJson(policyDTO));
-            }
+            response = APIGateway.postDataToAPI(URI_POLICIES, jsonb.toJson(policyDTO));
             jsonb.close();
         }catch (Exception e){
             e.printStackTrace();
