@@ -29,7 +29,7 @@ public class RepairShopService {
     @POST
     @Path("/")
     public Response createRepairShop(RepairShopDTO repairShopDTO) {
-            RepairShopBean.create(
+            repairShopBean.create(
                     repairShopDTO.getName(),
                     repairShopDTO.getEmail(),
                     repairShopDTO.getPhone()

@@ -40,14 +40,16 @@ public class RepairShopGateway {
         ArrayList<RepairShop> repairShops = new ArrayList<>();
 
         JsonArray jsonArrayRepairShops = APIGateway.getDataFromAPI(URI_REPAIR_SHOPS);
-        jsonArrayRepairShops.forEach(repairShop -> {
-            Jsonb jsonb = JsonbBuilder.create();
-            RepairShopDTO repairShopDTOObj = jsonb.fromJson(repairShop.toString(), RepairShopDTO.class);
+        if (jsonArrayRepairShops != null) {
+            jsonArrayRepairShops.forEach(repairShop -> {
+                Jsonb jsonb = JsonbBuilder.create();
+                RepairShopDTO repairShopDTOObj = jsonb.fromJson(repairShop.toString(), RepairShopDTO.class);
 
-            RepairShop repairShopObj = toEntity(repairShopDTOObj);
+                RepairShop repairShopObj = toEntity(repairShopDTOObj);
 
-            repairShops.add(repairShopObj);
-        });
+                repairShops.add(repairShopObj);
+            });
+        }
 
         return repairShops;
     }

@@ -18,7 +18,7 @@ public class RepairShopBean {
     @EJB
     private ConfigBean configBean;
 
-    public static void create(String name, String email, long phone) {
+    public void create(String name, String email, long phone) {
         RepairShopGateway repairShopGateway = new RepairShopGateway();
 
         //verify if some repair shop has already the same email or phone
