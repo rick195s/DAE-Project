@@ -19,11 +19,8 @@ public class RepairShopBean {
     private ConfigBean configBean;
 
     public void create(String name, String email, long phone) {
-        RepairShopGateway repairShopGateway = new RepairShopGateway();
-
         //verify if some repair shop has already the same email or phone
-        List<RepairShop> repairShops = repairShopGateway.getFromMockAPI();
-        for (RepairShop repairShop : repairShops) {
+        for (RepairShop repairShop : configBean.getRepairShops()) {
             if (repairShop.getEmail().equals(email)) {
                 throw new IllegalArgumentException("Repair shop with email " + email + " already exists");
             }
@@ -33,7 +30,7 @@ public class RepairShopBean {
         }
 
         RepairShop repairShop = new RepairShop(name, email, phone);
-        repairShopGateway.postToMockAPI(repairShop);
+        configBean.addRepairShop(repairShop);
     }
 
     public List<RepairShop> getAllRepairShops() {
@@ -41,11 +38,21 @@ public class RepairShopBean {
     }
 
     public RepairShop findRepairShop(int id) {
-        return configBean.getRepairShopById(id);
+        for (RepairShop repairShop : configBean.getRepairShops()) {
+            if (repairShop.getId() == id) {
+                return repairShop;
+            }
+        }
+        return null;
     }
 
     public RepairShop findRepairShop(String email) {
-        return configBean.getRepairShopByEmail(email);
+        for (RepairShop repairShop : configBean.getRepairShops()) {
+            if (repairShop.getEmail().equals(email)) {
+                return repairShop;
+            }
+        }
+        return null;
     }
 }
 

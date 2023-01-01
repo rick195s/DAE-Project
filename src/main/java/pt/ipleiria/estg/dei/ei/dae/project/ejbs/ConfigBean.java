@@ -29,10 +29,6 @@ public class ConfigBean {
     @EJB
     OccurrenceBean occurrenceBean;
 
-    @EJB
-    RepairShopBean repairShopBean;
-
-    final String URI_REPAIR_SHOPS = "https://63af1f07cb0f90e5146dbd21.mockapi.io/api/insurers/Repair_Shops";
     final String URI_INSURERS = "https://63af23e6649c73f572b64917.mockapi.io/insurers";
 
     private final Faker faker = new Faker(new Locale("pt-PT"));
@@ -46,19 +42,15 @@ public class ConfigBean {
     public void populateDB() {
         System.out.println("Hello Java EE!");
 
-
         createClients();
         createRepairShops();
         populatePolicyTypeDetails();
         populatePolicyObejcts();
-        populateMockAPI();
-
+        // populateMockAPI();
 
         refreshInsurersViaAPI();
         refreshPoliciesViaAPI();
         refreshRepairShopsViaAPI();
-
-        getAllRepairShopsByName();
 
         createOccurrences();
 
@@ -84,42 +76,15 @@ public class ConfigBean {
         }
     }
 
-    //get all repair shops from mockAPI
-    public void getAllRepairShopsByName() {
-        RepairShopGateway repairShopGateway = new RepairShopGateway();
-        List<RepairShop> repairShops = repairShopGateway.getFromMockAPI();
-        for (RepairShop repairShop : repairShops) {
-            System.out.println(repairShop.getName());
-        }
-    }
-
     public List<RepairShop> getRepairShops() {
         refreshRepairShopsViaAPI();
         return repairShops;
     }
 
-    public RepairShop getRepairShopById(int id) {
-        refreshRepairShopsViaAPI();
-        for (RepairShop repairShop : repairShops) {
-            if (repairShop.getId() == id) {
-                return repairShop;
-            }
-        }
-        return null;
-    }
-
-    public RepairShop getRepairShopByEmail(String email) {
-        refreshRepairShopsViaAPI();
-        for (RepairShop repairShop : repairShops) {
-            if (repairShop.getEmail().equals(email)) {
-                return repairShop;
-            }
-        }
-        return null;
-    }
-
-    public void setRepairShops(List<RepairShop> repairShops) {
-        this.repairShops = repairShops;
+    public void addRepairShop(RepairShop repairShop) {
+        RepairShopGateway repairShopGateway = new RepairShopGateway();
+        repairShopGateway.postToMockAPI(repairShop);
+        repairShops.add(repairShop);
     }
 
     public List<Policy> getPolicies() {
@@ -194,8 +159,8 @@ public class ConfigBean {
     }
 
     private void populateMockAPI() {
-        //populatePoliciesInAPI();
-        //populateRepairShopsInAPI();
+        populatePoliciesInAPI();
+        populateRepairShopsInAPI();
     }
 
     private void populateRepairShopsInAPI() {
