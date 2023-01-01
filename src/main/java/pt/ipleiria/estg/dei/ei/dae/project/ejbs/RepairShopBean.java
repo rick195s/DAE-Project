@@ -1,7 +1,9 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -9,24 +11,23 @@ import java.util.List;
 
 @Stateless
 public class RepairShopBean {
-
     @PersistenceContext
     EntityManager entityManager;
-    public void create(int id, String name, String email, long phone) {
-        RepairShop repairShop = findRepairShop(id);
-        if (repairShop != null) {
-            throw new IllegalArgumentException("RepairShop already exists");
-        }
-        repairShop = new RepairShop(id,name,email,phone);
-        entityManager.persist(repairShop);
-    }
+
+    @EJB
+    private ConfigBean configBean;
 
     public List<RepairShop> getAllRepairShops() {
-        return (List<RepairShop>) entityManager.createNamedQuery("getAllRepairShops").getResultList();
+        return configBean.getRepairShops();
     }
 
     public RepairShop findRepairShop(int id) {
-        return entityManager.find(RepairShop.class, id);
+        for (RepairShop repairShop : configBean.getRepairShops()) {
+            if (repairShop.getId() == id) {
+                return repairShop;
+            }
+        }
+        return null;
     }
 }
 

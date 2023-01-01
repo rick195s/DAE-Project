@@ -31,7 +31,7 @@ public class ConfigBean {
     @EJB
     PolicyObjectBean policyObjectBean;
 
-    final String URI_REPAIR_SHOPS = "https://634f1183df22c2af7b4a4b38.mockapi.io/repair_shops";
+    final String URI_REPAIR_SHOPS = "https://63af1f07cb0f90e5146dbd21.mockapi.io/api/insurers/Repair_Shops";
     final String URI_INSURERS = "https://63af23e6649c73f572b64917.mockapi.io/insurers";
 
 
@@ -39,6 +39,7 @@ public class ConfigBean {
      private List<Insurer> insurers = new ArrayList<>();
      private List<PolicyTypeDetail> policyTypeDetails = new ArrayList<>();
      private List<PolicyObject> policyObjects = new ArrayList<>();
+     private List<RepairShop> repairShops = new ArrayList<>();
 
     @PostConstruct
     public void populateDB() {
@@ -50,17 +51,39 @@ public class ConfigBean {
         populatePolicyObejcts();
         refreshInsurersViaAPI();
         refreshPoliciesViaAPI();
+        refreshRepairShopsViaAPI();
 
         //testar mockAPI
         populateMockAPI();
+        getAllRepairShopsByName();
 
-        //get all repair shops from mockAPI
+    }
+
+    //get all repair shops from mockAPI
+    public void getAllRepairShopsByName() {
         RepairShopGateway repairShopGateway = new RepairShopGateway();
         List<RepairShop> repairShops = repairShopGateway.getFromMockAPI();
         for (RepairShop repairShop : repairShops) {
-            System.out.println(repairShop);
+            System.out.println(repairShop.getName());
         }
+    }
 
+    public List<RepairShop> getRepairShops() {
+        refreshRepairShopsViaAPI();
+        return repairShops;
+    }
+
+    public RepairShop getRepairShopById(int id) {
+        for (RepairShop repairShop : repairShops) {
+            if (repairShop.getId() == id) {
+                return repairShop;
+            }
+        }
+        return null;
+    }
+
+    public void setRepairShops(List<RepairShop> repairShops) {
+        this.repairShops = repairShops;
     }
 
     public  List<Policy> getPolicies(){
@@ -118,11 +141,13 @@ public class ConfigBean {
     }
 
     private void refreshRepairShopsViaAPI() {
+        repairShops = new ArrayList<>();
         JsonArray jsonArrayRepairShops = APIGateway.getDataFromAPI(URI_REPAIR_SHOPS);
         jsonArrayRepairShops.forEach(repairShop -> {
             Jsonb jsonb = JsonbBuilder.create();
             RepairShop repairShopObj = jsonb.fromJson(repairShop.toString(), RepairShop.class);
-            repairShopBean.create(repairShopObj.getId(), repairShopObj.getName(), repairShopObj.getEmail(), repairShopObj.getPhone());
+
+            repairShops.add(repairShopObj);
         });
     }
 
@@ -154,8 +179,7 @@ public class ConfigBean {
     }
 
     private void populateRepairShopsInAPI() {
-        RepairShop repairShop1 = new RepairShop(1, "Oficina do Ze Manel", "zemanel99@gmail.com", 912345678);
-
+        RepairShop repairShop1 = new RepairShop(5, "Oficina do Ze", "ze99@gmail.com", 912345679);
         RepairShopGateway gateway = new RepairShopGateway();
         gateway.postToMockAPI(repairShop1);
     }
