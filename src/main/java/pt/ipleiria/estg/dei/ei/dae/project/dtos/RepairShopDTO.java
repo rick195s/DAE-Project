@@ -10,14 +10,21 @@ public class RepairShopDTO implements Serializable {
     int id;
     String name;
     String email;
-    String phone;
+    long phone;
 
-    public RepairShopDTO(int id, String name, String email, String phone) {
+    public RepairShopDTO(int id, String name, String email, long phone) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
     }
+
+    public RepairShopDTO(String name, String email, long phone) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
+
 
     public RepairShopDTO() {
     }
@@ -46,11 +53,11 @@ public class RepairShopDTO implements Serializable {
         this.email = email;
     }
 
-    public String getPhone() {
+    public long getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(long phone) {
         this.phone = phone;
     }
 }
