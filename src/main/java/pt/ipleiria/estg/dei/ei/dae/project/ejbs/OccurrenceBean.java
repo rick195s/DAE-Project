@@ -23,12 +23,12 @@ public class OccurrenceBean {
     EntityManager entityManager;
 
     @EJB
-    ConfigBean configBean;
-
-    @EJB
     HistoricalBean historicalBean;
 
-    public Occurrence create(int policyId, int repairShopId, String description, int clientId, ConfigBean configBeanArg) {
+    @EJB
+    PolicyBean policyBean;
+
+    public Occurrence create(int policyId, int repairShopId, String description, int clientId) {
         if (description.length() < 10) {
             throw new IllegalArgumentException("Description must be at least 10 characters long");
         }
@@ -38,11 +38,7 @@ public class OccurrenceBean {
             throw new IllegalArgumentException("Client dont exists");
         }
 
-        if (configBeanArg != null){
-            configBean = configBeanArg;
-        }
-
-        Policy policy = configBean.getPolicy(policyId);
+        Policy policy = policyBean.findPolicy(policyId);
         if (policy == null) {
             throw new IllegalArgumentException("Policy dont exists");
         }

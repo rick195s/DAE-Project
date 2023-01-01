@@ -1,26 +1,26 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
+import pt.ipleiria.estg.dei.ei.dae.project.Supervisor;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.RepairShopGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Stateless
 public class RepairShopBean {
-    @PersistenceContext
-    EntityManager entityManager;
 
-    @EJB
-    private ConfigBean configBean;
+    @Inject
+    Supervisor supervisor;
 
     public void create(String name, String email, long phone) {
         //verify if some repair shop has already the same email or phone
-        for (RepairShop repairShop : configBean.getRepairShops()) {
+        for (RepairShop repairShop : supervisor.getRepairShops()) {
             if (repairShop.getEmail().equals(email)) {
                 throw new IllegalArgumentException("Repair shop with email " + email + " already exists");
             }
@@ -30,15 +30,15 @@ public class RepairShopBean {
         }
 
         RepairShop repairShop = new RepairShop(name, email, phone);
-        configBean.addRepairShop(repairShop);
+        supervisor.addRepairShop(repairShop);
     }
 
     public List<RepairShop> getAllRepairShops() {
-        return configBean.getRepairShops();
+        return supervisor.getRepairShops();
     }
 
     public RepairShop findRepairShop(int id) {
-        for (RepairShop repairShop : configBean.getRepairShops()) {
+        for (RepairShop repairShop : supervisor.getRepairShops()) {
             if (repairShop.getId() == id) {
                 return repairShop;
             }
@@ -47,7 +47,7 @@ public class RepairShopBean {
     }
 
     public RepairShop findRepairShop(String email) {
-        for (RepairShop repairShop : configBean.getRepairShops()) {
+        for (RepairShop repairShop : supervisor.getRepairShops()) {
             if (repairShop.getEmail().equals(email)) {
                 return repairShop;
             }

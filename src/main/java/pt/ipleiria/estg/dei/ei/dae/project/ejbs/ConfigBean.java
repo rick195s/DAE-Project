@@ -1,11 +1,8 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import com.github.javafaker.Faker;
+import pt.ipleiria.estg.dei.ei.dae.project.Supervisor;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
-import pt.ipleiria.estg.dei.ei.dae.project.gateways.APIGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.RepairShopGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.*;
@@ -14,9 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.json.JsonArray;
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import javax.inject.Inject;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -29,14 +24,10 @@ public class ConfigBean {
     @EJB
     OccurrenceBean occurrenceBean;
 
-    final String URI_INSURERS = "https://63af23e6649c73f572b64917.mockapi.io/insurers";
+    @Inject
+    Supervisor supervisor;
 
     private final Faker faker = new Faker(new Locale("pt-PT"));
-    private List<Policy> policies = new ArrayList<>();
-    private List<Insurer> insurers = new ArrayList<>();
-    private List<PolicyTypeDetail> policyTypeDetails = new ArrayList<>();
-    private List<PolicyObject> policyObjects = new ArrayList<>();
-    private List<RepairShop> repairShops = new ArrayList<>();
 
     @PostConstruct
     public void populateDB() {
@@ -44,13 +35,7 @@ public class ConfigBean {
 
         createClients();
         createRepairShops();
-        populatePolicyTypeDetails();
-        populatePolicyObejcts();
         // populateMockAPI();
-
-        refreshInsurersViaAPI();
-        refreshPoliciesViaAPI();
-        refreshRepairShopsViaAPI();
 
         createOccurrences();
 
@@ -72,89 +57,7 @@ public class ConfigBean {
 
     private void createOccurrences() {
         for (int i = 0; i < 20; i++) {
-            occurrenceBean.create(1, 1, faker.lorem().sentence(10), 1, this);
-        }
-    }
-
-    public List<RepairShop> getRepairShops() {
-        refreshRepairShopsViaAPI();
-        return repairShops;
-    }
-
-    public void addRepairShop(RepairShop repairShop) {
-        RepairShopGateway repairShopGateway = new RepairShopGateway();
-        repairShopGateway.postToMockAPI(repairShop);
-        repairShops.add(repairShop);
-    }
-
-    public List<Policy> getPolicies() {
-        refreshPoliciesViaAPI();
-        return policies;
-    }
-
-    public Policy getPolicy(int id) {
-        for (Policy policy : policies) {
-            if (policy.getId() == id) {
-                return policy;
-            }
-        }
-        return null;
-    }
-
-    public List<Insurer> getInsurers() {
-        refreshInsurersViaAPI();
-        return insurers;
-    }
-
-    private void populatePolicyTypeDetails() {
-
-        policyTypeDetails.add(new PolicyTypeDetail(1, PolicyType.ACCIDENT, PolicyObjectType.VEHICLE,
-                "Seguro que abrange o seu proprio carro e os danos causados aos outros carros"));
-
-        policyTypeDetails.add(new PolicyTypeDetail(2, PolicyType.FULL, PolicyObjectType.HOUSE,
-                "Seguro que abrange a sua casa em qualquer sobre qualquer dano ou roubo"));
-
-
-        policyTypeDetails.add(new PolicyTypeDetail(3, PolicyType.BASIC, PolicyObjectType.HOUSE,
-                "Seguro que abrange a sua casa em danos menores" +
-                        ", vidros e portas"));
-
-
-        policyTypeDetails.add(new PolicyTypeDetail(4, PolicyType.FULL, PolicyObjectType.PHONE,
-                "Seguro que abrange os danos totais causados ao seu aparelho com opcao de reparacao ou substituicao"));
-
-
-        policyTypeDetails.add(new PolicyTypeDetail(5, PolicyType.BASIC, PolicyObjectType.PHONE,
-                "Seguro que abrange os danos parciais causados ao seu aparelho com opcao de reparacao"));
-
-    }
-
-    private void populatePolicyObejcts() {
-        policyObjects.add(new PolicyObject(1, "Carro Ze Manel", "C:\\Users\\joaop\\Desktop\\carro.jpg"));
-    }
-
-    private void refreshRepairShopsViaAPI() {
-        RepairShopGateway repairShopGateway = new RepairShopGateway();
-        repairShops = repairShopGateway.getFromMockAPI();
-    }
-
-    private void refreshInsurersViaAPI() {
-        insurers = new ArrayList<>();
-        JsonArray jsonArrayInsurers = APIGateway.getDataFromAPI(URI_INSURERS);
-        jsonArrayInsurers.forEach(insurer -> {
-            Jsonb jsonb = JsonbBuilder.create();
-            Insurer insurerObj = jsonb.fromJson(insurer.toString(), Insurer.class);
-
-            insurers.add(insurerObj);
-        });
-    }
-
-    private void refreshPoliciesViaAPI() {
-        PolicyGateway gateway = new PolicyGateway();
-        policies = gateway.getFromMockAPI();
-
-        for (Policy policy : policies) {
-            policy.setClient(clientBean.findClient(policy.getClientId()));
+            occurrenceBean.create(1, 1, faker.lorem().sentence(10), 1);
         }
     }
 
@@ -182,21 +85,9 @@ public class ConfigBean {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        policies.add(
-                new Policy(
-                        1,
-                        client,
-                        2,
-                        PolicyState.APPROVED,
-                        policyTypeDetails.get(0).getId(),
-                        policyObjects.get(0).getId(),
-                        formatter.format(calendar.getTime()),
-                        formatter.format(calendar2.getTime())
-                )
-        );
 
         PolicyGateway gateway = new PolicyGateway();
-        for (Policy policy : policies) {
+        for (Policy policy : supervisor.getPolicies()) {
             gateway.postToMockAPI(policy);
         }
     }

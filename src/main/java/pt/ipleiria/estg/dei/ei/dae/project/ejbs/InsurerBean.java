@@ -1,9 +1,11 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
+import pt.ipleiria.estg.dei.ei.dae.project.Supervisor;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -12,8 +14,8 @@ public class InsurerBean {
 
     EntityManager entityManager;
 
-    @EJB
-    private ConfigBean configBean;
+    @Inject
+    Supervisor supervisor;
 
 
     public void create(int id, String name) {
@@ -26,7 +28,7 @@ public class InsurerBean {
     }
 
     public List<Insurer> getAllInsurers() {
-        return configBean.getInsurers();
+        return supervisor.getInsurers();
     }
 
     public Insurer findInsurer(int id) {
