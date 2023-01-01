@@ -36,19 +36,6 @@ public class HistoricalService {
                 .build();
     }
 
-    @DELETE
-    @Path("{id}")
-    public Response deleteHistorical(@PathParam("id") int id) {
-        Historical historical = historicalBean.findHistorical(id);
-        if (historical != null) {
-            historicalBean.delete(historical);
-            return Response.ok().build();
-        }
-        return Response.status(Response.Status.NOT_FOUND)
-                .entity("ERROR_FINDING_STUDENT")
-                .build();
-    }
-
     // Converts an entity Student to a DTO Student class
     private HistoricalDTO toDTO(Historical historical) {
         return new HistoricalDTO(
