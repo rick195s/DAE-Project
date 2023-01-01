@@ -29,6 +29,11 @@ public class Supervisor {
     private List<PolicyTypeDetail> policyTypeDetails = new ArrayList<>();
     private List<PolicyObject> policyObjects = new ArrayList<>();
 
+    public Supervisor() {
+        populatePolicyTypeDetails();
+        populatePolicyObejcts();
+    }
+
     public List<Policy> getPolicies() {
         refreshPoliciesViaAPI();
         return policies;
