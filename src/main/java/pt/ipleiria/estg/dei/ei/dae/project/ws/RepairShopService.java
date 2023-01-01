@@ -1,19 +1,15 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
-import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceDTO;
-import pt.ipleiria.estg.dei.ei.dae.project.dtos.PolicyDTO;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.InsurerExpertDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.RepairShopDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.RepairShopBean;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
-import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.InsurerExpert;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
 
 import javax.ejb.EJB;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +24,22 @@ public class RepairShopService {
     @Path("/") // means: the relative url path is “/api/repairshops”
     public List<RepairShopDTO> getAllRepairShopsWS() {
         return toDTOs(repairShopBean.getAllRepairShops());
+    }
+
+    @POST
+    @Path("/")
+    public Response createRepairShop(RepairShopDTO repairShopDTO) {
+            RepairShopBean.create(
+                    repairShopDTO.getName(),
+                    repairShopDTO.getEmail(),
+                    repairShopDTO.getPhone()
+
+            );
+            RepairShop newRepairShop = repairShopBean.findRepairShop(repairShopDTO.getEmail());
+            if (newRepairShop == null) {
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+            return Response.status(Response.Status.CREATED).entity(toDTO(newRepairShop)).build();
     }
 
     private RepairShopDTO toDTO(RepairShop repairShop) {

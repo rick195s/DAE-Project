@@ -55,7 +55,6 @@ public class RepairShopGateway {
     //convert one entity into a DTO
     private RepairShopDTO toDTO(RepairShop repairShop) {
         return new RepairShopDTO(
-                repairShop.getId(),
                 repairShop.getName(),
                 repairShop.getEmail(),
                 repairShop.getPhone()

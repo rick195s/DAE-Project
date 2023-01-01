@@ -29,16 +29,10 @@ public class ConfigBean {
     @EJB
     OccurrenceBean occurrenceBean;
 
-    @EJB
-    RepairShopBean repairShopBean;
-
-    @EJB
-    PolicyObjectBean policyObjectBean;
-
     final String URI_REPAIR_SHOPS = "https://63af1f07cb0f90e5146dbd21.mockapi.io/api/insurers/Repair_Shops";
     final String URI_INSURERS = "https://63af23e6649c73f572b64917.mockapi.io/insurers";
 
-    private Faker faker = new Faker(new Locale("pt-PT"));
+    private final Faker faker = new Faker(new Locale("pt-PT"));
      private List<Policy> policies = new ArrayList<>();
      private List<Insurer> insurers = new ArrayList<>();
      private List<PolicyTypeDetail> policyTypeDetails = new ArrayList<>();
@@ -95,8 +89,19 @@ public class ConfigBean {
     }
 
     public RepairShop getRepairShopById(int id) {
+        refreshRepairShopsViaAPI();
         for (RepairShop repairShop : repairShops) {
             if (repairShop.getId() == id) {
+                return repairShop;
+            }
+        }
+        return null;
+    }
+
+    public RepairShop getRepairShopByEmail(String email) {
+        refreshRepairShopsViaAPI();
+        for (RepairShop repairShop : repairShops) {
+            if (repairShop.getEmail().equals(email)) {
                 return repairShop;
             }
         }
@@ -185,8 +190,6 @@ public class ConfigBean {
     }
 
     private void populateMockAPI(){
-        //populateRepairShopsInAPI();
-        //populateInsurersInAPI();
         //populatePoliciesInAPI();
         //populateRepairShopsInAPI();
     }

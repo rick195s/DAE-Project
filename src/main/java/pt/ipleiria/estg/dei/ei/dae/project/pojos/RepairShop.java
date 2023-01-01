@@ -34,6 +34,15 @@ public class RepairShop implements Serializable {
         occurrences = new LinkedList<>();
     }
 
+    public RepairShop(String name, String email, long phone) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        insurers= new LinkedList<>();
+        repairShopExperts = new LinkedList<>();
+        occurrences = new LinkedList<>();
+    }
+
     public RepairShop() {
         insurers= new LinkedList<>();
         repairShopExperts = new LinkedList<>();
