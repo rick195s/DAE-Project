@@ -63,7 +63,7 @@ public class ConfigBean {
         //testar mockAPI
         populateMockAPI();
         getAllRepairShopsByName();
-        
+
         createOccurrences();
 
     }
