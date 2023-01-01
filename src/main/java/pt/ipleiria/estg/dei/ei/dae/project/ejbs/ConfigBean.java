@@ -2,13 +2,13 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import com.github.javafaker.Faker;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
+import pt.ipleiria.estg.dei.ei.dae.project.gateways.APIGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.RepairShopGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.*;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
-import pt.ipleiria.estg.dei.ei.dae.project.gateways.APIGateway;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -29,15 +29,18 @@ public class ConfigBean {
     @EJB
     OccurrenceBean occurrenceBean;
 
+    @EJB
+    RepairShopBean repairShopBean;
+
     final String URI_REPAIR_SHOPS = "https://63af1f07cb0f90e5146dbd21.mockapi.io/api/insurers/Repair_Shops";
     final String URI_INSURERS = "https://63af23e6649c73f572b64917.mockapi.io/insurers";
 
     private final Faker faker = new Faker(new Locale("pt-PT"));
-     private List<Policy> policies = new ArrayList<>();
-     private List<Insurer> insurers = new ArrayList<>();
-     private List<PolicyTypeDetail> policyTypeDetails = new ArrayList<>();
-     private List<PolicyObject> policyObjects = new ArrayList<>();
-     private List<RepairShop> repairShops = new ArrayList<>();
+    private List<Policy> policies = new ArrayList<>();
+    private List<Insurer> insurers = new ArrayList<>();
+    private List<PolicyTypeDetail> policyTypeDetails = new ArrayList<>();
+    private List<PolicyObject> policyObjects = new ArrayList<>();
+    private List<RepairShop> repairShops = new ArrayList<>();
 
     @PostConstruct
     public void populateDB() {
@@ -45,6 +48,7 @@ public class ConfigBean {
 
 
         createClients();
+        createRepairShops();
         populatePolicyTypeDetails();
         populatePolicyObejcts();
         populateMockAPI();
@@ -54,23 +58,29 @@ public class ConfigBean {
         refreshPoliciesViaAPI();
         refreshRepairShopsViaAPI();
 
-        //testar mockAPI
-        populateMockAPI();
         getAllRepairShopsByName();
 
         createOccurrences();
 
     }
 
-    private void createClients(){
+    private void createClients() {
         for (int i = 0; i < 20; i++) {
             clientBean.create(faker.name().fullName(), faker.internet().emailAddress(), "dwqdwqdwqdwdede", ((int) faker.number().randomNumber(9, true)));
         }
     }
 
-    private void createOccurrences(){
+    private void createRepairShops() {
+        RepairShopGateway repairShopGateway = new RepairShopGateway();
         for (int i = 0; i < 20; i++) {
-            occurrenceBean.create(1,1,faker.lorem().sentence(10),1, this);
+            RepairShop repairShop = new RepairShop(faker.company().name(), faker.internet().emailAddress(), ((int) faker.number().randomNumber(9, true)));
+            repairShopGateway.postToMockAPI(repairShop);
+        }
+    }
+
+    private void createOccurrences() {
+        for (int i = 0; i < 20; i++) {
+            occurrenceBean.create(1, 1, faker.lorem().sentence(10), 1, this);
         }
     }
 
@@ -112,26 +122,26 @@ public class ConfigBean {
         this.repairShops = repairShops;
     }
 
-    public  List<Policy> getPolicies(){
+    public List<Policy> getPolicies() {
         refreshPoliciesViaAPI();
         return policies;
     }
 
-    public Policy getPolicy(int id){
+    public Policy getPolicy(int id) {
         for (Policy policy : policies) {
-            if(policy.getId() == id){
+            if (policy.getId() == id) {
                 return policy;
             }
         }
         return null;
     }
 
-    public  List<Insurer> getInsurers() {
+    public List<Insurer> getInsurers() {
         refreshInsurersViaAPI();
         return insurers;
     }
 
-    private void populatePolicyTypeDetails(){
+    private void populatePolicyTypeDetails() {
 
         policyTypeDetails.add(new PolicyTypeDetail(1, PolicyType.ACCIDENT, PolicyObjectType.VEHICLE,
                 "Seguro que abrange o seu proprio carro e os danos causados aos outros carros"));
@@ -159,17 +169,11 @@ public class ConfigBean {
     }
 
     private void refreshRepairShopsViaAPI() {
-        repairShops = new ArrayList<>();
-        JsonArray jsonArrayRepairShops = APIGateway.getDataFromAPI(URI_REPAIR_SHOPS);
-        jsonArrayRepairShops.forEach(repairShop -> {
-            Jsonb jsonb = JsonbBuilder.create();
-            RepairShop repairShopObj = jsonb.fromJson(repairShop.toString(), RepairShop.class);
-
-            repairShops.add(repairShopObj);
-        });
+        RepairShopGateway repairShopGateway = new RepairShopGateway();
+        repairShops = repairShopGateway.getFromMockAPI();
     }
 
-    private void refreshInsurersViaAPI(){
+    private void refreshInsurersViaAPI() {
         insurers = new ArrayList<>();
         JsonArray jsonArrayInsurers = APIGateway.getDataFromAPI(URI_INSURERS);
         jsonArrayInsurers.forEach(insurer -> {
@@ -180,7 +184,7 @@ public class ConfigBean {
         });
     }
 
-    private void refreshPoliciesViaAPI(){
+    private void refreshPoliciesViaAPI() {
         PolicyGateway gateway = new PolicyGateway();
         policies = gateway.getFromMockAPI();
 
@@ -189,7 +193,7 @@ public class ConfigBean {
         }
     }
 
-    private void populateMockAPI(){
+    private void populateMockAPI() {
         //populatePoliciesInAPI();
         //populateRepairShopsInAPI();
     }
@@ -211,7 +215,7 @@ public class ConfigBean {
                 TimeZone.getTimeZone("UTC"));
         calendar2.set(2021, Calendar.DECEMBER, 2);
 
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         policies.add(
                 new Policy(
