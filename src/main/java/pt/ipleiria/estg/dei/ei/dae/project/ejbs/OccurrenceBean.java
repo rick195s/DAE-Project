@@ -1,7 +1,10 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
+import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Historical;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.OccurrenceFile;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
@@ -63,5 +66,25 @@ public class OccurrenceBean {
 
     public Occurrence findOccurrence(int id) {
         return entityManager.find(Occurrence.class, id);
+    }
+
+    public List<OccurrenceFile> getOccurrenceFiles(int id) {
+        Occurrence occurrence = entityManager.find(Occurrence.class, id);
+        if (occurrence == null) {
+            throw new IllegalArgumentException("Occurrence dont exists");
+        }
+
+        Hibernate.initialize(occurrence.getOccurenceFileList());
+        return occurrence.getOccurenceFileList();
+    }
+
+    public List<Historical> getHistorical(int id) {
+        Occurrence occurrence = entityManager.find(Occurrence.class, id);
+        if (occurrence == null) {
+            throw new IllegalArgumentException("Occurrence dont exists");
+        }
+
+        Hibernate.initialize(occurrence.getOccurenceHistoricalList());
+        return occurrence.getOccurenceHistoricalList();
     }
 }

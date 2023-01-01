@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Historical;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 
 import java.io.Serializable;
@@ -15,6 +16,13 @@ public class HistoricalDTO implements Serializable {
     String date;
 
     public HistoricalDTO() {
+    }
+
+    public HistoricalDTO(Historical historical) {
+        this.id = historical.getId();
+        this.state = historical.getState();
+        this.description = historical.getDescription();
+        this.date = historical.getDate();
     }
 
     public HistoricalDTO(int id, HistoricalEnum state, String description, String date) {

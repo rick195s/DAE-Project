@@ -1,6 +1,10 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
+import org.hibernate.Hibernate;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.HistoricalDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceDTO;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceFileDTO;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.detailed.DetailedOccurrenceDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.OccurrenceBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
@@ -30,7 +34,7 @@ public class OccurrenceService {
     public Response getOccurrence(@PathParam("id") int id) {
         Occurrence occurrence = occurrenceBean.findOccurrence(id);
         if (occurrence != null) {
-            return Response.ok(toDTO(occurrence)).build();
+            return Response.ok(toDetailedDTO(occurrence)).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
                 .entity("ERROR_FINDING_OCCURRENCE")
@@ -51,18 +55,22 @@ public class OccurrenceService {
         return Response.status(Response.Status.CREATED).entity(toDTO(occurrence)).build();
     }
 
-    // Converts an entity Student to a DTO Student class
+    private DetailedOccurrenceDTO toDetailedDTO(Occurrence occurrence) {
+        DetailedOccurrenceDTO detailedOccurrenceDTO = new DetailedOccurrenceDTO(occurrence);
+
+        occurrenceBean.getOccurrenceFiles(occurrence.getId()).forEach(occurrenceFile -> {
+            detailedOccurrenceDTO.getFiles().add(new OccurrenceFileDTO(occurrenceFile));
+        });
+
+        occurrenceBean.getHistorical(occurrence.getId()).forEach(historical -> {
+            detailedOccurrenceDTO.getHistoric().add(new HistoricalDTO(historical));
+        });
+
+        return detailedOccurrenceDTO;
+    }
+
     private OccurrenceDTO toDTO(Occurrence occurrence) {
-        return new OccurrenceDTO(
-                occurrence.getId(),
-                occurrence.getDescription(),
-                occurrence.getApprovalType(),
-                occurrence.getStartDate(),
-                occurrence.getEndDate(),
-                occurrence.getPolicyId(),
-                occurrence.getRepairShopId(),
-                occurrence.getClient().getId()
-        );
+        return new OccurrenceDTO(occurrence);
     }
 
     // converts an entire list of entities into a list of DTOs

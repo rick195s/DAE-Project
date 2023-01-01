@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 
 import java.io.Serializable;
@@ -40,6 +41,22 @@ public class OccurrenceDTO implements Serializable {
     }
 
     public OccurrenceDTO() {
+    }
+
+    public OccurrenceDTO(Occurrence occurrence) {
+        this.id = occurrence.getId();
+        this.description = occurrence.getDescription();
+        this.approvalType = occurrence.getApprovalType();
+        this.policyId = occurrence.getPolicyId();
+        this.repairShopId = occurrence.getRepairShopId();
+        this.clientId = occurrence.getClient().getId();
+
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.startDate = formatter.format(occurrence.getStartDate().getTime());
+
+        if (occurrence.getEndDate() != null) {
+            this.endDate = formatter.format(occurrence.getEndDate().getTime());
+        }
     }
 
     public int getId() {
