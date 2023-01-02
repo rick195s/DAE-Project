@@ -53,6 +53,18 @@ public class OccurrenceService {
                 .build();
     }
 
+    @GET
+    @Path("/client/{id}")
+    public Response getOccurrencesOfClient(@PathParam("id") int id) {
+        List<Occurrence> occurrences = occurrenceBean.getOccurrencesOfClient(id);
+        if (occurrences != null) {
+            return Response.ok(OccurrenceDTO.from(occurrences)).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_OCCURRENCE")
+                .build();
+    }
+
     @POST
     @Path("/")
     public Response createOccurrence(OccurrenceDTO occurrenceDTO) throws OccurrenceSmallDescriptionException, EntityNotFoundException {
