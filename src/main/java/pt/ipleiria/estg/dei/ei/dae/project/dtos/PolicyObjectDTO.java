@@ -13,16 +13,15 @@ public class PolicyObjectDTO implements Serializable {
     int id;
     String name;
     String filePath;
-    PolicyObjectType type;
+
     //@NotNull
     //Policy policy;
 
 
-    public PolicyObjectDTO(int id, String name, String filePath, PolicyObjectType type) {
+    public PolicyObjectDTO(int id, String name, String filePath) {
         this.id = id;
         this.name = name;
         this.filePath = filePath;
-        this.type = type;
     }
 
     public PolicyObjectDTO() {
@@ -50,13 +49,5 @@ public class PolicyObjectDTO implements Serializable {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
-    }
-
-    public PolicyObjectType getType() {
-        return type;
-    }
-
-    public void setType(PolicyObjectType type) {
-        this.type = type;
     }
 }

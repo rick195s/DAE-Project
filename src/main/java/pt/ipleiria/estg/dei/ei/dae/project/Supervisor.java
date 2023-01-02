@@ -5,6 +5,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.APIGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyGateway;
+import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyObjectGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.RepairShopGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.*;
 
@@ -52,6 +53,10 @@ public class Supervisor {
         refreshRepairShopsViaAPI();
         return repairShops;
     }
+    public List<PolicyObject> getPolicyObjects() {
+       populatePolicyObejcts();
+        return policyObjects;
+    }
 
     public void addRepairShop(RepairShop repairShop) {
         RepairShopGateway repairShopGateway = new RepairShopGateway();
@@ -94,7 +99,9 @@ public class Supervisor {
     }
 
     private void populatePolicyObejcts() {
-        policyObjects.add(new PolicyObject(1, "Carro Ze Manel", "C:\\Users\\joaop\\Desktop\\carro.jpg"));
+        PolicyObjectGateway gateway = new PolicyObjectGateway();
+        policyObjects = gateway.getFromMockAPI();
+        //policyObjects.add(new PolicyObject(1, "Carro Ze Manel", "C:\\Users\\joaop\\Desktop\\carro.jpg"));
     }
 
     private void refreshInsurersViaAPI() {
