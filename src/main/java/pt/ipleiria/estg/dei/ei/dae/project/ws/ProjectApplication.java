@@ -1,4 +1,4 @@
-package pt.ipleiria.estg.dei.ei.dae.project;
+package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

@@ -16,10 +16,6 @@ public class EntityNotFoundExceptionMapper implements ExceptionMapper<EntityNotF
     }
 
     protected static Response getResponse(EntityNotFoundException e) {
-        var cause = e.getMessage();
-        var entity = cause.substring(cause.lastIndexOf('.') + 1, cause.indexOf(" with id"));
-
-        var msg = entity + " not found: " + cause.substring(cause.lastIndexOf(' ') + 1);
-        return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO(msg)).build();
+        return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO(e.getMessage())).build();
     }
 }

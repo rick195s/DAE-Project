@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 import com.github.javafaker.Faker;
 import pt.ipleiria.estg.dei.ei.dae.project.Supervisor;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
+import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.RepairShopGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.*;
@@ -27,7 +28,7 @@ public class ConfigBean {
     @Inject
     Supervisor supervisor;
 
-    private final Faker faker = new Faker(new Locale("pt-PT"));
+    private final Faker faker = new Faker(new Locale("en"));
 
     @PostConstruct
     public void populateDB() {
@@ -57,7 +58,11 @@ public class ConfigBean {
 
     private void createOccurrences() {
         for (int i = 0; i < 20; i++) {
-            occurrenceBean.create(1, 1, faker.lorem().sentence(10), 1);
+            try {
+                occurrenceBean.create(1, 1, faker.lorem().sentence(10), 1);
+            } catch (OccurrenceSmallDescriptionException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

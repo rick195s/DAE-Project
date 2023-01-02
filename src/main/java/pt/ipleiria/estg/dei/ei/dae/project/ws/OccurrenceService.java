@@ -1,15 +1,16 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
-import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.HistoricalDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceFileDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.detailed.DetailedOccurrenceDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.OccurrenceBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
-import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
+import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
+
 
 import javax.ejb.EJB;
+import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -43,7 +44,7 @@ public class OccurrenceService {
 
     @POST
     @Path("/")
-    public Response createOccurrence(OccurrenceDTO occurrenceDTO) {
+    public Response createOccurrence(OccurrenceDTO occurrenceDTO) throws OccurrenceSmallDescriptionException, EntityNotFoundException {
         Occurrence occurrence = occurrenceBean.create(
                 occurrenceDTO.getPolicyId(),
                 occurrenceDTO.getRepairShopId(),
