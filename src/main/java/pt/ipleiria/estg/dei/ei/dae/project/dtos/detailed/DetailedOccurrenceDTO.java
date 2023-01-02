@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DetailedOccurrenceDTO extends OccurrenceDTO implements Serializable {
     private List<HistoricalDTO> historic;
@@ -18,11 +19,6 @@ public class DetailedOccurrenceDTO extends OccurrenceDTO implements Serializable
 
     public DetailedOccurrenceDTO(int id, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate, int policyId, int repairShopId, int clientId) {
         super(id, description, approvalType, startDate, endDate, policyId, repairShopId, clientId);
-        this.files = new ArrayList<>();
-        this.historic = new ArrayList<>();
-    }
-    public DetailedOccurrenceDTO(Occurrence occurrence) {
-        super(occurrence);
         this.files = new ArrayList<>();
         this.historic = new ArrayList<>();
     }
@@ -46,5 +42,21 @@ public class DetailedOccurrenceDTO extends OccurrenceDTO implements Serializable
 
     public void setFiles(List<OccurrenceFileDTO> files) {
         this.files = files;
+    }
+
+    public static DetailedOccurrenceDTO from(Occurrence occurrence) {
+        return new DetailedOccurrenceDTO(
+                occurrence.getId(),
+                occurrence.getDescription(),
+                occurrence.getApprovalType(),
+                occurrence.getStartDate(),
+                occurrence.getEndDate(),
+                occurrence.getPolicyId(),
+                occurrence.getRepairShopId(),
+                occurrence.getClient().getId());
+    }
+
+    public static List<DetailedOccurrenceDTO> detailedFrom(List<Occurrence> occurrences) {
+        return occurrences.stream().map(DetailedOccurrenceDTO::from).collect(Collectors.toList());
     }
 }

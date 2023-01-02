@@ -1,9 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
-import pt.ipleiria.estg.dei.ei.dae.project.dtos.InsurerExpertDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.RepairShopDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.RepairShopBean;
-import pt.ipleiria.estg.dei.ei.dae.project.pojos.InsurerExpert;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
 
 import javax.ejb.EJB;

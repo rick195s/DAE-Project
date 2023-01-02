@@ -1,11 +1,14 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.OccurrenceFile;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class OccurrenceDTO implements Serializable {
      int id;
@@ -41,22 +44,6 @@ public class OccurrenceDTO implements Serializable {
     }
 
     public OccurrenceDTO() {
-    }
-
-    public OccurrenceDTO(Occurrence occurrence) {
-        this.id = occurrence.getId();
-        this.description = occurrence.getDescription();
-        this.approvalType = occurrence.getApprovalType();
-        this.policyId = occurrence.getPolicyId();
-        this.repairShopId = occurrence.getRepairShopId();
-        this.clientId = occurrence.getClient().getId();
-
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        this.startDate = formatter.format(occurrence.getStartDate().getTime());
-
-        if (occurrence.getEndDate() != null) {
-            this.endDate = formatter.format(occurrence.getEndDate().getTime());
-        }
     }
 
     public int getId() {
@@ -121,5 +108,21 @@ public class OccurrenceDTO implements Serializable {
 
     public void setClientId(int clientId) {
         this.clientId = clientId;
+    }
+
+    public static OccurrenceDTO from(Occurrence occurrence) {
+        return new OccurrenceDTO(
+                occurrence.getId(),
+                occurrence.getDescription(),
+                occurrence.getApprovalType(),
+                occurrence.getStartDate(),
+                occurrence.getEndDate(),
+                occurrence.getPolicyId(),
+                occurrence.getRepairShopId(),
+                occurrence.getClient().getId());
+    }
+
+    public static List<OccurrenceDTO> from(List<Occurrence> occurrences) {
+        return occurrences.stream().map(OccurrenceDTO::from).collect(Collectors.toList());
     }
 }
