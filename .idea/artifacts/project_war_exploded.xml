@@ -6,7 +6,6 @@
         <exploded>true</exploded>
         <module>project</module>
         <packaging>war</packaging>
-        <unpackNestedArchives>false</unpackNestedArchives>
       </options>
     </properties>
     <root id="root">
@@ -34,6 +33,14 @@
           <element id="library" level="project" name="Maven: com.sun.istack:istack-commons-runtime:4.0.1" />
           <element id="library" level="project" name="Maven: org.hibernate.validator:hibernate-validator:7.0.4.Final" />
           <element id="library" level="project" name="Maven: jakarta.validation:jakarta.validation-api:3.0.0" />
+          <element id="library" level="project" name="Maven: commons-io:commons-io:2.11.0" />
+          <element id="library" level="project" name="Maven: org.jboss.resteasy:resteasy-core:6.2.1.Final" />
+          <element id="library" level="project" name="Maven: jakarta.annotation:jakarta.annotation-api:2.1.1" />
+          <element id="library" level="project" name="Maven: jakarta.ws.rs:jakarta.ws.rs-api:3.1.0" />
+          <element id="library" level="project" name="Maven: org.jboss.resteasy:resteasy-core-spi:6.2.1.Final" />
+          <element id="library" level="project" name="Maven: org.reactivestreams:reactive-streams:1.0.4" />
+          <element id="library" level="project" name="Maven: org.eclipse.angus:angus-activation:1.0.0" />
+          <element id="library" level="project" name="Maven: com.ibm.async:asyncutil:0.1.0" />
           <element id="library" level="project" name="Maven: com.github.javafaker:javafaker:0.15" />
           <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.5" />
           <element id="library" level="project" name="Maven: org.yaml:snakeyaml:android:1.20" />
