@@ -89,3 +89,12 @@ Content-Type: application/json
 ###DELETE one
 DELETE http://localhost:8080/project/api/historical/1
 Accept: application/json
+
+
+##############
+PUT http://localhost:8080/project/api/occurrences/approval_type/1/change
+Content-Type: application/json
+
+{
+  "approval_type": "APPROVED"
+}
