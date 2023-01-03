@@ -146,6 +146,7 @@ public class OccurrenceService {
         FileUtils fileUtils = new FileUtils();
 
         for (InputPart inputPart : inputParts) {
+
             String filename = fileUtils.getFilename(inputPart.getHeaders());
             String ext = FilenameUtils.getExtension(filename);
             filename = FilenameUtils.removeExtension(filename) + "_" + System.currentTimeMillis() + "." + ext;
