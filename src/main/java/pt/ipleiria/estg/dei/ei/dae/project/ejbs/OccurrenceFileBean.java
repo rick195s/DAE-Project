@@ -6,6 +6,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.OccurrenceFile;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 
 @Stateless
@@ -18,6 +19,9 @@ public class OccurrenceFileBean {
 
     public OccurrenceFile create(int occurrenceId, String filename, String filepath){
         var occurrence = occurrenceBean.find(occurrenceId);
+        if (occurrence == null) {
+            throw new EntityNotFoundException("Occurrence dont exists");
+        }
 
         var occurrenceFile = new OccurrenceFile(filename, filepath, occurrence);
 
