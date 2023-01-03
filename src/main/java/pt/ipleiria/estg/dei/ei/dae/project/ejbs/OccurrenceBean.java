@@ -95,8 +95,13 @@ public class OccurrenceBean {
         return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesByClient").setParameter("client", client).getResultList();
     }
 
-    public void ApproveOccurence(Occurrence occurrence) {
+    public void ApproveOccurrence(Occurrence occurrence) {
         occurrence.setApprovalType(ApprovalType.APPROVED);
+        entityManager.merge(occurrence);
+    }
+
+    public void DeclineOccurrence(Occurrence occurrence) {
+        occurrence.setApprovalType(ApprovalType.REJECTED);
         entityManager.merge(occurrence);
     }
 }
