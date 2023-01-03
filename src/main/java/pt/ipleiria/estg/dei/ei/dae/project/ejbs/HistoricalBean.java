@@ -15,13 +15,14 @@ public class HistoricalBean {
     @PersistenceContext
     EntityManager entityManager;
 
-    public void create(String description, int occurrenceId , String date) {
+    public void create(String description, int occurrenceId , String date, HistoricalEnum historicalEnum) {
         Occurrence occurrence = entityManager.find(Occurrence.class, occurrenceId);
         if (occurrence == null) {
             throw new IllegalArgumentException("Occurrence does not exist");
         }
 
-        Historical historical = new Historical(HistoricalEnum.A_AGUARDAR_APROVACAO_PELA_SEGURADORA, description, occurrence, date);
+
+        Historical historical = new Historical(historicalEnum, description, occurrence, date);
         entityManager.persist(historical);
     }
 
