@@ -6,6 +6,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.Historical;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.OccurrenceFile;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
@@ -30,7 +31,7 @@ public class OccurrenceBean {
     @EJB
     PolicyBean policyBean;
 
-    public Occurrence create(int policyId, int repairShopId, String description, int clientId) throws OccurrenceSmallDescriptionException, EntityNotFoundException {
+    public Occurrence create(int policyId, String description, int clientId) throws OccurrenceSmallDescriptionException, EntityNotFoundException {
         if (description.length() < 10) {
             throw new OccurrenceSmallDescriptionException(description);
         }
@@ -52,7 +53,7 @@ public class OccurrenceBean {
         entityManager.flush();
 
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        historicalBean.create("Occurrence Created", occurrence.getId(), formatter.format(Calendar.getInstance().getTime()));
+        historicalBean.create("Occurrence Created", occurrence.getId(), formatter.format(Calendar.getInstance().getTime()), HistoricalEnum.A_AGUARDAR_APROVACAO_PELA_SEGURADORA);
 
         return occurrence;
     }
@@ -97,11 +98,23 @@ public class OccurrenceBean {
 
     public void ApproveOccurrence(Occurrence occurrence) {
         occurrence.setApprovalType(ApprovalType.APPROVED);
+
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentData = formatter.format(Calendar.getInstance().getTime());
+
+        historicalBean.create("Aprovado pela seguradora", occurrence.getId(), currentData, HistoricalEnum.APROVADO_PELA_SEGURADORA);
+
         entityManager.merge(occurrence);
     }
 
     public void DeclineOccurrence(Occurrence occurrence) {
         occurrence.setApprovalType(ApprovalType.REJECTED);
+
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentData = formatter.format(Calendar.getInstance().getTime());
+
+        historicalBean.create("Rejeitado pela seguradora", occurrence.getId(), currentData, HistoricalEnum.NAO_APROVADO_PELA_SEGURADORA);
+
         entityManager.merge(occurrence);
     }
 }

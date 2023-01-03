@@ -104,7 +104,6 @@ public class OccurrenceService {
     public Response createOccurrence(OccurrenceDTO occurrenceDTO) throws OccurrenceSmallDescriptionException, EntityNotFoundException {
         Occurrence occurrence = occurrenceBean.create(
                 occurrenceDTO.getPolicyId(),
-                occurrenceDTO.getRepairShopId(),
                 occurrenceDTO.getDescription(),
                 occurrenceDTO.getClientId()
         );
