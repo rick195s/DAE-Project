@@ -35,7 +35,6 @@ public class ConfigBean {
         System.out.println("Hello Java EE!");
 
         createClients();
-        createRepairShops();
         // populateMockAPI();
 
         createOccurrences();
@@ -48,7 +47,7 @@ public class ConfigBean {
         }
     }
 
-    private void createRepairShops() {
+    private void populateRepairShopsInAPI() {
         RepairShopGateway repairShopGateway = new RepairShopGateway();
         for (int i = 0; i < 20; i++) {
             RepairShop repairShop = new RepairShop(faker.company().name(), faker.internet().emailAddress(), ((int) faker.number().randomNumber(9, true)));
@@ -69,12 +68,6 @@ public class ConfigBean {
     private void populateMockAPI() {
         populatePoliciesInAPI();
         populateRepairShopsInAPI();
-    }
-
-    private void populateRepairShopsInAPI() {
-        RepairShop repairShop1 = new RepairShop(5, "Oficina do Ze", "ze99@gmail.com", 912345679);
-        RepairShopGateway gateway = new RepairShopGateway();
-        gateway.postToMockAPI(repairShop1);
     }
 
     private void populatePoliciesInAPI() {

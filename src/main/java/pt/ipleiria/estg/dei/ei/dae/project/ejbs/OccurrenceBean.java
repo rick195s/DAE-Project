@@ -85,4 +85,18 @@ public class OccurrenceBean {
         Hibernate.initialize(occurrence.getOccurenceHistoricalList());
         return occurrence.getOccurenceHistoricalList();
     }
+
+    public List<Occurrence> getOccurrencesOfClient(int id) {
+        Client client = entityManager.find(Client.class, id);
+        if (client == null) {
+            throw new IllegalArgumentException("Client dont exists");
+        }
+
+        return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesByClient").setParameter("client", client).getResultList();
+    }
+
+    public void ApproveOccurence(Occurrence occurrence) {
+        occurrence.setApprovalType(ApprovalType.APPROVED);
+        entityManager.merge(occurrence);
+    }
 }
