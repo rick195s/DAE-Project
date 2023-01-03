@@ -71,7 +71,7 @@ public class ConfigBean {
     }
 
     private void populatePoliciesInAPI() {
-        Client client = clientBean.findClient(1);
+        Client client = clientBean.find(1);
 
         Calendar calendar = Calendar.getInstance(
                 TimeZone.getTimeZone("UTC"));

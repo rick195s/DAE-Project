@@ -1,15 +1,10 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import pt.ipleiria.estg.dei.ei.dae.project.Supervisor;
-import pt.ipleiria.estg.dei.ei.dae.project.gateways.RepairShopGateway;
-import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Stateless
@@ -37,7 +32,7 @@ public class RepairShopBean {
         return supervisor.getRepairShops();
     }
 
-    public RepairShop findRepairShop(int id) {
+    public RepairShop find(int id) {
         for (RepairShop repairShop : supervisor.getRepairShops()) {
             if (repairShop.getId() == id) {
                 return repairShop;

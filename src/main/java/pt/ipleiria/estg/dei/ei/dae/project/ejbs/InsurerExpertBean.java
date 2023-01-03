@@ -27,12 +27,12 @@ public class InsurerExpertBean {
         return (List<InsurerExpert>) entityManager.createNamedQuery("getAllInsurerExperts").getResultList();
     }
 
-    public InsurerExpert findInsurerExpert(int id) {
+    public InsurerExpert find(int id) {
         return entityManager.find(InsurerExpert.class, id);
     }
 
     public void delete(int id) {
-        InsurerExpert insurer_expert = findInsurerExpert(id);
+        InsurerExpert insurer_expert = find(id);
         if (insurer_expert == null) {
             throw new IllegalArgumentException("Insurer_Expert does not exist");
         }
@@ -40,7 +40,7 @@ public class InsurerExpertBean {
     }
 
     public void update(int id, String name, String email, String password, int insurerId) {
-        InsurerExpert insurer_expert = findInsurerExpert(id);
+        InsurerExpert insurer_expert = find(id);
         if (insurer_expert == null) {
             throw new IllegalArgumentException("Insurer_Expert does not exist");
         }

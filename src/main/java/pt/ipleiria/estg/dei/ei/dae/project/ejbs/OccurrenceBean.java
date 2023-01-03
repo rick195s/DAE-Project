@@ -40,7 +40,7 @@ public class OccurrenceBean {
             throw new EntityNotFoundException("Client dont exists");
         }
 
-        Policy policy = policyBean.findPolicy(policyId);
+        Policy policy = policyBean.find(policyId);
         if (policy == null) {
             throw new EntityNotFoundException("Policy dont exists");
         }
@@ -62,7 +62,7 @@ public class OccurrenceBean {
         return (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrences").getResultList();
     }
 
-    public Occurrence findOccurrence(int id) {
+    public Occurrence find(int id) {
         return entityManager.find(Occurrence.class, id);
     }
 

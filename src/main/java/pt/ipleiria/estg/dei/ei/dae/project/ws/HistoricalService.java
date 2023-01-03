@@ -27,7 +27,7 @@ public class HistoricalService {
     @GET
     @Path("{id}")
     public Response getHistoricalDetails(@PathParam("id") int id) {
-        Historical historical = historicalBean.findHistorical(id);
+        Historical historical = historicalBean.find(id);
         if (historical != null) {
             return Response.ok(toDTO(historical)).build();
         }

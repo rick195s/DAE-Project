@@ -29,7 +29,7 @@ public class InsurerExpertService {
         @GET
         @Path("{id}")
         public Response getInsurerExpertDetails(@PathParam("id") int id) {
-            InsurerExpert insurerExpert = insurerExpertBean.findInsurerExpert(id);
+            InsurerExpert insurerExpert = insurerExpertBean.find(id);
             if (insurerExpert != null) {
                 return Response.ok(toDTO(insurerExpert)).build();
             }
@@ -49,7 +49,7 @@ public class InsurerExpertService {
                     insurerExpertDTO.getInsurerId()
 
             );
-            InsurerExpert newInsurerExpert = insurerExpertBean.findInsurerExpert(insurerExpertDTO.getId());
+            InsurerExpert newInsurerExpert = insurerExpertBean.find(insurerExpertDTO.getId());
             if (newInsurerExpert == null) {
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
@@ -60,7 +60,7 @@ public class InsurerExpertService {
     @PUT
     @Path("{id}")
     public Response updateInsurerExpert(@PathParam("id") int id, InsurerExpertDTO insurerExpertDTO) {
-        InsurerExpert insurerExpert = insurerExpertBean.findInsurerExpert(id);
+        InsurerExpert insurerExpert = insurerExpertBean.find(id);
         if (insurerExpert == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -77,7 +77,7 @@ public class InsurerExpertService {
     @DELETE
     @Path("{id}")
     public Response deleteInsurerExpert(@PathParam("id") int id) {
-        InsurerExpert insurerExpert = insurerExpertBean.findInsurerExpert(id);
+        InsurerExpert insurerExpert = insurerExpertBean.find(id);
         if (insurerExpert == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

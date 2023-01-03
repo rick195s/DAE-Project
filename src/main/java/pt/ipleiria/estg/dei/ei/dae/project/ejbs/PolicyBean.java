@@ -3,7 +3,6 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 import pt.ipleiria.estg.dei.ei.dae.project.Supervisor;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -22,7 +21,7 @@ public class PolicyBean {
         return supervisor.getPolicies();
     }
 
-    public Policy findPolicy(int id) {
+    public Policy find(int id) {
         for (Policy policy : supervisor.getPolicies()) {
             if (policy.getId() == id) {
                 return policy;

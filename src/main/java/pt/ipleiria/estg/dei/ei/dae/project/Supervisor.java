@@ -44,7 +44,7 @@ public class Supervisor {
         policies = gateway.getFromMockAPI();
 
         for (Policy policy : policies) {
-            policy.setClient(clientBean.findClient(policy.getClientId()));
+            policy.setClient(clientBean.find(policy.getClientId()));
         }
     }
 

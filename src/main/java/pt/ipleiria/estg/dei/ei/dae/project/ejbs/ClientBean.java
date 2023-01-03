@@ -22,7 +22,7 @@ public class ClientBean {
         return (List<Client>) entityManager.createNamedQuery("getAllClients").getResultList();
     }
 
-    public Client findClient(int id) {
+    public Client find(int id) {
         return entityManager.find(Client.class, id);
     }
 }

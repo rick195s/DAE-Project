@@ -27,7 +27,7 @@ public class InsurerService {
     @GET
     @Path("{id}")
     public Response getInsurerDetails(@PathParam("id") int id) {
-        Insurer insurer = insurerBean.findInsurer(id);
+        Insurer insurer = insurerBean.find(id);
         if (insurer != null) {
             return Response.ok(toDTO(insurer)).build();
         }
@@ -43,7 +43,7 @@ public class InsurerService {
                 insurerDTO.getId(),
                 insurerDTO.getName()
         );
-        Insurer newInsurer = insurerBean.findInsurer(insurerDTO.getId());
+        Insurer newInsurer = insurerBean.find(insurerDTO.getId());
         if (newInsurer == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -57,7 +57,7 @@ public class InsurerService {
                 id,
                 insurerDTO.getName()
         );
-        Insurer updatedInsurer = insurerBean.findInsurer(id);
+        Insurer updatedInsurer = insurerBean.find(id);
         if (updatedInsurer == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -68,7 +68,7 @@ public class InsurerService {
     @Path("{id}")
     public Response deleteInsurer(@PathParam("id") int id) {
         insurerBean.delete(id);
-        Insurer deletedInsurer = insurerBean.findInsurer(id);
+        Insurer deletedInsurer = insurerBean.find(id);
         if (deletedInsurer == null) {
             return Response.status(Response.Status.OK).build();
         }

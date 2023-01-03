@@ -3,7 +3,6 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 import pt.ipleiria.estg.dei.ei.dae.project.Supervisor;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -19,7 +18,7 @@ public class InsurerBean {
 
 
     public void create(int id, String name) {
-        Insurer insurer = findInsurer(id);
+        Insurer insurer = find(id);
         if (insurer != null) {
             throw new IllegalArgumentException("Insurer already exists");
         }
@@ -31,12 +30,12 @@ public class InsurerBean {
         return supervisor.getInsurers();
     }
 
-    public Insurer findInsurer(int id) {
+    public Insurer find(int id) {
         return entityManager.find(Insurer.class, id);
     }
 
     public void update(int id, String name) {
-        Insurer insurer = findInsurer(id);
+        Insurer insurer = find(id);
         if (insurer == null) {
             throw new IllegalArgumentException("Insurer does not exist");
         }
@@ -45,7 +44,7 @@ public class InsurerBean {
     }
 
     public void delete(int id) {
-        Insurer insurer = findInsurer(id);
+        Insurer insurer = find(id);
         if (insurer == null) {
             throw new IllegalArgumentException("Insurer does not exist");
         }
