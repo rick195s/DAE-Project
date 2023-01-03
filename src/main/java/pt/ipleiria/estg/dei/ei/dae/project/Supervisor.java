@@ -58,6 +58,15 @@ public class Supervisor {
         return policyObjects;
     }
 
+    public PolicyObject getPolicyObject(String name) {
+        for(PolicyObject policyObject :policyObjects){
+            if(policyObject.getName().equals(name)){
+               return policyObject;
+            }
+        }
+        return null;
+    }
+
     public void addRepairShop(RepairShop repairShop) {
         RepairShopGateway repairShopGateway = new RepairShopGateway();
         repairShopGateway.postToMockAPI(repairShop);

@@ -1,12 +1,15 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyObject;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PolicyObjectDTO implements Serializable {
 
@@ -49,5 +52,17 @@ public class PolicyObjectDTO implements Serializable {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public static PolicyObjectDTO from(PolicyObject policyObject) {
+        return new PolicyObjectDTO(
+                policyObject.getId(),
+                policyObject.getName(),
+                policyObject.getFilePath()
+        );
+    }
+
+    public static List<PolicyObjectDTO> from(List<PolicyObject> policyObjects) {
+        return policyObjects.stream().map(PolicyObjectDTO::from).collect(Collectors.toList());
     }
 }
