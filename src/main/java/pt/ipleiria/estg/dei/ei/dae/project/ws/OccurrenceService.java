@@ -8,6 +8,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceFileDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.detailed.DetailedOccurrenceDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.OccurrenceBean;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.OccurrenceFileBean;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.OccurrenceFile;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
@@ -38,8 +39,27 @@ public class OccurrenceService {
 
     @GET
     @Path("/")
-    public List<OccurrenceDTO> getAllOccurrencesWS() {
-        return OccurrenceDTO.from(occurrenceBean.getAllOccurrences());
+    public Response getOccurrencesWS() {
+        int clientId = 0;
+        List<Occurrence> occurrences;
+
+        if (clientId == 1) {
+            occurrences = occurrenceBean.getOccurrencesOfClient(clientId);
+            if (occurrences != null) {
+                return Response.ok(OccurrenceDTO.from(occurrences)).build();
+            }
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("ERROR_FINDING_OCCURRENCE")
+                    .build();
+        }
+
+        occurrences = occurrenceBean.getAllOccurrences();
+        if (occurrences != null) {
+            return Response.ok(OccurrenceDTO.from(occurrences)).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_OCCURRENCE")
+                .build();
     }
 
     @GET
@@ -54,12 +74,13 @@ public class OccurrenceService {
                 .build();
     }
 
-    @GET
-    @Path("/client/{id}")
-    public Response getOccurrencesOfClient(@PathParam("id") int id) {
-        List<Occurrence> occurrences = occurrenceBean.getOccurrencesOfClient(id);
-        if (occurrences != null) {
-            return Response.ok(OccurrenceDTO.from(occurrences)).build();
+    @PUT
+    @Path("/{id}/approved")
+    public Response ApproveOccurrence(@PathParam("id") int id) {
+        Occurrence occurrence = occurrenceBean.findOccurrence(id);
+        if (occurrence != null) {
+            occurrenceBean.ApproveOccurrence(occurrence);
+            return Response.ok(toDetailedDTO(occurrence)).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
                 .entity("ERROR_FINDING_OCCURRENCE")
@@ -67,11 +88,11 @@ public class OccurrenceService {
     }
 
     @PUT
-    @Path("/{id}/approved")
-    public Response updateApprovalType(@PathParam("id") int id) {
+    @Path("/{id}/declined")
+    public Response DeclineOccurrence(@PathParam("id") int id) {
         Occurrence occurrence = occurrenceBean.findOccurrence(id);
         if (occurrence != null) {
-            occurrenceBean.ApproveOccurence(occurrence);
+            occurrenceBean.DeclineOccurrence(occurrence);
             return Response.ok(toDetailedDTO(occurrence)).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
