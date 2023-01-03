@@ -16,6 +16,10 @@ import java.util.List;
         @NamedQuery(
                 name = "getAllOccurrences",
                 query = "SELECT o FROM Occurrence o ORDER BY o.id" // JPQL
+        ),
+        @NamedQuery(
+                name = "getOccurrencesByClient",
+                query = "SELECT o FROM Occurrence o WHERE o.client = :client ORDER BY o.id" // JPQL
         )
 })
 @Table(
