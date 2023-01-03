@@ -10,6 +10,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.ejbs.OccurrenceBean;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.OccurrenceFileBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.OccurrenceFile;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
 import pt.ipleiria.estg.dei.ei.dae.project.utils.FileUtils;
 
@@ -59,6 +60,19 @@ public class OccurrenceService {
         List<Occurrence> occurrences = occurrenceBean.getOccurrencesOfClient(id);
         if (occurrences != null) {
             return Response.ok(OccurrenceDTO.from(occurrences)).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_OCCURRENCE")
+                .build();
+    }
+
+    @PUT
+    @Path("/{id}/approved")
+    public Response updateApprovalType(@PathParam("id") int id) {
+        Occurrence occurrence = occurrenceBean.findOccurrence(id);
+        if (occurrence != null) {
+            occurrenceBean.ApproveOccurence(occurrence);
+            return Response.ok(toDetailedDTO(occurrence)).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
                 .entity("ERROR_FINDING_OCCURRENCE")
