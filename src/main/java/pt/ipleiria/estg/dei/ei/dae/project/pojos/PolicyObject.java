@@ -18,6 +18,10 @@ public class PolicyObject implements Serializable {
         this.name = name;
         this.filePath = filePath;
     }
+    public PolicyObject(String name, String filePath) {
+        this.name = name;
+        this.filePath = filePath;
+    }
 
     public PolicyObject() {
     }
