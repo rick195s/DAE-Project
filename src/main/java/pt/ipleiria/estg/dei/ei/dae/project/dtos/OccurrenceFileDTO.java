@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 
 public class OccurrenceFileDTO implements Serializable {
 
+    int id;
     String name;
-    String path;
 
-    public OccurrenceFileDTO(String name, String path) {
+    public OccurrenceFileDTO(int id, String name) {
+        this.id = id;
         this.name = name;
-        this.path = path;
     }
 
     public OccurrenceFileDTO() {
@@ -27,19 +27,11 @@ public class OccurrenceFileDTO implements Serializable {
         this.name = name;
     }
 
-    public String getPath() {
-        return path;
+    public static OccurrenceFileDTO from(OccurrenceFile occurrenceFile) {
+        return new OccurrenceFileDTO(occurrenceFile.getId(), occurrenceFile.getName());
     }
 
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public static OccurrenceFileDTO from(OccurrenceFile document) {
-        return new OccurrenceFileDTO(document.getName(), document.getPath());
-    }
-
-    public static List<OccurrenceFileDTO> from(List<OccurrenceFile> documents) {
-        return documents.stream().map(OccurrenceFileDTO::from).collect(Collectors.toList());
+    public static List<OccurrenceFileDTO> from(List<OccurrenceFile> occurrenceFiles) {
+        return occurrenceFiles.stream().map(OccurrenceFileDTO::from).collect(Collectors.toList());
     }
 }

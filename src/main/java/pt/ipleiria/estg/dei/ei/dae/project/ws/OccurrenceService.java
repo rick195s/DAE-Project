@@ -111,8 +111,29 @@ public class OccurrenceService {
         return Response.status(Response.Status.CREATED).entity(OccurrenceDTO.from(occurrence)).build();
     }
 
+    @GET
+    @Path("{id}/files")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOccurrenceFiles(@PathParam("id") int id) {
+        var documents = occurrenceBean.getOccurrenceFiles(id);
+        return Response.ok(OccurrenceFileDTO.from(documents)).build();
+    }
+
+    @GET
+    @Path("{occurrenceId}/files/download/{fileId}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response download(@PathParam("occurrenceId") int occurrenceId, @PathParam("fileId") int fileId) {
+        OccurrenceFile occurrenceFile = occurrenceFileBean.find(fileId);
+        var response = Response.ok(new File(occurrenceFile.getPath()));
+
+        response.header("Content-Disposition", "attachment;filename=" + occurrenceFile.getName());
+
+        return response.build();
+    }
+
+
     @POST
-    @Path("{id}/upload")
+    @Path("{id}/files")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response upload(@PathParam("id") int id, MultipartFormDataInput input) throws IOException {
@@ -136,18 +157,6 @@ public class OccurrenceService {
         }
 
         return Response.ok(OccurrenceFileDTO.from(occurrenceFiles)).build();
-    }
-
-    @GET
-    @Path("download/{id}")
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response download(@PathParam("id") int id) {
-        OccurrenceFile occurrenceFile = occurrenceFileBean.find(id);
-        var response = Response.ok(new File(occurrenceFile.getPath()));
-
-        response.header("Content-Disposition", "attachment;filename=" + occurrenceFile.getName());
-
-        return response.build();
     }
 
     private DetailedOccurrenceDTO toDetailedDTO(Occurrence occurrence) {
