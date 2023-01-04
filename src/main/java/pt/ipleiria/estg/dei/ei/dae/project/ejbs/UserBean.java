@@ -29,7 +29,8 @@ public class UserBean {
     }
 
     public User findOrFail(String email) {
-        var user = entityManager.getReference(User.class, email);
+        //var user = entityManager.getReference(User.class, email);
+        var user = findUserByEmail(email);
         Hibernate.initialize(user);
 
         return user;
