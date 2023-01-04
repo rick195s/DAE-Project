@@ -47,14 +47,6 @@ public class ConfigBean {
         }
     }
 
-    private void populateRepairShopsInAPI() {
-        RepairShopGateway repairShopGateway = new RepairShopGateway();
-        for (int i = 0; i < 20; i++) {
-            RepairShop repairShop = new RepairShop(faker.company().name(), faker.internet().emailAddress(), ((int) faker.number().randomNumber(9, true)));
-            repairShopGateway.postToMockAPI(repairShop);
-        }
-    }
-
     private void createOccurrences() {
         for (int i = 0; i < 20; i++) {
             try {
@@ -67,7 +59,6 @@ public class ConfigBean {
 
     private void populateMockAPI() {
         populatePoliciesInAPI();
-        populateRepairShopsInAPI();
     }
 
     private void populatePoliciesInAPI() {

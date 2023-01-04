@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project;
 
+import com.github.javafaker.Faker;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.ClientBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
@@ -13,6 +14,7 @@ import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @ApplicationScoped
 public class Supervisor {
@@ -21,11 +23,14 @@ public class Supervisor {
 
     final String URI_INSURERS = "https://63af23e6649c73f572b64917.mockapi.io/insurers";
 
+    private final Faker faker = new Faker(new Locale("en"));
+
     private List<Policy> policies = new ArrayList<>();
     private List<RepairShop> repairShops = new ArrayList<>();
     private List<Insurer> insurers = new ArrayList<>();
     private List<PolicyTypeDetail> policyTypeDetails = new ArrayList<>();
     private List<PolicyObject> policyObjects = new ArrayList<>();
+    private List<Administrator> administrators = new ArrayList<>();
 
     public Supervisor() {
         populatePolicyTypeDetails();
@@ -84,6 +89,15 @@ public class Supervisor {
     public List<Insurer> getInsurers() {
         refreshInsurersViaAPI();
         return insurers;
+    }
+
+    private void populateRepairShopExpertsInAPI() {
+        refreshRepairShopsViaAPI();
+        RepairShopExpertGateway repairShopExpertGateway = new RepairShopExpertGateway();
+        for (int i = 0; i < 20; i++) {
+            RepairShopExpert repairShopExpert = new RepairShopExpert(faker.company().name(), faker.internet().emailAddress(), "123", "repairShopExpert", repairShops.get(1));
+            repairShopExpertGateway.postToMockAPI(repairShopExpert);
+        }
     }
 
     private void populatePolicyTypeDetails() {
