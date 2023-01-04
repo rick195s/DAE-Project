@@ -26,17 +26,4 @@ public class PolicyObjectService {
         return PolicyObjectDTO.from(policyObjectBean.getAllPolicyObjects());
     }
 
-    @POST
-    @Path("/")
-    public Response createPolicyObject(PolicyObjectDTO policyObjectDTO){
-        policyObjectBean.create(
-            policyObjectDTO.getName(),
-            policyObjectDTO.getFilePath()
-        );
-        PolicyObject newPolicyObject = policyObjectBean.findPolicyObject(policyObjectDTO.getName());
-        if (newPolicyObject == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        return Response.status(Response.Status.CREATED).entity(PolicyObjectDTO.from(newPolicyObject)).build();
-    }
 }

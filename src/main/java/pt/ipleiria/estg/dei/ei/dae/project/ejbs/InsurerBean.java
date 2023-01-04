@@ -16,38 +16,11 @@ public class InsurerBean {
     @Inject
     Supervisor supervisor;
 
-
-    public void create(int id, String name) {
-        Insurer insurer = find(id);
-        if (insurer != null) {
-            throw new IllegalArgumentException("Insurer already exists");
-        }
-        insurer = new Insurer(id, name);
-        entityManager.persist(insurer);
-    }
-
     public List<Insurer> getAllInsurers() {
         return supervisor.getInsurers();
     }
 
     public Insurer find(int id) {
         return entityManager.find(Insurer.class, id);
-    }
-
-    public void update(int id, String name) {
-        Insurer insurer = find(id);
-        if (insurer == null) {
-            throw new IllegalArgumentException("Insurer does not exist");
-        }
-        insurer.setName(name);
-        entityManager.merge(insurer);
-    }
-
-    public void delete(int id) {
-        Insurer insurer = find(id);
-        if (insurer == null) {
-            throw new IllegalArgumentException("Insurer does not exist");
-        }
-        entityManager.remove(insurer);
     }
 }

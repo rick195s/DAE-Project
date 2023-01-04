@@ -24,22 +24,6 @@ public class RepairShopService {
         return toDTOs(repairShopBean.getAllRepairShops());
     }
 
-    @POST
-    @Path("/")
-    public Response createRepairShop(RepairShopDTO repairShopDTO) {
-            repairShopBean.create(
-                    repairShopDTO.getName(),
-                    repairShopDTO.getEmail(),
-                    repairShopDTO.getPhone()
-
-            );
-            RepairShop newRepairShop = repairShopBean.findRepairShop(repairShopDTO.getEmail());
-            if (newRepairShop == null) {
-                return Response.status(Response.Status.BAD_REQUEST).build();
-            }
-            return Response.status(Response.Status.CREATED).entity(toDTO(newRepairShop)).build();
-    }
-
     private RepairShopDTO toDTO(RepairShop repairShop) {
         return new RepairShopDTO(
                 repairShop.getId(),

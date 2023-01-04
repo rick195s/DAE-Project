@@ -20,7 +20,7 @@ public class FileUtils {
         InputStream inputStream = inputPart.getBody(InputStream.class, null);
 
         byte[] bytes = IOUtils.toByteArray(inputStream);
-        if (bytes.length > 10000) {
+        if (bytes.length > 100000) {
             throw new IOException("File too large");
         }
         mkdirIfNotExists(uploaddir);

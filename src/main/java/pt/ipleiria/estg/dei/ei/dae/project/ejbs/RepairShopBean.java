@@ -13,21 +13,6 @@ public class RepairShopBean {
     @Inject
     Supervisor supervisor;
 
-    public void create(String name, String email, long phone) {
-        //verify if some repair shop has already the same email or phone
-        for (RepairShop repairShop : supervisor.getRepairShops()) {
-            if (repairShop.getEmail().equals(email)) {
-                throw new IllegalArgumentException("Repair shop with email " + email + " already exists");
-            }
-            if (repairShop.getPhone() == phone) {
-                throw new IllegalArgumentException("Repair shop with phone " + phone + " already exists");
-            }
-        }
-
-        RepairShop repairShop = new RepairShop(name, email, phone);
-        supervisor.addRepairShop(repairShop);
-    }
-
     public List<RepairShop> getAllRepairShops() {
         return supervisor.getRepairShops();
     }
@@ -41,7 +26,7 @@ public class RepairShopBean {
         return null;
     }
 
-    public RepairShop findRepairShop(String email) {
+    public RepairShop find(String email) {
         for (RepairShop repairShop : supervisor.getRepairShops()) {
             if (repairShop.getEmail().equals(email)) {
                 return repairShop;

@@ -13,16 +13,8 @@ public class PolicyObjectBean {
 
     @Inject
     Supervisor supervisor;
-    public void create(String name, String filePath) {
-        PolicyObject policyObject= supervisor.getPolicyObject(name);
-        if(policyObject!=null){
-            throw new IllegalArgumentException("Policy object with name " + name + " already exists");
-        }
-        policyObject = new PolicyObject(name,filePath);
-        supervisor.addPolicyObject(policyObject);
-    }
 
-    public PolicyObject findPolicyObject(String name) {
+    public PolicyObject find(String name) {
         return supervisor.getPolicyObject(name);
     }
     public List<PolicyObject> getAllPolicyObjects() {

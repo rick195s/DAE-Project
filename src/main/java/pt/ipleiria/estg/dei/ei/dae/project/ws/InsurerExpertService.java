@@ -38,53 +38,6 @@ public class InsurerExpertService {
                     .build();
         }
 
-        //TODO: change the password (Acho que é devido a isso o erro)
-        @POST
-        @Path("/")
-        public Response createNewInsurerExpert(InsurerExpertDTO insurerExpertDTO) {
-            insurerExpertBean.create(
-                    insurerExpertDTO.getName(),
-                    insurerExpertDTO.getEmail(),
-                    "adsd",
-                    insurerExpertDTO.getInsurerId()
-
-            );
-            InsurerExpert newInsurerExpert = insurerExpertBean.find(insurerExpertDTO.getId());
-            if (newInsurerExpert == null) {
-                return Response.status(Response.Status.BAD_REQUEST).build();
-            }
-            return Response.status(Response.Status.CREATED).entity(toDTO(newInsurerExpert)).build();
-        }
-
-    //TODO: change the password (Acho que é devido a isso o erro)
-    @PUT
-    @Path("{id}")
-    public Response updateInsurerExpert(@PathParam("id") int id, InsurerExpertDTO insurerExpertDTO) {
-        InsurerExpert insurerExpert = insurerExpertBean.find(id);
-        if (insurerExpert == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        insurerExpertBean.update(
-                insurerExpertDTO.getId(),
-                insurerExpertDTO.getName(),
-                insurerExpertDTO.getEmail(),
-                "asd",
-                insurerExpertDTO.getInsurerId()
-        );
-        return Response.ok(toDTO(insurerExpert)).build();
-    }
-
-    @DELETE
-    @Path("{id}")
-    public Response deleteInsurerExpert(@PathParam("id") int id) {
-        InsurerExpert insurerExpert = insurerExpertBean.find(id);
-        if (insurerExpert == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        insurerExpertBean.delete(id);
-        return Response.ok().build();
-    }
-
         // Converts an entity Student to a DTO Student class
         private InsurerExpertDTO toDTO(InsurerExpert insurerExpert) {
             return new InsurerExpertDTO(

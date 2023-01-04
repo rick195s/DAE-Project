@@ -1,6 +1,5 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.OccurrenceFile;
 
 import javax.ejb.EJB;

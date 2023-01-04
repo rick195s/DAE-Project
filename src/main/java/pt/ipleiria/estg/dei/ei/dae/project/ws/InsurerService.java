@@ -36,45 +36,6 @@ public class InsurerService {
                 .build();
     }
 
-    @POST
-    @Path("/")
-    public Response createNewInsurer(InsurerDTO insurerDTO) {
-        insurerBean.create(
-                insurerDTO.getId(),
-                insurerDTO.getName()
-        );
-        Insurer newInsurer = insurerBean.find(insurerDTO.getId());
-        if (newInsurer == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        return Response.status(Response.Status.CREATED).entity(toDTO(newInsurer)).build();
-    }
-
-    @PUT
-    @Path("{id}")
-    public Response updateInsurer(@PathParam("id") int id, InsurerDTO insurerDTO) {
-        insurerBean.update(
-                id,
-                insurerDTO.getName()
-        );
-        Insurer updatedInsurer = insurerBean.find(id);
-        if (updatedInsurer == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        return Response.status(Response.Status.OK).entity(toDTO(updatedInsurer)).build();
-    }
-
-    @DELETE
-    @Path("{id}")
-    public Response deleteInsurer(@PathParam("id") int id) {
-        insurerBean.delete(id);
-        Insurer deletedInsurer = insurerBean.find(id);
-        if (deletedInsurer == null) {
-            return Response.status(Response.Status.OK).build();
-        }
-        return Response.status(Response.Status.BAD_REQUEST).build();
-    }
-
     // Converts an entity Student to a DTO Student class
     private InsurerDTO toDTO(Insurer insurer) {
         return new InsurerDTO(
