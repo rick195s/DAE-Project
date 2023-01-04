@@ -12,8 +12,8 @@ public class ClientBean {
     @PersistenceContext
     EntityManager entityManager;
 
-    public void create(String name, String email, String password, int NIF_NIPC) {
-        Client client = new Client(name, email, password, NIF_NIPC);
+    public void create(String name, String email, String password, String role, int NIF_NIPC) {
+        Client client = new Client(name, email, password, role, NIF_NIPC);
         entityManager.persist(client);
     }
 
@@ -22,7 +22,7 @@ public class ClientBean {
         return (List<Client>) entityManager.createNamedQuery("getAllClients").getResultList();
     }
 
-    public Client findClient(int id) {
+    public Client find(int id) {
         return entityManager.find(Client.class, id);
     }
 }

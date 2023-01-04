@@ -14,6 +14,7 @@ import java.io.Serializable;
 )
 public class OccurrenceFile implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
     private String path;
@@ -24,8 +25,7 @@ public class OccurrenceFile implements Serializable {
 
     public OccurrenceFile() {
     }
-    public OccurrenceFile(int id, String name, String path, Occurrence occurrence) {
-        this.id = id;
+    public OccurrenceFile(String name, String path, Occurrence occurrence) {
         this.name = name;
         this.path = path;
         this.occurrence = occurrence;

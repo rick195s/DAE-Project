@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
+import org.apache.commons.io.FilenameUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.HistoricalDTO;
@@ -8,10 +9,8 @@ import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceFileDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.detailed.DetailedOccurrenceDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.OccurrenceBean;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.OccurrenceFileBean;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.OccurrenceFile;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
 import pt.ipleiria.estg.dei.ei.dae.project.utils.FileUtils;
 
@@ -65,7 +64,7 @@ public class OccurrenceService {
     @GET
     @Path("/{id}")
     public Response getOccurrence(@PathParam("id") int id) {
-        Occurrence occurrence = occurrenceBean.findOccurrence(id);
+        Occurrence occurrence = occurrenceBean.find(id);
         if (occurrence != null) {
             return Response.ok(toDetailedDTO(occurrence)).build();
         }
@@ -77,7 +76,7 @@ public class OccurrenceService {
     @PUT
     @Path("/{id}/approved")
     public Response ApproveOccurrence(@PathParam("id") int id) {
-        Occurrence occurrence = occurrenceBean.findOccurrence(id);
+        Occurrence occurrence = occurrenceBean.find(id);
         if (occurrence != null) {
             occurrenceBean.ApproveOccurrence(occurrence);
             return Response.ok(toDetailedDTO(occurrence)).build();
@@ -90,7 +89,7 @@ public class OccurrenceService {
     @PUT
     @Path("/{id}/declined")
     public Response DeclineOccurrence(@PathParam("id") int id) {
-        Occurrence occurrence = occurrenceBean.findOccurrence(id);
+        Occurrence occurrence = occurrenceBean.find(id);
         if (occurrence != null) {
             occurrenceBean.DeclineOccurrence(occurrence);
             return Response.ok(toDetailedDTO(occurrence)).build();
@@ -112,6 +111,27 @@ public class OccurrenceService {
         return Response.status(Response.Status.CREATED).entity(OccurrenceDTO.from(occurrence)).build();
     }
 
+    @GET
+    @Path("{id}/files")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOccurrenceFiles(@PathParam("id") int id) {
+        var documents = occurrenceBean.getOccurrenceFiles(id);
+        return Response.ok(OccurrenceFileDTO.from(documents)).build();
+    }
+
+    @GET
+    @Path("{occurrenceId}/files/download/{fileId}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response download(@PathParam("occurrenceId") int occurrenceId, @PathParam("fileId") int fileId) {
+        OccurrenceFile occurrenceFile = occurrenceFileBean.find(fileId);
+        var response = Response.ok(new File(occurrenceFile.getPath()));
+
+        response.header("Content-Disposition", "attachment;filename=" + occurrenceFile.getName());
+
+        return response.build();
+    }
+
+
     @POST
     @Path("{id}/files")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -124,13 +144,14 @@ public class OccurrenceService {
         var occurrenceFiles = new LinkedList<OccurrenceFile>();
 
         FileUtils fileUtils = new FileUtils();
-        String homedir = System.getProperty("user.home");
-        String dirpath = homedir + File.separator + "uploads" + File.separator + "occurrences";
 
         for (InputPart inputPart : inputParts) {
-            String filepath = fileUtils.upload(dirpath, inputPart);
 
             String filename = fileUtils.getFilename(inputPart.getHeaders());
+            String ext = FilenameUtils.getExtension(filename);
+            filename = FilenameUtils.removeExtension(filename) + "_" + System.currentTimeMillis() + "." + ext;
+
+            String filepath = fileUtils.upload("occurrences" + File.separator + id, filename, inputPart);
 
             var occurrenceFile = occurrenceFileBean.create(id, filename, filepath);
             occurrenceFiles.add(occurrenceFile);

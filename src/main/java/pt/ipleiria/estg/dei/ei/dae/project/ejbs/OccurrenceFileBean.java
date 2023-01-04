@@ -1,24 +1,12 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
-import org.hibernate.Hibernate;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Historical;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.OccurrenceFile;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
-import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
-import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
-import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.core.MultivaluedMap;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
 
 @Stateless
 public class OccurrenceFileBean {
@@ -29,13 +17,20 @@ public class OccurrenceFileBean {
     OccurrenceBean occurrenceBean;
 
     public OccurrenceFile create(int occurrenceId, String filename, String filepath){
-        var occurrence = occurrenceBean.findOccurrence(occurrenceId);
+        var occurrence = occurrenceBean.find(occurrenceId);
+        if (occurrence == null) {
+            throw new EntityNotFoundException("Occurrence dont exists");
+        }
 
-        var occurrenceFile = new OccurrenceFile(1, filename, filepath, occurrence);
+        var occurrenceFile = new OccurrenceFile(filename, filepath, occurrence);
 
         entityManager.persist(occurrenceFile);
         occurrence.addOccurenceFile(occurrenceFile);
 
         return occurrenceFile;
+    }
+
+    public OccurrenceFile find(int id) {
+        return entityManager.find(OccurrenceFile.class, id);
     }
 }

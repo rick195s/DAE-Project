@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "Historicals")
 public class Historical implements Serializable {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
 
     @Enumerated(EnumType.STRING)

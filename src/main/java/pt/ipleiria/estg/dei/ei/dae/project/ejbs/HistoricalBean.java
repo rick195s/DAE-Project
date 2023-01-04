@@ -7,7 +7,6 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Calendar;
 import java.util.List;
 
 @Stateless
@@ -30,7 +29,7 @@ public class HistoricalBean {
         return (List<Historical>) entityManager.createNamedQuery("getAllHistoricals").getResultList();
     }
 
-    public Historical findHistorical(int id) {
+    public Historical find(int id) {
         return entityManager.find(Historical.class, id);
     }
 }

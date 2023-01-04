@@ -43,7 +43,7 @@ public class ConfigBean {
 
     private void createClients() {
         for (int i = 0; i < 20; i++) {
-            clientBean.create(faker.name().fullName(), faker.internet().emailAddress(), "dwqdwqdwqdwdede", ((int) faker.number().randomNumber(9, true)));
+            clientBean.create(faker.name().fullName(), faker.internet().emailAddress(), "dwqdwqdwqdwdede","client", ((int) faker.number().randomNumber(9, true)));
         }
     }
 
@@ -71,7 +71,7 @@ public class ConfigBean {
     }
 
     private void populatePoliciesInAPI() {
-        Client client = clientBean.findClient(1);
+        Client client = clientBean.find(1);
 
         Calendar calendar = Calendar.getInstance(
                 TimeZone.getTimeZone("UTC"));
