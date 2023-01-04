@@ -29,8 +29,8 @@ public class Client extends User implements Serializable {
     private List<Occurrence> occurrences;
 
 
-    public Client( String name, String email, String password, int NIF_NIPC) {
-        super(name, email, password);
+    public Client( String name, String email, String password, String role, int NIF_NIPC) {
+        super(name, email, password, role);
         this.NIF_NIPC = NIF_NIPC;
         this.policies = new ArrayList<>();
         this.occurrences = new ArrayList<>();

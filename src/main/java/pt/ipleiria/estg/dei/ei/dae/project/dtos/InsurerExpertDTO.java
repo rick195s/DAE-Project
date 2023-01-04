@@ -9,8 +9,8 @@ public class InsurerExpertDTO extends UserDTO implements Serializable {
     public InsurerExpertDTO() {
     }
 
-    public InsurerExpertDTO(int id, String name, String email) {
-        super(id, name, email);
+    public InsurerExpertDTO(int id, String name, String email, String role) {
+        super(id, name, email, role);
     }
 
     public InsurerDTO getInsurerDTO() {

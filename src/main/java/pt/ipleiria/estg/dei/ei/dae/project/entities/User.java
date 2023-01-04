@@ -31,10 +31,14 @@ public class User implements Serializable {
     @Email
     protected String email;
 
-    public User(String name, String email, String password) {
+    @NotNull
+    protected String role;
+
+    public User(String name, String email, String password, String role) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     public User() {
@@ -76,6 +80,13 @@ public class User implements Serializable {
         this.name = name;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
    @Override
     public boolean equals(Object o) {
