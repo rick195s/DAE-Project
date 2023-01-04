@@ -18,7 +18,7 @@ import java.util.List;
 @Table(
         name = "clients"
 )
-@PrimaryKeyJoinColumn(name = "user_id")
+@PrimaryKeyJoinColumn(name = "user_email")
 public class Client extends User implements Serializable {
     int NIF_NIPC;
 
@@ -29,20 +29,16 @@ public class Client extends User implements Serializable {
     private List<Occurrence> occurrences;
 
 
-    public Client( String name, String email, String password, String role, int NIF_NIPC) {
+    public Client(String name, String email, String password, String role, int NIF_NIPC) {
         super(name, email, password, role);
         this.NIF_NIPC = NIF_NIPC;
         this.policies = new ArrayList<>();
         this.occurrences = new ArrayList<>();
     }
 
-    public Client() {
+    public Client(String clientEmail) {
         this.policies = new ArrayList<>();
         this.occurrences = new ArrayList<>();
-    }
-
-    public Client(int id) {
-        super(id);
     }
 
     public int getNIF_NIPC() {

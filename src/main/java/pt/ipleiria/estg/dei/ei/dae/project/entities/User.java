@@ -20,7 +20,7 @@ import java.util.Objects;
 
 @Inheritance(strategy=InheritanceType.JOINED)
 public class User implements Serializable {
-    @Id
+    @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected int id;
 
@@ -29,6 +29,7 @@ public class User implements Serializable {
 
     @NotNull
     @Email
+    @Id
     protected String email;
 
     @NotNull

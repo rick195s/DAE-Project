@@ -11,7 +11,7 @@ public class RepairShopExpert extends User implements Serializable {
 
     RepairShop repairShop;
 
-    public RepairShopExpert( String name, String email, String password, String role, RepairShop repairShop) {
+    public RepairShopExpert(int id, String name, String email, String password, String role, RepairShop repairShop) {
         super(name, email, password, role);
         this.repairShop = repairShop;
     }

@@ -18,19 +18,19 @@ public class UserBean {
     @Inject
     private Hasher hasher;
 
-    public User find(String username) {
-        return em.find(User.class, username);
+    public User find(String email) {
+        return em.find(User.class, email);
     }
 
     public User findOrFail(String username) {
-        var user = em.getReference(User.class, username);
+        User user = em.getReference(User.class, username);
         Hibernate.initialize(user);
 
         return user;
     }
 
-    public boolean canLogin(String username, String password) {
-        var user = find(username);
+    public boolean canLogin(String email, String password) {
+        User user = find(email);
 
         return user != null && user.getPassword().equals(hasher.hash(password));
     }

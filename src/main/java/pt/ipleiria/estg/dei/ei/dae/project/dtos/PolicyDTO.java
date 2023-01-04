@@ -10,7 +10,7 @@ import java.util.List;
 public class PolicyDTO {
     int id;
 
-    int clientId;
+    String clientEmail;
 
     int insurerId;
 
@@ -30,9 +30,9 @@ public class PolicyDTO {
         occurrences = new ArrayList<>();
     }
 
-    public PolicyDTO(int id, int clientId, int insurerId, int policyTypeDetailId, List<OccurrenceDTO> occurrences, int policyObjectId, PolicyState state, String startDate, String endDate) {
+    public PolicyDTO(int id, String clientEmail, int insurerId, int policyTypeDetailId, List<OccurrenceDTO> occurrences, int policyObjectId, PolicyState state, String startDate, String endDate) {
         this.id = id;
-        this.clientId = clientId;
+        this.clientEmail = clientEmail;
         this.insurerId = insurerId;
         this.policyTypeDetailId = policyTypeDetailId;
         this.occurrences = occurrences;
@@ -50,12 +50,12 @@ public class PolicyDTO {
         this.id = id;
     }
 
-    public int getClientId() {
-        return clientId;
+    public String getClientEmail() {
+        return clientEmail;
     }
 
-    public void setClientId(int clientId) {
-        this.clientId = clientId;
+    public void setClientEmail(String clientEmail) {
+        this.clientEmail = clientEmail;
     }
 
     public int getInsurerId() {

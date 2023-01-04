@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.entities;
 
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
@@ -65,7 +66,7 @@ public class Occurrence implements Serializable {
 
     @NotNull
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "client_email")
     Client client;
 
 

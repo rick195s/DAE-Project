@@ -52,11 +52,11 @@ public class Policy implements Serializable {
         this.id = id;
     }
 
-    public int getClientId() {
+    public String getClientEmail() {
         if (client == null){
-            return 0;
+            return null;
         }
-        return client.getId();
+        return client.getEmail();
     }
 
     public void setClient(Client client) {

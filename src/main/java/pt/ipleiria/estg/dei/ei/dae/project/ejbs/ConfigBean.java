@@ -43,7 +43,7 @@ public class ConfigBean {
 
     private void createClients() {
         for (int i = 0; i < 20; i++) {
-            clientBean.create(faker.name().fullName(), faker.internet().emailAddress(), "dwqdwqdwqdwdede","client", ((int) faker.number().randomNumber(9, true)));
+            clientBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123","client", ((int) faker.number().randomNumber(9, true)));
         }
     }
 
@@ -58,7 +58,12 @@ public class ConfigBean {
     private void createOccurrences() {
         for (int i = 0; i < 20; i++) {
             try {
-                occurrenceBean.create(1, faker.lorem().sentence(10), i+1);
+
+                List<Client> allClients = clientBean.getAllClients();
+
+                String email = allClients.get(i+1).getEmail();
+
+                occurrenceBean.create(1, faker.lorem().sentence(10), email);
             } catch (OccurrenceSmallDescriptionException e) {
                 throw new RuntimeException(e);
             }
@@ -71,7 +76,11 @@ public class ConfigBean {
     }
 
     private void populatePoliciesInAPI() {
-        Client client = clientBean.find(1);
+        List<Client> allClients = clientBean.getAllClients();
+
+        String email = allClients.get(1).getEmail();
+
+        Client client = clientBean.find(email);
 
         Calendar calendar = Calendar.getInstance(
                 TimeZone.getTimeZone("UTC"));

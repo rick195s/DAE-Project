@@ -31,12 +31,15 @@ public class OccurrenceBean {
     @EJB
     PolicyBean policyBean;
 
-    public Occurrence create(int policyId, String description, int clientId) throws OccurrenceSmallDescriptionException, EntityNotFoundException {
+    @EJB
+    ClientBean clientBean;
+
+    public Occurrence create(int policyId, String description, String email) throws OccurrenceSmallDescriptionException, EntityNotFoundException {
         if (description.length() < 10) {
             throw new OccurrenceSmallDescriptionException(description);
         }
 
-        Client client = entityManager.find(Client.class, clientId);
+        Client client = entityManager.find(Client.class, email);
         if (client == null) {
             throw new EntityNotFoundException("Client dont exists");
         }

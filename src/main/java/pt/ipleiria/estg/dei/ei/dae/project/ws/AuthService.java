@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ws;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.Auth;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.UserBean;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Authenticated;
 import pt.ipleiria.estg.dei.ei.dae.project.security.TokenIssuer;
 
@@ -31,8 +32,8 @@ public class AuthService {
     @POST
     @Path("/login")
     public Response authenticate(@Valid Auth auth) {
-        if (userBean.canLogin(auth.getUsername(), auth.getPassword())) {
-            String token = issuer.issue(auth.getUsername());
+        if (userBean.canLogin(auth.getEmail(), auth.getPassword())) {
+            String token = issuer.issue(auth.getEmail());
             return Response.ok(token).build();
         }
 
@@ -43,9 +44,11 @@ public class AuthService {
     @Authenticated
     @Path("/user")
     public Response getAuthenticatedUser() {
-        var username = securityContext.getUserPrincipal().getName();
-        var user = userBean.findOrFail(username);
-
+        String username = securityContext.getUserPrincipal().getName();
+        User user = userBean.findOrFail(username);
+        if (user == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         return Response.ok(UserDTO.from(user)).build();
     }
 }

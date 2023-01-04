@@ -17,8 +17,8 @@ public class DetailedOccurrenceDTO extends OccurrenceDTO implements Serializable
 
     private List<OccurrenceFileDTO> files;
 
-    public DetailedOccurrenceDTO(int id, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate, int policyId, int repairShopId, int clientId) {
-        super(id, description, approvalType, startDate, endDate, policyId, repairShopId, clientId);
+    public DetailedOccurrenceDTO(int id, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate, int policyId, int repairShopId, String clientEmail) {
+        super(id, description, approvalType, startDate, endDate, policyId, repairShopId, clientEmail);
         this.files = new ArrayList<>();
         this.historic = new ArrayList<>();
     }
@@ -53,7 +53,7 @@ public class DetailedOccurrenceDTO extends OccurrenceDTO implements Serializable
                 occurrence.getEndDate(),
                 occurrence.getPolicyId(),
                 occurrence.getRepairShopId(),
-                occurrence.getClient().getId());
+                occurrence.getClient().getEmail());
     }
 
     public static List<DetailedOccurrenceDTO> detailedFrom(List<Occurrence> occurrences) {

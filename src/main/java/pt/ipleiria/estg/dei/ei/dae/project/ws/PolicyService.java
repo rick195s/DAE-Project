@@ -31,7 +31,7 @@ public class PolicyService {
     private PolicyDTO toDTO(Policy policy) {
         return new PolicyDTO(
                 policy.getId(),
-                policy.getClientId(),
+                policy.getClientEmail(),
                 policy.getInsurerId(),
                 policy.getPolicyTypeDetailId(),
                 occurencesToDTOs(policy.getOccurrences()),
@@ -63,7 +63,7 @@ public class PolicyService {
                 occurrence.getEndDate(),
                 occurrence.getPolicyId(),
                 occurrence.getRepairShopId(),
-                occurrence.getClient().getId()
+                occurrence.getClient().getEmail()
         );
 
     }

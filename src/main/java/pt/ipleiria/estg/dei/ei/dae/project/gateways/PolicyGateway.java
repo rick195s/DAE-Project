@@ -43,7 +43,7 @@ public class PolicyGateway {
 
             Policy policyObj = new Policy(
                     policyDTOObj.getId(),
-                    new Client(policyDTOObj.getClientId()),
+                    new Client(policyDTOObj.getClientEmail()),
                     policyDTOObj.getInsurerId(),
                     policyDTOObj.getState(),
                     policyDTOObj.getPolicyTypeDetailId(),
@@ -62,7 +62,7 @@ public class PolicyGateway {
     private PolicyDTO toDTO(Policy policy) {
         return new PolicyDTO(
                 policy.getId(),
-                policy.getClientId(),
+                policy.getClientEmail(),
                 policy.getInsurerId(),
                 policy.getPolicyTypeDetailId(),
                 new LinkedList<>(),
