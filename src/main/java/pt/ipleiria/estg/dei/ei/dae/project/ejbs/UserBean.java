@@ -1,6 +1,5 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
-import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Hasher;
 
@@ -13,24 +12,21 @@ import javax.persistence.PersistenceContext;
 public class UserBean {
 
     @PersistenceContext
-    private EntityManager em;
+    private EntityManager entityManager;
 
     @Inject
     private Hasher hasher;
 
-    public User find(String email) {
-        return em.find(User.class, email);
+    public User find(int id) {
+        return entityManager.find(User.class, id);
     }
 
-    public User findOrFail(String username) {
-        User user = em.getReference(User.class, username);
-        Hibernate.initialize(user);
-
-        return user;
+    public User findUserByEmail(String email) {
+        return (User) entityManager.createNamedQuery("getUserByEmail").getResultList();
     }
 
     public boolean canLogin(String email, String password) {
-        User user = find(email);
+        User user = findUserByEmail(email);
 
         return user != null && user.getPassword().equals(hasher.hash(password));
     }

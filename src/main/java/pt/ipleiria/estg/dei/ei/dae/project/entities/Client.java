@@ -18,8 +18,8 @@ import java.util.List;
 @Table(
         name = "clients"
 )
-@PrimaryKeyJoinColumn(name = "user_email")
-public class Client extends User implements Serializable {
+@PrimaryKeyJoinColumn(name = "user_id")
+public class Client extends User {
     int NIF_NIPC;
 
     @Transient
@@ -36,7 +36,8 @@ public class Client extends User implements Serializable {
         this.occurrences = new ArrayList<>();
     }
 
-    public Client(String clientEmail) {
+    public Client(int id) {
+        this.id = id;
         this.policies = new ArrayList<>();
         this.occurrences = new ArrayList<>();
     }

@@ -105,7 +105,7 @@ public class OccurrenceService {
         Occurrence occurrence = occurrenceBean.create(
                 occurrenceDTO.getPolicyId(),
                 occurrenceDTO.getDescription(),
-                occurrenceDTO.getClientEmail()
+                occurrenceDTO.getClientId()
         );
 
         return Response.status(Response.Status.CREATED).entity(OccurrenceDTO.from(occurrence)).build();

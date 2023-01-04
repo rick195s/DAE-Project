@@ -44,8 +44,8 @@ public class AuthService {
     @Authenticated
     @Path("/user")
     public Response getAuthenticatedUser() {
-        String username = securityContext.getUserPrincipal().getName();
-        User user = userBean.findOrFail(username);
+        String userEmail = securityContext.getUserPrincipal().getName();
+        User user = userBean.findUserByEmail(userEmail);
         if (user == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

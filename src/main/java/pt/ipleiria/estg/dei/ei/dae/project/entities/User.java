@@ -11,6 +11,10 @@ import java.util.Objects;
         @NamedQuery(
                 name = "getAllUsers",
                 query = "SELECT u FROM User u ORDER BY u.name" // JPQL
+        ),
+        @NamedQuery(
+                name = "getUserByEmail",
+                query = "SELECT u FROM User u WHERE u.email = :email" // JPQL
         )
 })
 @Table(
@@ -19,7 +23,8 @@ import java.util.Objects;
 )
 
 @Inheritance(strategy=InheritanceType.JOINED)
-public class User implements Serializable {
+public class User {
+    @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected int id;
@@ -29,7 +34,6 @@ public class User implements Serializable {
 
     @NotNull
     @Email
-    @Id
     protected String email;
 
     @NotNull
@@ -43,10 +47,6 @@ public class User implements Serializable {
     }
 
     public User() {
-    }
-
-    public User(int id) {
-        this.id = id;
     }
 
     public int getId() {

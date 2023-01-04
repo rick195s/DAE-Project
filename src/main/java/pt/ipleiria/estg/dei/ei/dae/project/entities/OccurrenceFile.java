@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Table(
         name = "occurrences_files"
 )
-public class OccurrenceFile implements Serializable {
+public class OccurrenceFile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;

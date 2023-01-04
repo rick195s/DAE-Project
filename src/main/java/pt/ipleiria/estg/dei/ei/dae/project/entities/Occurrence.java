@@ -26,7 +26,7 @@ import java.util.List;
 @Table(
         name = "occurrences"
 )
-public class Occurrence implements Serializable {
+public class Occurrence {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;

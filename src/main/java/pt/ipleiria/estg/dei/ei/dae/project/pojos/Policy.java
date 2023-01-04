@@ -5,7 +5,6 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,11 +51,11 @@ public class Policy implements Serializable {
         this.id = id;
     }
 
-    public String getClientEmail() {
+    public int getClientId() {
         if (client == null){
-            return null;
+            return 0;
         }
-        return client.getEmail();
+        return client.getId();
     }
 
     public void setClient(Client client) {

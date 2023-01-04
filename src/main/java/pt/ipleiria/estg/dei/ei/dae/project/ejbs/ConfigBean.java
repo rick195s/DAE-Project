@@ -37,7 +37,7 @@ public class ConfigBean {
         createClients();
         // populateMockAPI();
 
-        createOccurrences();
+       createOccurrences();
 
     }
 
@@ -58,12 +58,7 @@ public class ConfigBean {
     private void createOccurrences() {
         for (int i = 0; i < 20; i++) {
             try {
-
-                List<Client> allClients = clientBean.getAllClients();
-
-                String email = allClients.get(i+1).getEmail();
-
-                occurrenceBean.create(1, faker.lorem().sentence(10), email);
+                occurrenceBean.create(1, faker.lorem().sentence(10), i+1);
             } catch (OccurrenceSmallDescriptionException e) {
                 throw new RuntimeException(e);
             }
@@ -76,12 +71,6 @@ public class ConfigBean {
     }
 
     private void populatePoliciesInAPI() {
-        List<Client> allClients = clientBean.getAllClients();
-
-        String email = allClients.get(1).getEmail();
-
-        Client client = clientBean.find(email);
-
         Calendar calendar = Calendar.getInstance(
                 TimeZone.getTimeZone("UTC"));
 
