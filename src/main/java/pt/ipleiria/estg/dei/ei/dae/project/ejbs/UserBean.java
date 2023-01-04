@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
+import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Hasher;
 
@@ -22,7 +23,16 @@ public class UserBean {
     }
 
     public User findUserByEmail(String email) {
-        return (User) entityManager.createNamedQuery("getUserByEmail").getResultList();
+        return (User) entityManager.createNamedQuery("getUserByEmail")
+                .setParameter("email", email)
+                .getSingleResult();
+    }
+
+    public User findOrFail(String email) {
+        var user = entityManager.getReference(User.class, email);
+        Hibernate.initialize(user);
+
+        return user;
     }
 
     public boolean canLogin(String email, String password) {

@@ -42,6 +42,11 @@ public class Client extends User {
         this.occurrences = new ArrayList<>();
     }
 
+    public Client() {
+        this.policies = new ArrayList<>();
+        this.occurrences = new ArrayList<>();
+    }
+
     public int getNIF_NIPC() {
         return NIF_NIPC;
     }
