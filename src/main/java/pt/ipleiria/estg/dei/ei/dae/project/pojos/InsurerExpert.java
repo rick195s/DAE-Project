@@ -14,8 +14,8 @@ public class InsurerExpert extends User implements Serializable {
     public InsurerExpert() {
     }
 
-    public InsurerExpert( String name, String email, String password, Insurer insurer) {
-        super( name, email, password);
+    public InsurerExpert( String name, String email, String password, String role, Insurer insurer) {
+        super( name, email, password, role);
         this.insurer = insurer;
     }
 

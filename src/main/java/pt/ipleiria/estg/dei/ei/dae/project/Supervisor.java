@@ -3,10 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.project;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.ClientBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
-import pt.ipleiria.estg.dei.ei.dae.project.gateways.APIGateway;
-import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyGateway;
-import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyObjectGateway;
-import pt.ipleiria.estg.dei.ei.dae.project.gateways.RepairShopGateway;
+import pt.ipleiria.estg.dei.ei.dae.project.gateways.*;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.*;
 
 import javax.ejb.EJB;

@@ -5,7 +5,6 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 

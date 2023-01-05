@@ -16,7 +16,7 @@ import java.util.List;
         )
 })
 @Table(name = "Historicals")
-public class Historical implements Serializable {
+public class Historical {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;

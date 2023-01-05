@@ -1,16 +1,31 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
+import org.hibernate.Hibernate;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserDTO implements Serializable {
+    @NotNull
     protected int id;
 
-    protected String name, email;
+    @NotNull
+    protected String name;
 
-    public UserDTO(int id, String name, String email) {
+    @NotNull
+    protected String email;
+
+    @NotNull
+    protected String role;
+
+    public UserDTO(int id, String name, String email, String role) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.role = role;
     }
 
     public UserDTO() {
@@ -38,5 +53,26 @@ public class UserDTO implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public static UserDTO from(User user) {
+        return new UserDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                Hibernate.getClass(user).getSimpleName()
+        );
+    }
+
+    public static List<UserDTO> from(List<User> users) {
+        return users.stream().map(UserDTO::from).collect(Collectors.toList());
     }
 }

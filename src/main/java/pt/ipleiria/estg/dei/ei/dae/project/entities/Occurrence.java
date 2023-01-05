@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.entities;
 
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
@@ -25,7 +26,7 @@ import java.util.List;
 @Table(
         name = "occurrences"
 )
-public class Occurrence implements Serializable {
+public class Occurrence {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;

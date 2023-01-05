@@ -6,12 +6,13 @@ public class ClientDTO extends UserDTO implements Serializable {
 
     int NIF_NIPC;
 
-    public ClientDTO(int id, String name, String email, int NIF_NIPC) {
-        super(id, name, email);
+    public ClientDTO(int id, String name, String email, String role, int NIF_NIPC) {
+        super(id, name, email, role);
         this.NIF_NIPC = NIF_NIPC;
     }
 
     public ClientDTO() {
+
     }
 
     public int getNIF_NIPC() {

@@ -119,7 +119,8 @@ public class OccurrenceDTO implements Serializable {
                 occurrence.getEndDate(),
                 occurrence.getPolicyId(),
                 occurrence.getRepairShopId(),
-                occurrence.getClient().getId());
+                occurrence.getClient().getId()
+        );
     }
 
     public static List<OccurrenceDTO> from(List<Occurrence> occurrences) {

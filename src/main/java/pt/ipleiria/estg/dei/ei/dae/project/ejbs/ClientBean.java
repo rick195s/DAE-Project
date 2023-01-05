@@ -1,8 +1,10 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
+import pt.ipleiria.estg.dei.ei.dae.project.security.Hasher;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -12,8 +14,11 @@ public class ClientBean {
     @PersistenceContext
     EntityManager entityManager;
 
-    public void create(String name, String email, String password, int NIF_NIPC) {
-        Client client = new Client(name, email, password, NIF_NIPC);
+    @Inject
+    private Hasher hasher;
+
+    public void create(String name, String email, String password, String role, int NIF_NIPC) {
+        Client client = new Client(name, email, hasher.hash(password), role, NIF_NIPC);
         entityManager.persist(client);
     }
 

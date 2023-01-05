@@ -19,7 +19,7 @@ import java.util.List;
         name = "clients"
 )
 @PrimaryKeyJoinColumn(name = "user_id")
-public class Client extends User implements Serializable {
+public class Client extends User {
     int NIF_NIPC;
 
     @Transient
@@ -29,9 +29,15 @@ public class Client extends User implements Serializable {
     private List<Occurrence> occurrences;
 
 
-    public Client( String name, String email, String password, int NIF_NIPC) {
-        super(name, email, password);
+    public Client(String name, String email, String password, String role, int NIF_NIPC) {
+        super(name, email, password, role);
         this.NIF_NIPC = NIF_NIPC;
+        this.policies = new ArrayList<>();
+        this.occurrences = new ArrayList<>();
+    }
+
+    public Client(int id) {
+        this.id = id;
         this.policies = new ArrayList<>();
         this.occurrences = new ArrayList<>();
     }
@@ -39,10 +45,6 @@ public class Client extends User implements Serializable {
     public Client() {
         this.policies = new ArrayList<>();
         this.occurrences = new ArrayList<>();
-    }
-
-    public Client(int id) {
-        super(id);
     }
 
     public int getNIF_NIPC() {

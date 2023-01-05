@@ -43,7 +43,8 @@ public class InsurerExpertService {
             return new InsurerExpertDTO(
                     insurerExpert.getId(),
                     insurerExpert.getName(),
-                    insurerExpert.getEmail()
+                    insurerExpert.getEmail(),
+                    insurerExpert.getRole()
             );
         }
 

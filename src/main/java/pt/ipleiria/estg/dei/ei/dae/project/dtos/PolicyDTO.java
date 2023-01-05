@@ -32,7 +32,7 @@ public class PolicyDTO {
 
     public PolicyDTO(int id, int clientId, int insurerId, int policyTypeDetailId, List<OccurrenceDTO> occurrences, int policyObjectId, PolicyState state, String startDate, String endDate) {
         this.id = id;
-        this.clientId = clientId;
+        this.clientId = clientId ;
         this.insurerId = insurerId;
         this.policyTypeDetailId = policyTypeDetailId;
         this.occurrences = occurrences;
