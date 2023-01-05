@@ -66,7 +66,7 @@ public class Occurrence {
 
     @NotNull
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "client_email")
+    @JoinColumn(name = "client_id")
     Client client;
 
 
