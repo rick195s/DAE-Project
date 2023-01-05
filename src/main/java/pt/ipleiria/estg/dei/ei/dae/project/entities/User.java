@@ -22,7 +22,7 @@ import java.util.Objects;
         ),
         @NamedQuery(
                 name = "getAllRepairShopExperts",
-                query = "SELECT u FROM User u WHERE u.role = 'repairShopExpert' ORDER BY u.id" // JPQL
+                query = "SELECT u FROM User u WHERE u.role = 'repair_shop_expert' ORDER BY u.id" // JPQL
         )
 })
 @Table(
