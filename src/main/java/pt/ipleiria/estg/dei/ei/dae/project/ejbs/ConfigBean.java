@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 import com.github.javafaker.Faker;
 import pt.ipleiria.estg.dei.ei.dae.project.Supervisor;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.RepairShopGateway;
@@ -23,6 +24,9 @@ public class ConfigBean {
     ClientBean clientBean;
 
     @EJB
+    UserBean userBean;
+
+    @EJB
     OccurrenceBean occurrenceBean;
 
     @Inject
@@ -35,6 +39,8 @@ public class ConfigBean {
         System.out.println("Hello Java EE!");
 
         createClients();
+        createAdmins();
+        createRepairShopExperts();
         // populateMockAPI();
 
        createOccurrences();
@@ -47,11 +53,15 @@ public class ConfigBean {
         }
     }
 
-    private void populateRepairShopsInAPI() {
-        RepairShopGateway repairShopGateway = new RepairShopGateway();
-        for (int i = 0; i < 20; i++) {
-            RepairShop repairShop = new RepairShop(faker.company().name(), faker.internet().emailAddress(), ((int) faker.number().randomNumber(9, true)));
-            repairShopGateway.postToMockAPI(repairShop);
+    private void createAdmins() {
+        for (int i = 0; i < 6; i++) {
+            userBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123","admin");
+        }
+    }
+
+    private void createRepairShopExperts() {
+        for (int i = 0; i < 6; i++) {
+            userBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123","repair_shop_expert");
         }
     }
 
@@ -67,7 +77,6 @@ public class ConfigBean {
 
     private void populateMockAPI() {
         populatePoliciesInAPI();
-        populateRepairShopsInAPI();
     }
 
     private void populatePoliciesInAPI() {

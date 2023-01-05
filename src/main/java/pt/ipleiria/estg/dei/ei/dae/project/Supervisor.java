@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project;
 
+import com.github.javafaker.Faker;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.ClientBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
@@ -13,6 +14,7 @@ import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @ApplicationScoped
 public class Supervisor {
@@ -20,6 +22,8 @@ public class Supervisor {
     ClientBean clientBean;
 
     final String URI_INSURERS = "https://63af23e6649c73f572b64917.mockapi.io/insurers";
+
+    private final Faker faker = new Faker(new Locale("en"));
 
     private List<Policy> policies = new ArrayList<>();
     private List<RepairShop> repairShops = new ArrayList<>();
@@ -50,6 +54,7 @@ public class Supervisor {
         refreshRepairShopsViaAPI();
         return repairShops;
     }
+
     public List<PolicyObject> getPolicyObjects() {
        populatePolicyObejcts();
         return policyObjects;

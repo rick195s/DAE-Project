@@ -1,10 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.pojos;
 
-
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class RepairShopExpert extends User implements Serializable {
