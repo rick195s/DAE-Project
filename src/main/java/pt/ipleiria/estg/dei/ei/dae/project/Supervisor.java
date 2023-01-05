@@ -30,7 +30,6 @@ public class Supervisor {
     private List<Insurer> insurers = new ArrayList<>();
     private List<PolicyTypeDetail> policyTypeDetails = new ArrayList<>();
     private List<PolicyObject> policyObjects = new ArrayList<>();
-    private List<Administrator> administrators = new ArrayList<>();
 
     public Supervisor() {
         populatePolicyTypeDetails();
@@ -55,6 +54,7 @@ public class Supervisor {
         refreshRepairShopsViaAPI();
         return repairShops;
     }
+
     public List<PolicyObject> getPolicyObjects() {
        populatePolicyObejcts();
         return policyObjects;
@@ -89,15 +89,6 @@ public class Supervisor {
     public List<Insurer> getInsurers() {
         refreshInsurersViaAPI();
         return insurers;
-    }
-
-    private void populateRepairShopExpertsInAPI() {
-        refreshRepairShopsViaAPI();
-        RepairShopExpertGateway repairShopExpertGateway = new RepairShopExpertGateway();
-        for (int i = 0; i < 20; i++) {
-            RepairShopExpert repairShopExpert = new RepairShopExpert(faker.company().name(), faker.internet().emailAddress(), "123", "repairShopExpert", repairShops.get(1));
-            repairShopExpertGateway.postToMockAPI(repairShopExpert);
-        }
     }
 
     private void populatePolicyTypeDetails() {

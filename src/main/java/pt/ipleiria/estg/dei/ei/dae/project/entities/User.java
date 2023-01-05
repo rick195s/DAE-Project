@@ -10,11 +10,19 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllUsers",
-                query = "SELECT u FROM User u ORDER BY u.name" // JPQL
+                query = "SELECT u FROM User u ORDER BY u.id" // JPQL
         ),
         @NamedQuery(
                 name = "getUserByEmail",
                 query = "SELECT u FROM User u WHERE u.email = :email" // JPQL
+        ),
+        @NamedQuery(
+                name = "getAllAdministrators",
+                query = "SELECT u FROM User u WHERE u.role = 'admin' ORDER BY u.id" // JPQL
+        ),
+        @NamedQuery(
+                name = "getAllRepairShopExperts",
+                query = "SELECT u FROM User u WHERE u.role = 'repairShopExpert' ORDER BY u.id" // JPQL
         )
 })
 @Table(

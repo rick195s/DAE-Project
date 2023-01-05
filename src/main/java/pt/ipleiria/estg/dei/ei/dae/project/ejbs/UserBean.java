@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Stateless
 public class UserBean {
@@ -18,8 +19,17 @@ public class UserBean {
     @Inject
     private Hasher hasher;
 
+    public void create(String name, String email, String password, String role) {
+        User user = new User(name, email, hasher.hash(password), role);
+        entityManager.persist(user);
+    }
+
     public User find(int id) {
         return entityManager.find(User.class, id);
+    }
+
+    public List<User> getAllUsers() {
+        return (List<User>) entityManager.createNamedQuery("getAllUsers").getResultList();
     }
 
     public User findUserByEmail(String email) {
@@ -40,5 +50,13 @@ public class UserBean {
         User user = findUserByEmail(email);
 
         return user != null && user.getPassword().equals(hasher.hash(password));
+    }
+
+    public List<User> getAllAdministrators() {
+        return (List<User>) entityManager.createNamedQuery("getAllAdministrators").getResultList();
+    }
+
+    public List<User> getAllRepairShopExperts() {
+        return (List<User>) entityManager.createNamedQuery("getAllRepairShopExperts").getResultList();
     }
 }
