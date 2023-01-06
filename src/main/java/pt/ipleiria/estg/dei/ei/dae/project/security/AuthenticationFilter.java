@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.security;
 
 import io.jsonwebtoken.Jwts;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.UserBean;
+import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 import javax.annotation.Priority;
 import javax.crypto.spec.SecretKeySpec;
@@ -18,6 +19,7 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.security.Key;
 import java.security.Principal;
+import java.util.Objects;
 
 @Provider
 @Authenticated
@@ -49,7 +51,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
             @Override
             public boolean isUserInRole(String s) {
-                return org.hibernate.Hibernate.getClass(user).getSimpleName().equals(s);
+                Role role = Role.valueOf(s);
+                return Objects.equals(user.getRole(), role);
             }
 
             @Override

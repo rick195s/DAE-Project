@@ -1,13 +1,18 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import org.hibernate.Hibernate;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Hasher;
+import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Stateless
@@ -58,5 +63,49 @@ public class UserBean {
 
     public List<User> getAllRepairShopExperts() {
         return (List<User>) entityManager.createNamedQuery("getAllRepairShopExperts").getResultList();
+    }
+
+
+    public Response update(int id, UserDTO userDTO) {
+        User user = find(id);
+
+        if (user == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        if (userDTO.getName() != null) {
+            user.setName(userDTO.getName());
+        }
+
+        if (userDTO.getEmail() != null) {
+            if (findUserByEmail(userDTO.getEmail()) == null) {
+                user.setEmail(userDTO.getEmail());
+            } else {
+                return Response.status(Response.Status.CONFLICT).build();
+            }
+        }
+
+
+        List<Role> roles = new ArrayList<>(Arrays.asList(Role.values()));
+
+        if (userDTO.getRole() != null) {
+            if (!userDTO.getRole().equals("ADMINISTRATOR")) {
+                //TODO: falta implementar uma resposta má caso o if dentro deste ciclo for falhe
+                for (Role role : roles) {
+                    if (role.name().equals(userDTO.getRole())) {
+                        user.setRole(String.valueOf(role));
+                    }
+                }
+
+            } else {
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
+
+        } else {
+            return Response.status(Response.Status.CONFLICT).build();
+        }
+
+        entityManager.merge(user);
+        return Response.status(Response.Status.OK).entity(userDTO.from(user)).build();
     }
 }
