@@ -1,11 +1,11 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PolicyDTO {
     int id;
@@ -112,6 +112,26 @@ public class PolicyDTO {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+
+    public static PolicyDTO from(Policy policy) {
+        return new PolicyDTO(
+                policy.getId(),
+                policy.getClientId(),
+                policy.getInsurerId(),
+                policy.getPolicyTypeDetailId(),
+                OccurrenceDTO.from(policy.getOccurrences()),
+                policy.getPolicyObjectId(),
+                policy.getState(),
+                policy.getStartDate(),
+                policy.getEndDate()
+
+        );
+    }
+
+    public static List<PolicyDTO> from(List<Policy> policies) {
+        return policies.stream().map(PolicyDTO::from).collect(Collectors.toList());
     }
 }
 

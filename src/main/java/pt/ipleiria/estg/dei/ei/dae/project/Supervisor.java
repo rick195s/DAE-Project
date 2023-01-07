@@ -9,9 +9,6 @@ import pt.ipleiria.estg.dei.ei.dae.project.pojos.*;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
-import javax.json.JsonArray;
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -131,20 +128,11 @@ public class Supervisor {
     private void populatePolicyObejcts() {
         PolicyObjectGateway gateway = new PolicyObjectGateway();
         policyObjects = gateway.getFromMockAPI();
-        //policyObjects.add(new PolicyObject(1, "Carro Ze Manel", "C:\\Users\\joaop\\Desktop\\carro.jpg"));
     }
 
     private void refreshInsurersViaAPI() {
-        insurers = new ArrayList<>();
-        JsonArray jsonArrayInsurers = APIGateway.getDataFromAPI(URI_INSURERS);
-        jsonArrayInsurers.forEach(insurer -> {
-            Jsonb jsonb = JsonbBuilder.create();
-            Insurer insurerObj = jsonb.fromJson(insurer.toString(), Insurer.class);
-
-            insurers.add(insurerObj);
-        });
+        InsurerGateway gateway = new InsurerGateway();
+        insurers = gateway.getFromMockAPI();
     }
-
-
 
 }

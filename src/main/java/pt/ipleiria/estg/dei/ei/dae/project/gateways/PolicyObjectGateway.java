@@ -16,7 +16,7 @@ final String URI_POLICY_OBJECTS = "https://63af1ea3649c73f572b5d24b.mockapi.io/p
 
 
 public void postToMockAPI(PolicyObject policyObject) {
-    PolicyObjectDTO policyObjectDTO = toDTO(policyObject);
+    PolicyObjectDTO policyObjectDTO = PolicyObjectDTO.from(policyObject);
     Jsonb jsonb = JsonbBuilder.create();
     Response response = null;
     try {
@@ -50,13 +50,6 @@ public void postToMockAPI(PolicyObject policyObject) {
                 policyObjectDTO.getId(),
                 policyObjectDTO.getName(),
                 policyObjectDTO.getFilePath()
-        );
-    }
-    private PolicyObjectDTO toDTO(PolicyObject policyObject) {
-        return new PolicyObjectDTO(
-                policyObject.getId(),
-                policyObject.getName(),
-                policyObject.getFilePath()
         );
     }
 }

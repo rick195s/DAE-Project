@@ -1,6 +1,5 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
-import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 
 import javax.validation.constraints.NotNull;

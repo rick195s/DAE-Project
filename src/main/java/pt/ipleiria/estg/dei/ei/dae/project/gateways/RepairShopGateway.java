@@ -17,7 +17,7 @@ public class RepairShopGateway {
     final String URI_REPAIR_SHOPS = "https://63af1f07cb0f90e5146dbd21.mockapi.io/api/insurers/Repair_Shops";
 
     public void postToMockAPI(RepairShop repairShop) {
-        RepairShopDTO repairShopDTO = toDTO(repairShop);
+        RepairShopDTO repairShopDTO = RepairShopDTO.from(repairShop);
 
         Jsonb jsonb = JsonbBuilder.create();
         Response response = null;
@@ -52,16 +52,6 @@ public class RepairShopGateway {
         }
 
         return repairShops;
-    }
-
-    //convert one entity into a DTO
-    private RepairShopDTO toDTO(RepairShop repairShop) {
-        return new RepairShopDTO(
-                repairShop.getId(),
-                repairShop.getName(),
-                repairShop.getEmail(),
-                repairShop.getPhone()
-        );
     }
 
     //convert one DTO into an entity

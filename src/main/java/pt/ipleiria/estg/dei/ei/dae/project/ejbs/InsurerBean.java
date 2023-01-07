@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import pt.ipleiria.estg.dei.ei.dae.project.Supervisor;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
 
 import javax.ejb.Stateless;
@@ -11,9 +12,6 @@ import java.util.List;
 
 @Stateless
 public class InsurerBean {
-
-    EntityManager entityManager;
-
     @Inject
     Supervisor supervisor;
 
@@ -22,7 +20,12 @@ public class InsurerBean {
     }
 
     public Insurer find(int id) {
-        return entityManager.find(Insurer.class, id);
+        for (Insurer insurer : supervisor.getInsurers()) {
+            if (insurer.getId() == id) {
+                return insurer;
+            }
+        }
+        return null;
     }
 
     public List<RepairShop> getRepairShops(int id) {

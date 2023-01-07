@@ -28,25 +28,25 @@ public class UserService {
     @GET // means: to call this endpoint, we need to use the HTTP GET method
     @Path("/") // means: the relative url path is “/api/students/all”
     public List<UserDTO> getAllUsersWS() {
-        return toDTOs(userBean.getAllUsers());
+        return UserDTO.from(userBean.getAllUsers());
     }
 
     @GET
     @Path("/{id}")
     public UserDTO getUserWS(@PathParam("id") int id) {
-        return toDTO(userBean.find(id));
+        return UserDTO.from(userBean.find(id));
     }
 
     @GET
     @Path("/administrators")
     public List<UserDTO> getAllAdministratorsWS() {
-        return toDTOs(userBean.getAllAdministrators());
+        return UserDTO.from(userBean.getAllAdministrators());
     }
 
     @GET
     @Path("/repairshopexperts")
     public List<UserDTO> getAllRepairShopExpertsWS() {
-        return toDTOs(userBean.getAllRepairShopExperts());
+        return UserDTO.from(userBean.getAllRepairShopExperts());
     }
 
     @POST
@@ -61,28 +61,12 @@ public class UserService {
 
         User user = userBean.findUserByEmail(userDTO.getEmail());
 
-        return Response.status(Response.Status.CREATED).entity(userDTO.from(user)).build();
+        return Response.status(Response.Status.CREATED).entity(UserDTO.from(user)).build();
     }
 
     @PUT
     @Path("/{id}")
     public Response updateUserWS(@PathParam("id") int id, UserDTO userDTO) {
         return userBean.update(id, userDTO);
-    }
-
-    // Converts an entity Student to a DTO Student class
-    private UserDTO toDTO(User user) {
-        return new UserDTO(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getRole()
-        );
-    }
-
-
-    // converts an entire list of entities into a list of DTOs
-    private List<UserDTO> toDTOs(List<User> users) {
-        return users.stream().map(this::toDTO).collect(Collectors.toList());
     }
 }
