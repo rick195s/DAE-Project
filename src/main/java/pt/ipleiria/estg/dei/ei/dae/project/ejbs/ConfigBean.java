@@ -8,6 +8,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescription
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.RepairShopGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.*;
+import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -41,6 +42,7 @@ public class ConfigBean {
         createClients();
         createAdmins();
         createRepairShopExperts();
+        createInsurerExperts();
         // populateMockAPI();
 
        createOccurrences();
@@ -49,19 +51,25 @@ public class ConfigBean {
 
     private void createClients() {
         for (int i = 0; i < 20; i++) {
-            clientBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123","client", ((int) faker.number().randomNumber(9, true)));
+            clientBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123", String.valueOf(Role.CLIENT), ((int) faker.number().randomNumber(9, true)));
         }
     }
 
     private void createAdmins() {
         for (int i = 0; i < 6; i++) {
-            userBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123","admin");
+            userBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123",String.valueOf(Role.ADMINISTRATOR));
         }
     }
 
     private void createRepairShopExperts() {
         for (int i = 0; i < 6; i++) {
-            userBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123","repair_shop_expert");
+            userBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123",String.valueOf(Role.REPAIR_SHOP_EXPERT));
+        }
+    }
+
+    private void createInsurerExperts() {
+        for (int i = 0; i < 6; i++) {
+            userBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123",String.valueOf(Role.INSURER_EXPERT));
         }
     }
 
