@@ -63,7 +63,11 @@ public class OccurrenceBean {
 
     public List<Occurrence> getAllOccurrences() {
         // remember, maps to: “SELECT c FROM Courses c ORDER BY c.name”
-        return (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrences").getResultList();
+        List<Occurrence> occurrences = (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrences").getResultList();
+        for (Occurrence occurrence : occurrences) {
+            occurrence.setPolicy(policyBean.find(occurrence.getPolicyId()));
+        }
+        return occurrences;
     }
 
     public Occurrence find(int id) {
@@ -73,10 +77,6 @@ public class OccurrenceBean {
         }
 
         occurrence.setPolicy(policyBean.find(occurrence.getPolicyId()));
-
-        if (occurrence.getPolicy() == null){
-            System.out.println("Policy is null");
-        }
 
         return  occurrence;
     }

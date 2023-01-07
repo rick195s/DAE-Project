@@ -168,9 +168,6 @@ public class Occurrence {
     }
 
     public int getInsurerId() {
-        if (policy == null) {
-            System.out.println("Policy is null occurenceid: " + id);
-        }
         return policy.getInsurerId();
     }
 
