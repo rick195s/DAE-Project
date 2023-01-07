@@ -124,6 +124,7 @@ public class Occurrence {
 
     public void setPolicy(Policy policy) {
         this.policy = policy;
+        this.policyId = policy.getId();
     }
 
     public RepairShop getRepairShop() {
@@ -164,6 +165,13 @@ public class Occurrence {
 
     public void setEndDate(Calendar endDate) {
         this.endDate = endDate;
+    }
+
+    public int getInsurerId() {
+        if (policy == null) {
+            System.out.println("Policy is null occurenceid: " + id);
+        }
+        return policy.getInsurerId();
     }
 
     public List<OccurrenceFile> getOccurenceFileList() {

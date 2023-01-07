@@ -55,6 +55,20 @@ public class Supervisor {
         return repairShops;
     }
 
+    public List<RepairShop> getRepairShops(int insurerId) {
+        List<RepairShop> repairShopsOfInsurer = new ArrayList<>();
+
+        for (RepairShop repairShop : getRepairShops()) {
+            for (Insurer insurer : repairShop.getInsurers()) {
+                if (insurer.getId() == insurerId) {
+                    repairShopsOfInsurer.add(repairShop);
+                }
+            }
+        }
+
+        return repairShopsOfInsurer;
+    }
+
     public List<PolicyObject> getPolicyObjects() {
        populatePolicyObejcts();
         return policyObjects;

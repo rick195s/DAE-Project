@@ -68,7 +68,7 @@ public class ConfigBean {
     private void createOccurrences() {
         for (int i = 0; i < 20; i++) {
             try {
-                occurrenceBean.create(1, faker.lorem().sentence(10), i+1);
+                occurrenceBean.create(supervisor.getPolicies().get(0).getId(), faker.lorem().sentence(10), i+1);
             } catch (OccurrenceSmallDescriptionException e) {
                 throw new RuntimeException(e);
             }

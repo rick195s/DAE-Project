@@ -11,9 +11,6 @@ import java.util.List;
 
 @Stateless
 public class PolicyBean {
-    @PersistenceContext
-    EntityManager entityManager;
-
     @Inject
     Supervisor supervisor;
 

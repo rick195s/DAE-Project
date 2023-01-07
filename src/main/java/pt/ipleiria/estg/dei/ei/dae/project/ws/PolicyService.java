@@ -63,7 +63,8 @@ public class PolicyService {
                 occurrence.getEndDate(),
                 occurrence.getPolicyId(),
                 occurrence.getRepairShopId(),
-                occurrence.getClient().getId()
+                occurrence.getClient().getId(),
+                occurrence.getInsurerId()
         );
 
     }

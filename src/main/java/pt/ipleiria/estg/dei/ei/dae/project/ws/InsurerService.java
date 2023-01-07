@@ -1,8 +1,10 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.InsurerDTO;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.RepairShopDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.InsurerBean;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
@@ -33,6 +35,19 @@ public class InsurerService {
         }
         return Response.status(Response.Status.NOT_FOUND)
                 .entity("ERROR_FINDING_STUDENT")
+                .build();
+    }
+
+    @GET
+    @Path("{id}/repair-shops")
+    public Response getRepairShops(@PathParam("id") int id) {
+        List<RepairShopDTO> repairShops = RepairShopDTO.from(insurerBean.getRepairShops(id));
+
+        if (repairShops != null) {
+            return Response.ok(repairShops).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_REPAIR_SHOPS")
                 .build();
     }
 

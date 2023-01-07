@@ -1,9 +1,11 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
-import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
+
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class RepairShopDTO implements Serializable {
 
@@ -18,13 +20,6 @@ public class RepairShopDTO implements Serializable {
         this.email = email;
         this.phone = phone;
     }
-
-    public RepairShopDTO(String name, String email, long phone) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-    }
-
 
     public RepairShopDTO() {
     }
@@ -59,6 +54,19 @@ public class RepairShopDTO implements Serializable {
 
     public void setPhone(long phone) {
         this.phone = phone;
+    }
+
+    public static RepairShopDTO from(RepairShop repairShop) {
+        return new RepairShopDTO(
+                repairShop.getId(),
+                repairShop.getName(),
+                repairShop.getEmail(),
+                repairShop.getPhone()
+        );
+    }
+
+    public static List<RepairShopDTO> from(List<RepairShop> repairShops) {
+        return repairShops.stream().map(RepairShopDTO::from).collect(Collectors.toList());
     }
 }
 

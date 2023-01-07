@@ -67,7 +67,18 @@ public class OccurrenceBean {
     }
 
     public Occurrence find(int id) {
-        return entityManager.find(Occurrence.class, id);
+        Occurrence occurrence = entityManager.find(Occurrence.class, id);
+        if (occurrence == null){
+            return null;
+        }
+
+        occurrence.setPolicy(policyBean.find(occurrence.getPolicyId()));
+
+        if (occurrence.getPolicy() == null){
+            System.out.println("Policy is null");
+        }
+
+        return  occurrence;
     }
 
     public List<OccurrenceFile> getOccurrenceFiles(int id) {

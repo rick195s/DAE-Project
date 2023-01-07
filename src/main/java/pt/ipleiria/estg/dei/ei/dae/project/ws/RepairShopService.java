@@ -21,20 +21,7 @@ public class RepairShopService {
     @GET // means: to call this endpoint, we need to use the HTTP GET method
     @Path("/") // means: the relative url path is “/api/repairshops”
     public List<RepairShopDTO> getAllRepairShopsWS() {
-        return toDTOs(repairShopBean.getAllRepairShops());
+        return RepairShopDTO.from(repairShopBean.getAllRepairShops());
     }
 
-    private RepairShopDTO toDTO(RepairShop repairShop) {
-        return new RepairShopDTO(
-                repairShop.getId(),
-                repairShop.getName(),
-                repairShop.getEmail(),
-                repairShop.getPhone()
-        );
-    }
-
-    // converts an entire list of entities into a list of DTOs
-    private List<RepairShopDTO> toDTOs(List<RepairShop> repairShops) {
-        return repairShops.stream().map(this::toDTO).collect(Collectors.toList());
-    }
 }
