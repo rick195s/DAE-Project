@@ -16,6 +16,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -32,14 +33,17 @@ public class OccurrenceBean {
     PolicyBean policyBean;
 
     @EJB
+    RepairShopBean repairShopBean;
+
+    @EJB
     ClientBean clientBean;
 
-    public Occurrence create(int policyId, String description, int id) throws OccurrenceSmallDescriptionException, EntityNotFoundException {
+    public Occurrence create(int policyId, String description, int id) throws OccurrenceSmallDescriptionException {
         if (description.length() < 10) {
             throw new OccurrenceSmallDescriptionException(description);
         }
 
-        Client client = entityManager.find(Client.class, id);
+        Client client = clientBean.find(id);
         if (client == null) {
             throw new EntityNotFoundException("Client dont exists");
         }
@@ -110,7 +114,7 @@ public class OccurrenceBean {
         return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesByClient").setParameter("client", client).getResultList();
     }
 
-    public void ApproveOccurrence(Occurrence occurrence) {
+    public void approveOccurrence(Occurrence occurrence) {
         occurrence.setApprovalType(ApprovalType.APPROVED);
 
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -121,7 +125,7 @@ public class OccurrenceBean {
         entityManager.merge(occurrence);
     }
 
-    public void DeclineOccurrence(Occurrence occurrence) {
+    public void declineOccurrence(Occurrence occurrence) {
         occurrence.setApprovalType(ApprovalType.REJECTED);
 
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -130,5 +134,22 @@ public class OccurrenceBean {
         historicalBean.create("Rejeitado pela seguradora", occurrence.getId(), currentData, HistoricalEnum.NAO_APROVADO_PELA_SEGURADORA);
 
         entityManager.merge(occurrence);
+    }
+
+    public void setOccurrenceRepairShop(int id, int repairShopId) {
+        RepairShop repairShop = repairShopBean.find(repairShopId);
+        if (repairShop == null) {
+            throw new EntityNotFoundException("Repair Shop dont exists");
+        }
+
+        Occurrence occurrence = find(id);
+        if (occurrence == null) {
+            throw new EntityNotFoundException("Occurrence dont exists");
+        }
+
+        occurrence.setRepairShop(repairShop);
+
+        entityManager.merge(occurrence);
+
     }
 }

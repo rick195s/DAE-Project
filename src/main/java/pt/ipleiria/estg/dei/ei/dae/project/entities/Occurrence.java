@@ -133,6 +133,7 @@ public class Occurrence {
 
     public void setRepairShop(RepairShop repairShop) {
         this.repairShop = repairShop;
+        this.repairShopId = repairShop.getId();
     }
 
     public String getDescription() {

@@ -73,44 +73,6 @@ public class OccurrenceService {
                 .build();
     }
 
-    @PUT
-    @Path("/{id}/approved")
-    public Response ApproveOccurrence(@PathParam("id") int id) {
-        Occurrence occurrence = occurrenceBean.find(id);
-        if (occurrence != null) {
-            occurrenceBean.ApproveOccurrence(occurrence);
-            return Response.ok(toDetailedDTO(occurrence)).build();
-        }
-        return Response.status(Response.Status.NOT_FOUND)
-                .entity("ERROR_FINDING_OCCURRENCE")
-                .build();
-    }
-
-    @PUT
-    @Path("/{id}/declined")
-    public Response DeclineOccurrence(@PathParam("id") int id) {
-        Occurrence occurrence = occurrenceBean.find(id);
-        if (occurrence != null) {
-            occurrenceBean.DeclineOccurrence(occurrence);
-            return Response.ok(toDetailedDTO(occurrence)).build();
-        }
-        return Response.status(Response.Status.NOT_FOUND)
-                .entity("ERROR_FINDING_OCCURRENCE")
-                .build();
-    }
-
-    @POST
-    @Path("/")
-    public Response createOccurrence(OccurrenceDTO occurrenceDTO) throws OccurrenceSmallDescriptionException, EntityNotFoundException {
-        Occurrence occurrence = occurrenceBean.create(
-                occurrenceDTO.getPolicyId(),
-                occurrenceDTO.getDescription(),
-                occurrenceDTO.getClientId()
-        );
-
-        return Response.status(Response.Status.CREATED).entity(OccurrenceDTO.from(occurrence)).build();
-    }
-
     @GET
     @Path("{id}/files")
     @Produces(MediaType.APPLICATION_JSON)
@@ -129,6 +91,19 @@ public class OccurrenceService {
         response.header("Content-Disposition", "attachment;filename=" + occurrenceFile.getName());
 
         return response.build();
+    }
+
+
+    @POST
+    @Path("/")
+    public Response createOccurrence(OccurrenceDTO occurrenceDTO) throws OccurrenceSmallDescriptionException, EntityNotFoundException {
+        Occurrence occurrence = occurrenceBean.create(
+                occurrenceDTO.getPolicyId(),
+                occurrenceDTO.getDescription(),
+                occurrenceDTO.getClientId()
+        );
+
+        return Response.status(Response.Status.CREATED).entity(OccurrenceDTO.from(occurrence)).build();
     }
 
 
@@ -158,6 +133,40 @@ public class OccurrenceService {
         }
 
         return Response.ok(OccurrenceFileDTO.from(occurrenceFiles)).build();
+    }
+
+    @PUT
+    @Path("/{id}/approved")
+    public Response approveOccurrence(@PathParam("id") int id) {
+        Occurrence occurrence = occurrenceBean.find(id);
+        if (occurrence != null) {
+            occurrenceBean.approveOccurrence(occurrence);
+            return Response.ok(toDetailedDTO(occurrence)).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_OCCURRENCE")
+                .build();
+    }
+
+    @PUT
+    @Path("/{id}/declined")
+    public Response declineOccurrence(@PathParam("id") int id) {
+        Occurrence occurrence = occurrenceBean.find(id);
+        if (occurrence != null) {
+            occurrenceBean.declineOccurrence(occurrence);
+            return Response.ok(toDetailedDTO(occurrence)).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_OCCURRENCE")
+                .build();
+    }
+
+
+    @PATCH
+    @Path("/{id}/repair-shop/{repairShopId}")
+    public Response declineOccurrence(@PathParam("id") int id, @PathParam("repairShopId") int repairShopId) {
+        occurrenceBean.setOccurrenceRepairShop(id, repairShopId);
+        return Response.ok(toDetailedDTO(occurrenceBean.find(id))).build();
     }
 
     private DetailedOccurrenceDTO toDetailedDTO(Occurrence occurrence) {
