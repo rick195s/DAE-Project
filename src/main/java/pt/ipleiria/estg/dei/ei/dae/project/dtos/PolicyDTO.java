@@ -16,8 +16,6 @@ public class PolicyDTO {
 
     int  policyTypeDetailId;
 
-    List<OccurrenceDTO> occurrences;
-
     int policyObjectId;
 
     PolicyState state;
@@ -26,16 +24,13 @@ public class PolicyDTO {
 
     String endDate;
 
-    public PolicyDTO() {
-        occurrences = new ArrayList<>();
-    }
+    public PolicyDTO() {}
 
-    public PolicyDTO(int id, int clientId, int insurerId, int policyTypeDetailId, List<OccurrenceDTO> occurrences, int policyObjectId, PolicyState state, String startDate, String endDate) {
+    public PolicyDTO(int id, int clientId, int insurerId, int policyTypeDetailId, int policyObjectId, PolicyState state, String startDate, String endDate) {
         this.id = id;
         this.clientId = clientId ;
         this.insurerId = insurerId;
         this.policyTypeDetailId = policyTypeDetailId;
-        this.occurrences = occurrences;
         this.policyObjectId = policyObjectId;
         this.state = state;
         this.startDate = startDate;
@@ -72,14 +67,6 @@ public class PolicyDTO {
 
     public void setPolicyTypeDetailId(int policyTypeDetailId) {
         this.policyTypeDetailId = policyTypeDetailId;
-    }
-
-    public List<OccurrenceDTO> getOccurrences() {
-        return occurrences;
-    }
-
-    public void setOccurrences(List<OccurrenceDTO> occurrences) {
-        this.occurrences = occurrences;
     }
 
     public int getPolicyObjectId() {
@@ -121,7 +108,6 @@ public class PolicyDTO {
                 policy.getClientId(),
                 policy.getInsurerId(),
                 policy.getPolicyTypeDetailId(),
-                OccurrenceDTO.from(policy.getOccurrences()),
                 policy.getPolicyObjectId(),
                 policy.getState(),
                 policy.getStartDate(),

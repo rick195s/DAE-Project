@@ -18,8 +18,6 @@ public class Supervisor {
     @EJB
     ClientBean clientBean;
 
-    final String URI_INSURERS = "https://63af23e6649c73f572b64917.mockapi.io/insurers";
-
     private final Faker faker = new Faker(new Locale("en"));
 
     private List<Policy> policies = new ArrayList<>();
@@ -55,14 +53,14 @@ public class Supervisor {
     public List<RepairShop> getRepairShops(int insurerId) {
         List<RepairShop> repairShopsOfInsurer = new ArrayList<>();
 
+        InsurerGateway insurerGateway = new InsurerGateway();
+        List<Integer> repairShopsIds = new ArrayList<>(insurerGateway.getInsurersRepairShopsFromMockAPI(insurerId));
+
         for (RepairShop repairShop : getRepairShops()) {
-            for (Insurer insurer : repairShop.getInsurers()) {
-                if (insurer.getId() == insurerId) {
-                    repairShopsOfInsurer.add(repairShop);
-                }
+            if (repairShopsIds.contains(repairShop.getId())) {
+                repairShopsOfInsurer.add(repairShop);
             }
         }
-
         return repairShopsOfInsurer;
     }
 

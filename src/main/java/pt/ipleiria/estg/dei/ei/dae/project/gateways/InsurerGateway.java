@@ -1,19 +1,15 @@
 package pt.ipleiria.estg.dei.ei.dae.project.gateways;
 
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.InsurerDTO;
-import pt.ipleiria.estg.dei.ei.dae.project.dtos.PolicyDTO;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Insurer;
-import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 
 import javax.json.JsonArray;
+import javax.json.JsonObject;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class InsurerGateway {
     final String URI_INSURERS = "https://63af23e6649c73f572b64917.mockapi.io/insurers";
@@ -41,8 +37,8 @@ public class InsurerGateway {
     public List<Insurer> getFromMockAPI(){
         ArrayList<Insurer> insurers = new ArrayList<>();
 
-        JsonArray jsonArrayPolicies = APIGateway.getDataFromAPI(URI_INSURERS);
-        jsonArrayPolicies.forEach(insurer -> {
+        JsonArray jsonArrayInsurer = APIGateway.getDataFromAPI(URI_INSURERS);
+        jsonArrayInsurer.forEach(insurer -> {
             Jsonb jsonb = JsonbBuilder.create();
             InsurerDTO insurerDTO = jsonb.fromJson(insurer.toString(), InsurerDTO.class);
 
@@ -55,6 +51,19 @@ public class InsurerGateway {
         });
 
         return insurers;
+    }
+
+    public List<Integer> getInsurersRepairShopsFromMockAPI(int insurerId){
+        ArrayList<Integer> repairShops = new ArrayList<>();
+
+        JsonArray jsonArrayRepairShops = APIGateway.getDataFromAPI(URI_INSURERS_REPAIR_SHOPS_PIVOT+"?insurer_id="+insurerId);
+        jsonArrayRepairShops.forEach(repairShop -> {
+            // get repair shop id from json
+            JsonObject repairShopObj = repairShop.asJsonObject();
+            repairShops.add(Integer.parseInt(repairShopObj.getString("repair_shop_id")));
+        });
+
+        return repairShops;
     }
 
 }
