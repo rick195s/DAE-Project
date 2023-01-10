@@ -10,7 +10,7 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllUsers",
-                query = "SELECT u FROM User u ORDER BY u.id" // JPQL
+                query = "SELECT u FROM User u ORDER BY u.role, u.id" // JPQL
         ),
         @NamedQuery(
                 name = "getUserByEmail",
