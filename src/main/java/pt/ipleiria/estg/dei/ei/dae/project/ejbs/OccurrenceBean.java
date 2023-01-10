@@ -114,7 +114,12 @@ public class OccurrenceBean {
         return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesByClient").setParameter("client", client).getResultList();
     }
 
-    public void approveOccurrence(Occurrence occurrence) {
+    public void approveOccurrence(int id) {
+        Occurrence occurrence = find(id);
+        if (occurrence == null) {
+            throw new EntityNotFoundException("Occurrence dont exists");
+        }
+
         occurrence.setApprovalType(ApprovalType.APPROVED);
 
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -125,7 +130,12 @@ public class OccurrenceBean {
         entityManager.merge(occurrence);
     }
 
-    public void declineOccurrence(Occurrence occurrence) {
+    public void declineOccurrence(int id) {
+        Occurrence occurrence = find(id);
+        if (occurrence == null) {
+            throw new EntityNotFoundException("Occurrence dont exists");
+        }
+
         occurrence.setApprovalType(ApprovalType.REJECTED);
 
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

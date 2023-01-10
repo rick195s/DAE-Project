@@ -138,27 +138,15 @@ public class OccurrenceService {
     @PATCH
     @Path("/{id}/approved")
     public Response approveOccurrence(@PathParam("id") int id) {
-        Occurrence occurrence = occurrenceBean.find(id);
-        if (occurrence != null) {
-            occurrenceBean.approveOccurrence(occurrence);
-            return Response.ok(toDetailedDTO(occurrence)).build();
-        }
-        return Response.status(Response.Status.NOT_FOUND)
-                .entity("ERROR_FINDING_OCCURRENCE")
-                .build();
+        occurrenceBean.approveOccurrence(id);
+        return Response.ok(toDetailedDTO(occurrenceBean.find(id))).build();
     }
 
     @PATCH
     @Path("/{id}/declined")
     public Response declineOccurrence(@PathParam("id") int id) {
-        Occurrence occurrence = occurrenceBean.find(id);
-        if (occurrence != null) {
-            occurrenceBean.declineOccurrence(occurrence);
-            return Response.ok(toDetailedDTO(occurrence)).build();
-        }
-        return Response.status(Response.Status.NOT_FOUND)
-                .entity("ERROR_FINDING_OCCURRENCE")
-                .build();
+        occurrenceBean.declineOccurrence(id);
+        return Response.ok(toDetailedDTO(occurrenceBean.find(id))).build();
     }
 
 
