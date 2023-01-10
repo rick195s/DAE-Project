@@ -16,7 +16,9 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -32,14 +34,17 @@ public class OccurrenceBean {
     PolicyBean policyBean;
 
     @EJB
+    RepairShopBean repairShopBean;
+
+    @EJB
     ClientBean clientBean;
 
-    public Occurrence create(int policyId, String description, int id) throws OccurrenceSmallDescriptionException, EntityNotFoundException {
+    public Occurrence create(int policyId, String description, int id) throws OccurrenceSmallDescriptionException {
         if (description.length() < 10) {
             throw new OccurrenceSmallDescriptionException(description);
         }
 
-        Client client = entityManager.find(Client.class, id);
+        Client client = clientBean.find(id);
         if (client == null) {
             throw new EntityNotFoundException("Client dont exists");
         }
@@ -62,12 +67,35 @@ public class OccurrenceBean {
     }
 
     public List<Occurrence> getAllOccurrences() {
-        // remember, maps to: “SELECT c FROM Courses c ORDER BY c.name”
-        return (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrences").getResultList();
+        List<Policy> policies;
+        List<Integer> ids = new ArrayList<>();
+
+        List<Occurrence> occurrences = (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrences").getResultList();
+
+        for (Occurrence occurrence : occurrences) {
+            ids.add(occurrence.getPolicyId());
+        }
+
+        policies = policyBean.findAll(ids);
+        for (Occurrence occurrence : occurrences) {
+            for (Policy policy : policies) {
+                if (occurrence.getPolicyId() == policy.getId()) {
+                    occurrence.setPolicy(policy);
+                }
+            }
+        }
+        return occurrences;
     }
 
     public Occurrence find(int id) {
-        return entityManager.find(Occurrence.class, id);
+        Occurrence occurrence = entityManager.find(Occurrence.class, id);
+        if (occurrence == null){
+            return null;
+        }
+
+        occurrence.setPolicy(policyBean.find(occurrence.getPolicyId()));
+
+        return  occurrence;
     }
 
     public List<OccurrenceFile> getOccurrenceFiles(int id) {
@@ -99,7 +127,12 @@ public class OccurrenceBean {
         return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesByClient").setParameter("client", client).getResultList();
     }
 
-    public void ApproveOccurrence(Occurrence occurrence) {
+    public void approveOccurrence(int id) {
+        Occurrence occurrence = find(id);
+        if (occurrence == null) {
+            throw new EntityNotFoundException("Occurrence dont exists");
+        }
+
         occurrence.setApprovalType(ApprovalType.APPROVED);
 
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -110,7 +143,12 @@ public class OccurrenceBean {
         entityManager.merge(occurrence);
     }
 
-    public void DeclineOccurrence(Occurrence occurrence) {
+    public void declineOccurrence(int id) {
+        Occurrence occurrence = find(id);
+        if (occurrence == null) {
+            throw new EntityNotFoundException("Occurrence dont exists");
+        }
+
         occurrence.setApprovalType(ApprovalType.REJECTED);
 
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -119,5 +157,22 @@ public class OccurrenceBean {
         historicalBean.create("Rejeitado pela seguradora", occurrence.getId(), currentData, HistoricalEnum.NAO_APROVADO_PELA_SEGURADORA);
 
         entityManager.merge(occurrence);
+    }
+
+    public void setOccurrenceRepairShop(int id, int repairShopId) {
+        RepairShop repairShop = repairShopBean.find(repairShopId);
+        if (repairShop == null) {
+            throw new EntityNotFoundException("Repair Shop dont exists");
+        }
+
+        Occurrence occurrence = find(id);
+        if (occurrence == null) {
+            throw new EntityNotFoundException("Occurrence dont exists");
+        }
+
+        occurrence.setRepairShop(repairShop);
+
+        entityManager.merge(occurrence);
+
     }
 }

@@ -124,6 +124,7 @@ public class Occurrence {
 
     public void setPolicy(Policy policy) {
         this.policy = policy;
+        this.policyId = policy.getId();
     }
 
     public RepairShop getRepairShop() {
@@ -132,6 +133,7 @@ public class Occurrence {
 
     public void setRepairShop(RepairShop repairShop) {
         this.repairShop = repairShop;
+        this.repairShopId = repairShop.getId();
     }
 
     public String getDescription() {
@@ -164,6 +166,10 @@ public class Occurrence {
 
     public void setEndDate(Calendar endDate) {
         this.endDate = endDate;
+    }
+
+    public int getInsurerId() {
+        return policy.getInsurerId();
     }
 
     public List<OccurrenceFile> getOccurenceFileList() {

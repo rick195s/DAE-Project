@@ -80,4 +80,12 @@ public class RepairShop implements Serializable {
     public void setPhone(long phone) {
         this.phone = phone;
     }
+
+    public List<Insurer> getInsurers() {
+        return insurers;
+    }
+
+    public void addInsurer(List<Insurer> insurers) {
+        this.insurers = insurers;
+    }
 }

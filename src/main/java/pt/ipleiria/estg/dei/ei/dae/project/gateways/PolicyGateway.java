@@ -15,7 +15,7 @@ public class PolicyGateway {
     final String URI_POLICIES = "https://63af23e6649c73f572b64917.mockapi.io/policies";
 
     public void postToMockAPI(Policy policy) {
-        PolicyDTO policyDTO = toDTO(policy);
+        PolicyDTO policyDTO = PolicyDTO.from(policy);
 
         Jsonb jsonb = JsonbBuilder.create();
         Response response = null;
@@ -57,26 +57,4 @@ public class PolicyGateway {
 
         return policies;
     }
-
-    // Converts an entity Student to a DTO Student class
-    private PolicyDTO toDTO(Policy policy) {
-        return new PolicyDTO(
-                policy.getId(),
-                policy.getClientId(),
-                policy.getInsurerId(),
-                policy.getPolicyTypeDetailId(),
-                new LinkedList<>(),
-                policy.getPolicyObjectId(),
-                policy.getState(),
-                policy.getStartDate(),
-                policy.getEndDate()
-
-        );
-    }
-
-    // converts an entire list of entities into a list of DTOs
-    private List<PolicyDTO> toDTOs(List<Policy> policies) {
-        return policies.stream().map(this::toDTO).collect(Collectors.toList());
-    }
-
 }

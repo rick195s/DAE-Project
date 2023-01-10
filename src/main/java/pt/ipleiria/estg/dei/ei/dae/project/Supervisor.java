@@ -9,9 +9,6 @@ import pt.ipleiria.estg.dei.ei.dae.project.pojos.*;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
-import javax.json.JsonArray;
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -20,8 +17,6 @@ import java.util.Locale;
 public class Supervisor {
     @EJB
     ClientBean clientBean;
-
-    final String URI_INSURERS = "https://63af23e6649c73f572b64917.mockapi.io/insurers";
 
     private final Faker faker = new Faker(new Locale("en"));
 
@@ -53,6 +48,20 @@ public class Supervisor {
     public List<RepairShop> getRepairShops() {
         refreshRepairShopsViaAPI();
         return repairShops;
+    }
+
+    public List<RepairShop> getRepairShops(int insurerId) {
+        List<RepairShop> repairShopsOfInsurer = new ArrayList<>();
+
+        InsurerGateway insurerGateway = new InsurerGateway();
+        List<Integer> repairShopsIds = new ArrayList<>(insurerGateway.getInsurersRepairShopsFromMockAPI(insurerId));
+
+        for (RepairShop repairShop : getRepairShops()) {
+            if (repairShopsIds.contains(repairShop.getId())) {
+                repairShopsOfInsurer.add(repairShop);
+            }
+        }
+        return repairShopsOfInsurer;
     }
 
     public List<PolicyObject> getPolicyObjects() {
@@ -117,20 +126,11 @@ public class Supervisor {
     private void populatePolicyObejcts() {
         PolicyObjectGateway gateway = new PolicyObjectGateway();
         policyObjects = gateway.getFromMockAPI();
-        //policyObjects.add(new PolicyObject(1, "Carro Ze Manel", "C:\\Users\\joaop\\Desktop\\carro.jpg"));
     }
 
     private void refreshInsurersViaAPI() {
-        insurers = new ArrayList<>();
-        JsonArray jsonArrayInsurers = APIGateway.getDataFromAPI(URI_INSURERS);
-        jsonArrayInsurers.forEach(insurer -> {
-            Jsonb jsonb = JsonbBuilder.create();
-            Insurer insurerObj = jsonb.fromJson(insurer.toString(), Insurer.class);
-
-            insurers.add(insurerObj);
-        });
+        InsurerGateway gateway = new InsurerGateway();
+        insurers = gateway.getFromMockAPI();
     }
-
-
 
 }

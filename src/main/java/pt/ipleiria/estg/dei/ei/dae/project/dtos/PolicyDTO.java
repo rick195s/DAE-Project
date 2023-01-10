@@ -1,11 +1,11 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PolicyDTO {
     int id;
@@ -16,8 +16,6 @@ public class PolicyDTO {
 
     int  policyTypeDetailId;
 
-    List<OccurrenceDTO> occurrences;
-
     int policyObjectId;
 
     PolicyState state;
@@ -26,16 +24,13 @@ public class PolicyDTO {
 
     String endDate;
 
-    public PolicyDTO() {
-        occurrences = new ArrayList<>();
-    }
+    public PolicyDTO() {}
 
-    public PolicyDTO(int id, int clientId, int insurerId, int policyTypeDetailId, List<OccurrenceDTO> occurrences, int policyObjectId, PolicyState state, String startDate, String endDate) {
+    public PolicyDTO(int id, int clientId, int insurerId, int policyTypeDetailId, int policyObjectId, PolicyState state, String startDate, String endDate) {
         this.id = id;
         this.clientId = clientId ;
         this.insurerId = insurerId;
         this.policyTypeDetailId = policyTypeDetailId;
-        this.occurrences = occurrences;
         this.policyObjectId = policyObjectId;
         this.state = state;
         this.startDate = startDate;
@@ -74,14 +69,6 @@ public class PolicyDTO {
         this.policyTypeDetailId = policyTypeDetailId;
     }
 
-    public List<OccurrenceDTO> getOccurrences() {
-        return occurrences;
-    }
-
-    public void setOccurrences(List<OccurrenceDTO> occurrences) {
-        this.occurrences = occurrences;
-    }
-
     public int getPolicyObjectId() {
         return policyObjectId;
     }
@@ -112,6 +99,25 @@ public class PolicyDTO {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+
+    public static PolicyDTO from(Policy policy) {
+        return new PolicyDTO(
+                policy.getId(),
+                policy.getClientId(),
+                policy.getInsurerId(),
+                policy.getPolicyTypeDetailId(),
+                policy.getPolicyObjectId(),
+                policy.getState(),
+                policy.getStartDate(),
+                policy.getEndDate()
+
+        );
+    }
+
+    public static List<PolicyDTO> from(List<Policy> policies) {
+        return policies.stream().map(PolicyDTO::from).collect(Collectors.toList());
     }
 }
 

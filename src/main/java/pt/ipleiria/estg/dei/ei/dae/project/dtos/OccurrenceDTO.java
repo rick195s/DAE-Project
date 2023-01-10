@@ -25,15 +25,18 @@ public class OccurrenceDTO implements Serializable {
 
      int repairShopId;
 
-    int clientId;
+     int clientId;
 
-    public OccurrenceDTO(int id, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate, int policyId, int repairShopId, int clientId) {
+     int insurerId;
+
+    public OccurrenceDTO(int id, String description, ApprovalType approvalType, Calendar startDate, Calendar endDate, int policyId, int repairShopId, int clientId, int insurerId) {
         this.id = id;
         this.description = description;
         this.approvalType = approvalType;
         this.policyId = policyId;
         this.repairShopId = repairShopId;
         this.clientId = clientId;
+        this.insurerId = insurerId;
 
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.startDate = formatter.format(startDate.getTime());
@@ -110,6 +113,14 @@ public class OccurrenceDTO implements Serializable {
         this.clientId = clientId;
     }
 
+    public int getInsurerId() {
+        return insurerId;
+    }
+
+    public void setInsurerId(int insurerId) {
+        this.insurerId = insurerId;
+    }
+
     public static OccurrenceDTO from(Occurrence occurrence) {
         return new OccurrenceDTO(
                 occurrence.getId(),
@@ -119,7 +130,8 @@ public class OccurrenceDTO implements Serializable {
                 occurrence.getEndDate(),
                 occurrence.getPolicyId(),
                 occurrence.getRepairShopId(),
-                occurrence.getClient().getId()
+                occurrence.getClient().getId(),
+                occurrence.getInsurerId()
         );
     }
 
