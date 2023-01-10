@@ -5,8 +5,6 @@ import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Stateless
@@ -14,8 +12,15 @@ public class PolicyBean {
     @Inject
     Supervisor supervisor;
 
-    public List<Policy> getAllPolicies() {
+    public List<Policy> getAllPolicies()
+    {
         return supervisor.getPolicies();
+    }
+
+    public List<Policy> findAll(List<Integer> policiesIds) {
+        List<Policy> policies = supervisor.getPolicies();
+        policies.removeIf(policy -> !policiesIds.contains(policy.getId()));
+        return policies;
     }
 
     public Policy find(int id) {

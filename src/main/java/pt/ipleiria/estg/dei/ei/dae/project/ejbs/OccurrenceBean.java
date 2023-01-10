@@ -18,6 +18,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -66,10 +67,22 @@ public class OccurrenceBean {
     }
 
     public List<Occurrence> getAllOccurrences() {
-        // remember, maps to: “SELECT c FROM Courses c ORDER BY c.name”
+        List<Policy> policies;
+        List<Integer> ids = new ArrayList<>();
+
         List<Occurrence> occurrences = (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrences").getResultList();
+
         for (Occurrence occurrence : occurrences) {
-            occurrence.setPolicy(policyBean.find(occurrence.getPolicyId()));
+            ids.add(occurrence.getPolicyId());
+        }
+
+        policies = policyBean.findAll(ids);
+        for (Occurrence occurrence : occurrences) {
+            for (Policy policy : policies) {
+                if (occurrence.getPolicyId() == policy.getId()) {
+                    occurrence.setPolicy(policy);
+                }
+            }
         }
         return occurrences;
     }

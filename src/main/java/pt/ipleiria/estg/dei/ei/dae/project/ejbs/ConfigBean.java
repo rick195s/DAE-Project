@@ -25,6 +25,9 @@ public class ConfigBean {
     ClientBean clientBean;
 
     @EJB
+    PolicyBean policyBean;
+
+    @EJB
     UserBean userBean;
 
     @EJB
@@ -76,7 +79,7 @@ public class ConfigBean {
     private void createOccurrences() {
         for (int i = 0; i < 20; i++) {
             try {
-                occurrenceBean.create(supervisor.getPolicies().get(0).getId(), faker.lorem().sentence(10), i+1);
+                occurrenceBean.create(policyBean.getAllPolicies().get(0).getId(), faker.lorem().sentence(10), i+1);
             } catch (OccurrenceSmallDescriptionException e) {
                 throw new RuntimeException(e);
             }
