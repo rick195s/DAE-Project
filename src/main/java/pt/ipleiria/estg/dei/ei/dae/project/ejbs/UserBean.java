@@ -68,6 +68,7 @@ public class UserBean {
 
     public Response update(int id, UserDTO userDTO) {
         User user = find(id);
+        String email = findUserByEmail(userDTO.getEmail()).getEmail();
 
         if (user == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -78,7 +79,7 @@ public class UserBean {
         }
 
         if (userDTO.getEmail() != null) {
-            if (findUserByEmail(userDTO.getEmail()) == null) {
+            if (findUserByEmail(userDTO.getEmail()) == null || userDTO.getEmail().equals(user.getEmail())) {
                 user.setEmail(userDTO.getEmail());
             } else {
                 return Response.status(Response.Status.CONFLICT).build();
@@ -101,8 +102,6 @@ public class UserBean {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
 
-        } else {
-            return Response.status(Response.Status.CONFLICT).build();
         }
 
         entityManager.merge(user);
