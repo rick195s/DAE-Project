@@ -135,7 +135,7 @@ public class OccurrenceService {
         return Response.ok(OccurrenceFileDTO.from(occurrenceFiles)).build();
     }
 
-    @PUT
+    @PATCH
     @Path("/{id}/approved")
     public Response approveOccurrence(@PathParam("id") int id) {
         Occurrence occurrence = occurrenceBean.find(id);
@@ -148,7 +148,7 @@ public class OccurrenceService {
                 .build();
     }
 
-    @PUT
+    @PATCH
     @Path("/{id}/declined")
     public Response declineOccurrence(@PathParam("id") int id) {
         Occurrence occurrence = occurrenceBean.find(id);
