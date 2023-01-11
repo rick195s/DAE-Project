@@ -1,15 +1,13 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import org.hibernate.Hibernate;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Historical;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.OccurrenceFile;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
+import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -65,11 +63,11 @@ public class OccurrenceBean {
         return occurrence;
     }
 
-    public List<Occurrence> getAllOccurrences() {
+    public List<Occurrence> getAllOccurrences(User user) {
         List<Policy> policies;
         List<Integer> ids = new ArrayList<>();
 
-        List<Occurrence> occurrences = (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrences").getResultList();
+        List<Occurrence> occurrences = getOccurrencesOfUser(user);
 
         for (Occurrence occurrence : occurrences) {
             ids.add(occurrence.getPolicyId());
@@ -84,6 +82,35 @@ public class OccurrenceBean {
             }
         }
         return occurrences;
+    }
+
+
+    public List<Occurrence> getOccurrencesOfUser(User user) {
+
+        switch (user.getRole()) {
+            case CLIENT:
+                return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesByClient")
+                        .setParameter("client", clientBean.find(user.getId()))
+                        .getResultList();
+            break;
+            case REPAIR_SHOP_EXPERT:
+                return (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrencesByRepairShopId")
+                        .setParameter("repairShopId", user.getRepairShop().getId())
+                        .getResultList();
+            break;
+            case INSURER_EXPERT:
+                return (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrencesByInsuranceCompanyId")
+                        .setParameter("insuranceCompanyId", user.getInsuranceCompany().getId())
+                        .getResultList();
+            break;
+            case ADMINISTRATOR:
+                return (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrences").getResultList();
+            break;
+            default:
+                return new ArrayList<>();
+        }
+
+
     }
 
     public Occurrence find(int id) {
@@ -115,15 +142,6 @@ public class OccurrenceBean {
 
         Hibernate.initialize(occurrence.getOccurenceHistoricalList());
         return occurrence.getOccurenceHistoricalList();
-    }
-
-    public List<Occurrence> getOccurrencesOfClient(int id) {
-        Client client = entityManager.find(Client.class, id);
-        if (client == null) {
-            throw new IllegalArgumentException("Client dont exists");
-        }
-
-        return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesByClient").setParameter("client", client).getResultList();
     }
 
     public void approveOccurrence(int id) {
