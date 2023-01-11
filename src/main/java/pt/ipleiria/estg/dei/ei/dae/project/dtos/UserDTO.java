@@ -67,8 +67,7 @@ public class UserDTO implements Serializable {
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
-                //Hibernate.getClass(user).getSimpleName()
-                user.getRole()
+                user.getRole().toString()
         );
     }
 

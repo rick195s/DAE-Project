@@ -82,6 +82,9 @@ public class UserService {
     @PUT
     @Path("/{id}")
     public Response updateUserWS(@PathParam("id") int id, UserDTO userDTO) {
-        return userBean.update(id, userDTO);
+        userBean.update(id, userDTO);
+
+        User user = userBean.find(id);
+        return Response.status(Response.Status.OK).entity(UserDTO.from(user)).build();
     }
 }

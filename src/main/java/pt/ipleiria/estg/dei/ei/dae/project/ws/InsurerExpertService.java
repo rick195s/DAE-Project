@@ -44,7 +44,7 @@ public class InsurerExpertService {
                     insurerExpert.getId(),
                     insurerExpert.getName(),
                     insurerExpert.getEmail(),
-                    insurerExpert.getRole()
+                    insurerExpert.getRole().toString()
             );
         }
 

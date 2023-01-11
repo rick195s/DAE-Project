@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.pojos;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
+import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,7 +15,7 @@ public class InsurerExpert extends User implements Serializable {
     public InsurerExpert() {
     }
 
-    public InsurerExpert( String name, String email, String password, String role, Insurer insurer) {
+    public InsurerExpert( String name, String email, String password, Role role, Insurer insurer) {
         super( name, email, password, role);
         this.insurer = insurer;
     }

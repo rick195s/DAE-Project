@@ -34,7 +34,7 @@ public class ClientService {
                 client.getId(),
                 client.getName(),
                 client.getEmail(),
-                client.getRole(),
+                client.getRole().toString(),
                 client.getNIF_NIPC()
         );
     }
