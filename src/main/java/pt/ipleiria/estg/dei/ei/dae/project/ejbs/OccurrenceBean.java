@@ -7,7 +7,6 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
-import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -89,23 +88,19 @@ public class OccurrenceBean {
 
         switch (user.getRole()) {
             case CLIENT:
-                return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesByClient")
+                return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesOfClient")
                         .setParameter("client", clientBean.find(user.getId()))
                         .getResultList();
-            break;
             case REPAIR_SHOP_EXPERT:
-                return (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrencesByRepairShopId")
-                        .setParameter("repairShopId", user.getRepairShop().getId())
+                return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesOfRepairExpert")
+                        .setParameter("repairShopId", 1)
                         .getResultList();
-            break;
-            case INSURER_EXPERT:
+            /* TODO case INSURER_EXPERT:
                 return (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrencesByInsuranceCompanyId")
                         .setParameter("insuranceCompanyId", user.getInsuranceCompany().getId())
-                        .getResultList();
-            break;
+                        .getResultList();*/
             case ADMINISTRATOR:
                 return (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrences").getResultList();
-            break;
             default:
                 return new ArrayList<>();
         }
