@@ -36,9 +36,13 @@ public class UserBean {
     }
 
     public User findUserByEmail(String email) {
-        return (User) entityManager.createNamedQuery("getUserByEmail")
-                .setParameter("email", email)
-                .getSingleResult();
+        try {
+            return (User) entityManager.createNamedQuery("getUserByEmail")
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public User findOrFail(String email) {
