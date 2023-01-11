@@ -7,12 +7,14 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 import javax.ejb.EJB;
+import javax.json.JsonArray;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Path("users") // relative url web path for this service

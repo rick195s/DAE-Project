@@ -8,6 +8,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.json.JsonArray;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
@@ -69,20 +70,7 @@ public class UserBean {
         if (user == null) {
             throw new EntityNotFoundException("User with id " + id + " not found");
         }
-
-        if (userDTO.getName() != null) {
-            user.setName(userDTO.getName());
-        }
-
-
-        if (userDTO.getRole() != null && !userDTO.getRole().equals("ADMINISTRATOR")) {
-            try {
-                user.setRole(Role.valueOf(userDTO.getRole()));
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Role " + userDTO.getRole() + " not found");
-            }
-        }
-
+        user.setName(userDTO.getName());
 
         entityManager.merge(user);
     }
