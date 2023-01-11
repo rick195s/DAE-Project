@@ -1,6 +1,10 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.InsurerExpert;
+
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class InsurerExpertDTO extends UserDTO implements Serializable {
 
@@ -27,5 +31,18 @@ public class InsurerExpertDTO extends UserDTO implements Serializable {
 
     public void setInsurerId(int id) {
         this.insurerId.setId(id);
+    }
+
+    public static InsurerExpertDTO from(InsurerExpert insurerExpert) {
+        return new InsurerExpertDTO(
+                insurerExpert.getId(),
+                insurerExpert.getName(),
+                insurerExpert.getEmail(),
+                insurerExpert.getRole()
+        );
+    }
+
+    public static List<InsurerExpertDTO> insurerExpertFrom(List<InsurerExpert> insurerExperts) {
+        return insurerExperts.stream().map(InsurerExpertDTO::from).collect(Collectors.toList());
     }
 }

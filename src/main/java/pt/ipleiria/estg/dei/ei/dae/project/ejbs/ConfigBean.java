@@ -77,9 +77,11 @@ public class ConfigBean {
     }
 
     private void createOccurrences() {
-        for (int i = 0; i < 20; i++) {
+        List<Policy> policies = policyBean.getAllPolicies();
+        int max = Math.min(policies.size(), 20);
+        for (int i = 0; i < max; i++) {
             try {
-                occurrenceBean.create(policyBean.getAllPolicies().get(0).getId(), faker.lorem().sentence(10), i+1);
+                occurrenceBean.create(policies.get(i).getId(), faker.lorem().sentence(10), i+1);
             } catch (OccurrenceSmallDescriptionException e) {
                 throw new RuntimeException(e);
             }

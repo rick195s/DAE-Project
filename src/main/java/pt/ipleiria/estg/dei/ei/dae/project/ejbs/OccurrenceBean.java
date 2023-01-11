@@ -16,7 +16,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,12 +38,12 @@ public class OccurrenceBean {
     @EJB
     ClientBean clientBean;
 
-    public Occurrence create(int policyId, String description, int id) throws OccurrenceSmallDescriptionException {
+    public Occurrence create(int policyId, String description, int clientId) throws OccurrenceSmallDescriptionException {
         if (description.length() < 10) {
             throw new OccurrenceSmallDescriptionException(description);
         }
 
-        Client client = clientBean.find(id);
+        Client client = clientBean.find(clientId);
         if (client == null) {
             throw new EntityNotFoundException("Client dont exists");
         }
