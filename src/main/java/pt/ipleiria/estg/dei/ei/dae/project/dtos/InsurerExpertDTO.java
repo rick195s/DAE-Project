@@ -38,7 +38,7 @@ public class InsurerExpertDTO extends UserDTO implements Serializable {
                 insurerExpert.getId(),
                 insurerExpert.getName(),
                 insurerExpert.getEmail(),
-                insurerExpert.getRole()
+                insurerExpert.getRole().toString()
         );
     }
 

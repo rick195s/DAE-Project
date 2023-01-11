@@ -174,4 +174,20 @@ public class OccurrenceBean {
         entityManager.merge(occurrence);
 
     }
+
+    public void setCustomOccurrenceRepairShop(int id, String name, String email, long phone) {
+        Occurrence occurrence = find(id);
+        if (occurrence == null) {
+            throw new EntityNotFoundException("Occurrence dont exists");
+        }
+
+        RepairShop repairShop = repairShopBean.create(name, email, phone);
+        if (repairShop == null) {
+            throw new EntityNotFoundException("Repair Shop dont exists");
+        }
+
+        occurrence.setRepairShop(repairShop);
+
+        entityManager.merge(occurrence);
+    }
 }

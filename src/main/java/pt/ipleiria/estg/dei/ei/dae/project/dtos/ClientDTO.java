@@ -33,7 +33,7 @@ public class ClientDTO extends UserDTO implements Serializable {
                 client.getId(),
                 client.getName(),
                 client.getEmail(),
-                client.getRole(),
+                client.getRole().toString(),
                 client.getNIF_NIPC()
         );
     }

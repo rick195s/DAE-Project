@@ -6,6 +6,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.HistoricalDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceFileDTO;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.RepairShopDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.detailed.DetailedOccurrenceDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.OccurrenceBean;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.OccurrenceFileBean;
@@ -152,8 +153,15 @@ public class OccurrenceService {
 
     @PATCH
     @Path("/{id}/repair-shop/{repairShopId}")
-    public Response declineOccurrence(@PathParam("id") int id, @PathParam("repairShopId") int repairShopId) {
+    public Response setOccurrenceRepairShop(@PathParam("id") int id, @PathParam("repairShopId") int repairShopId) {
         occurrenceBean.setOccurrenceRepairShop(id, repairShopId);
+        return Response.ok(toDetailedDTO(occurrenceBean.find(id))).build();
+    }
+
+    @POST
+    @Path("/{id}/repair-shop")
+    public Response setCustomOccurrenceRepairShop(@PathParam("id") int id, RepairShopDTO repairShopDTO) {
+        occurrenceBean.setCustomOccurrenceRepairShop(id, repairShopDTO.getName(), repairShopDTO.getEmail(), repairShopDTO.getPhone());
         return Response.ok(toDetailedDTO(occurrenceBean.find(id))).build();
     }
 
