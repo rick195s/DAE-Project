@@ -1,5 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.entities;
 
+import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -10,7 +12,7 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllUsers",
-                query = "SELECT u FROM User u ORDER BY u.id" // JPQL
+                query = "SELECT u FROM User u ORDER BY u.role, u.id" // JPQL
         ),
         @NamedQuery(
                 name = "getUserByEmail",
@@ -45,9 +47,9 @@ public class User {
     protected String email;
 
     @NotNull
-    protected String role;
+    protected Role role;
 
-    public User(String name, String email, String password, String role) {
+    public User(String name, String email, String password, Role role) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -89,15 +91,15 @@ public class User {
         this.name = name;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-   @Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

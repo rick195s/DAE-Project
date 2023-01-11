@@ -48,7 +48,7 @@ public class ConfigBean {
         createInsurerExperts();
         // populateMockAPI();
 
-       createOccurrences();
+       //createOccurrences();
 
     }
 

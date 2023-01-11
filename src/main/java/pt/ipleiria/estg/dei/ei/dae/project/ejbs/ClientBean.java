@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Hasher;
+import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -18,7 +19,7 @@ public class ClientBean {
     private Hasher hasher;
 
     public void create(String name, String email, String password, String role, int NIF_NIPC) {
-        Client client = new Client(name, email, hasher.hash(password), role, NIF_NIPC);
+        Client client = new Client(name, email, hasher.hash(password), Role.valueOf(role), NIF_NIPC);
         entityManager.persist(client);
     }
 
