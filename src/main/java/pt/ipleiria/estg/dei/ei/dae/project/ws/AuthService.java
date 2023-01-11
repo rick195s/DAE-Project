@@ -51,10 +51,7 @@ public class AuthService {
                 userDTO.getPassword(),
                 Role.CLIENT.toString()
         );
-
-        String token = issuer.issue(userDTO.getEmail());
-
-        return Response.status(Response.Status.CREATED).entity(token).build();
+        return Response.status(Response.Status.CREATED).build();
     }
 
     @GET
