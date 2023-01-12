@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import org.hibernate.Hibernate;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.UpdatePasswordDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Hasher;
@@ -88,6 +89,30 @@ public class UserBean {
         }
 
 
+        entityManager.merge(user);
+    }
+
+    public void updatePassword(String userEmail, UpdatePasswordDTO updatePasswordDTO) {
+        User user = findUserByEmail(userEmail);
+        if (user == null) {
+            throw new EntityNotFoundException("User don't exists");
+        }
+
+        //verify if user password is not equal to old password
+        if (!user.getPassword().equals(hasher.hash(updatePasswordDTO.getOldPassword()))) {
+            throw new IllegalArgumentException("Old password is incorrect"); //TODO: criar um exception mapper para este erro
+        }
+        //verify if new password is not equal to confirm password
+        if (!updatePasswordDTO.getNewPassword().equals(updatePasswordDTO.getConfirmNewPassword())) {
+            throw new IllegalArgumentException("New password and confirm password are not equal"); //TODO: criar um exception mapper para este erro
+        }
+
+        //verify if old password is  equal to new password
+        if (updatePasswordDTO.getOldPassword().equals(updatePasswordDTO.getNewPassword())) {
+            throw new IllegalArgumentException("Old password and new password are equal"); //TODO: criar um exception mapper para este erro
+        }
+
+        user.setPassword(hasher.hash(updatePasswordDTO.getNewPassword()));
         entityManager.merge(user);
     }
 }
