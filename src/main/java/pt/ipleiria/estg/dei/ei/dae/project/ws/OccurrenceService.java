@@ -26,8 +26,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -110,32 +110,24 @@ public class OccurrenceService {
         return Response.status(Response.Status.CREATED).entity(OccurrenceDTO.from(occurrence)).build();
     }
 
+   //Create a occurrence with a file.csv
+    @POST
+    @Path("/csv")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response createOccurrenceWithCSV(MultipartFormDataInput input) throws IOException, OccurrenceSmallDescriptionException, EntityNotFoundException {
+        occurrenceBean.createOccurrenceWithCSV(input);
+        return Response.status(Response.Status.CREATED).build();
+    }
+
+
+
 
     @POST
     @Path("{id}/files")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response upload(@PathParam("id") int id, MultipartFormDataInput input) throws IOException {
-        Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
-
-        List<InputPart> inputParts = uploadForm.get("file");
-
-        var occurrenceFiles = new LinkedList<OccurrenceFile>();
-
-        FileUtils fileUtils = new FileUtils();
-
-        for (InputPart inputPart : inputParts) {
-
-            String filename = fileUtils.getFilename(inputPart.getHeaders());
-            String ext = FilenameUtils.getExtension(filename);
-            filename = FilenameUtils.removeExtension(filename) + "_" + System.currentTimeMillis() + "." + ext;
-
-            String filepath = fileUtils.upload("occurrences" + File.separator + id, filename, inputPart);
-
-            var occurrenceFile = occurrenceFileBean.create(id, filename, filepath);
-            occurrenceFiles.add(occurrenceFile);
-        }
-
+        List<OccurrenceFile> occurrenceFiles = occurrenceBean.uploadFiles(id, input);
         return Response.ok(OccurrenceFileDTO.from(occurrenceFiles)).build();
     }
 
