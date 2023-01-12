@@ -3,7 +3,9 @@ package pt.ipleiria.estg.dei.ei.dae.project.ws;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.RepairShopDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.RepairShopBean;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
+import pt.ipleiria.estg.dei.ei.dae.project.security.Authenticated;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -18,8 +20,9 @@ public class RepairShopService {
     @EJB
     private RepairShopBean repairShopBean;
 
-    @GET // means: to call this endpoint, we need to use the HTTP GET method
-    @Path("/") // means: the relative url path is “/api/repairshops”
+    @GET
+    @Authenticated
+    @Path("/")
     public List<RepairShopDTO> getAllRepairShopsWS() {
         return RepairShopDTO.from(repairShopBean.getAllRepairShops());
     }
