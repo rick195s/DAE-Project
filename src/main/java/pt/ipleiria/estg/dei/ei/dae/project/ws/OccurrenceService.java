@@ -1,7 +1,5 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
-import org.apache.commons.io.FilenameUtils;
-import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.HistoricalDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceDTO;
@@ -16,9 +14,9 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.OccurrenceFile;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Authenticated;
-import pt.ipleiria.estg.dei.ei.dae.project.utils.FileUtils;
 
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.*;
@@ -27,10 +25,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 @Path("occurrences") // relative url web path for this service
 @Produces({MediaType.APPLICATION_JSON}) // injects header “Content-Type: application/json”
@@ -66,6 +61,7 @@ public class OccurrenceService {
     }
 
     @GET
+    @Authenticated
     @Path("/{id}")
     public Response getOccurrence(@PathParam("id") int id) {
         Occurrence occurrence = occurrenceBean.find(id);
@@ -78,6 +74,7 @@ public class OccurrenceService {
     }
 
     @GET
+    @Authenticated
     @Path("{id}/files")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOccurrenceFiles(@PathParam("id") int id) {
@@ -86,6 +83,7 @@ public class OccurrenceService {
     }
 
     @GET
+    @Authenticated
     @Path("{occurrenceId}/files/download/{fileId}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response download(@PathParam("occurrenceId") int occurrenceId, @PathParam("fileId") int fileId) {
@@ -99,6 +97,8 @@ public class OccurrenceService {
 
 
     @POST
+    @Authenticated
+    @RolesAllowed({"ADMINISTRATOR", "CLIENT"})
     @Path("/")
     public Response createOccurrence(OccurrenceDTO occurrenceDTO) throws OccurrenceSmallDescriptionException {
         Occurrence occurrence = occurrenceBean.create(
@@ -112,6 +112,8 @@ public class OccurrenceService {
 
    //Create a occurrence with a file.csv
     @POST
+    @Authenticated
+    @RolesAllowed({"ADMINISTRATOR", "CLIENT"})
     @Path("/csv")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response createOccurrenceWithCSV(MultipartFormDataInput input) throws IOException, OccurrenceSmallDescriptionException, EntityNotFoundException {
@@ -120,9 +122,8 @@ public class OccurrenceService {
     }
 
 
-
-
     @POST
+    @Authenticated
     @Path("{id}/files")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
@@ -132,6 +133,8 @@ public class OccurrenceService {
     }
 
     @PATCH
+    @Authenticated
+    @RolesAllowed({"ADMINISTRATOR", "INSURER_EXPERT"})
     @Path("/{id}/approved")
     public Response approveOccurrence(@PathParam("id") int id) {
         occurrenceBean.approveOccurrence(id);
@@ -139,6 +142,8 @@ public class OccurrenceService {
     }
 
     @PATCH
+    @Authenticated
+    @RolesAllowed({"ADMINISTRATOR", "INSURER_EXPERT"})
     @Path("/{id}/declined")
     public Response declineOccurrence(@PathParam("id") int id) {
         occurrenceBean.declineOccurrence(id);
@@ -147,6 +152,8 @@ public class OccurrenceService {
 
 
     @PATCH
+    @Authenticated
+    @RolesAllowed({"ADMINISTRATOR", "CLIENT"})
     @Path("/{id}/repair-shop/{repairShopId}")
     public Response setOccurrenceRepairShop(@PathParam("id") int id, @PathParam("repairShopId") int repairShopId) {
         occurrenceBean.setOccurrenceRepairShop(id, repairShopId);
@@ -154,6 +161,8 @@ public class OccurrenceService {
     }
 
     @POST
+    @Authenticated
+    @RolesAllowed({"ADMINISTRATOR", "CLIENT"})
     @Path("/{id}/repair-shop")
     public Response setCustomOccurrenceRepairShop(@PathParam("id") int id, RepairShopDTO repairShopDTO) {
         occurrenceBean.setCustomOccurrenceRepairShop(id, repairShopDTO.getName(), repairShopDTO.getEmail(), repairShopDTO.getPhone());
