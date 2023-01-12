@@ -3,8 +3,8 @@ package pt.ipleiria.estg.dei.ei.dae.project.ws;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.PolicyDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.PolicyTypeDetailsDTO;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.detailed.DetailedPolicyDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.PolicyBean;
-import pt.ipleiria.estg.dei.ei.dae.project.ejbs.PolicyTypeDetailsBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyTypeDetail;
@@ -22,8 +22,6 @@ public class PolicyService {
     @EJB
     private PolicyBean policyBean;
 
-    @EJB
-    private PolicyTypeDetailsBean policyTypeDetail;
 
     @GET // means: to call this endpoint, we need to use the HTTP GET method
     @Path("/") // means: the relative url path is “/api/students/all”
@@ -35,7 +33,7 @@ public class PolicyService {
     @Path("/{id}")
     public PolicyDTO getPolicyDetails(@PathParam("id") int id) {
         Policy policy = policyBean.find(id);
-        PolicyTypeDetail policyTypeDetail = this.policyTypeDetail.find(policy.getPolicyTypeDetailId());
+        PolicyTypeDetail policyTypeDetail = this.policyBean.getPolicyDetails(policy.getPolicyTypeDetailId());
 
 
         if (policy != null && policyTypeDetail != null) {
@@ -57,13 +55,11 @@ public class PolicyService {
                 policy.getState(),
                 policy.getStartDate(),
                 policy.getEndDate()
-
         );
     }
 
-    private PolicyDTO toDTODetailed(Policy policy, PolicyTypeDetail policyTypeDetail) {
-
-        return new PolicyDTO(
+    private DetailedPolicyDTO toDTODetailed(Policy policy, PolicyTypeDetail policyTypeDetail) {
+        return new DetailedPolicyDTO(
                 policy.getId(),
                 policy.getClientId(),
                 policy.getInsurerId(),
