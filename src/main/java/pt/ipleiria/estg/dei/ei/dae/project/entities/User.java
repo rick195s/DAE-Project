@@ -47,6 +47,7 @@ public class User {
     protected String email;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     protected Role role;
 
     public User(String name, String email, String password, Role role) {
