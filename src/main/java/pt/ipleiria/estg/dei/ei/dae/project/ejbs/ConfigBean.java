@@ -62,6 +62,7 @@ public class ConfigBean {
         for (int i = 0; i < 6; i++) {
             userBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123",String.valueOf(Role.ADMINISTRATOR));
         }
+        userBean.create("manel", "manel@gmail.com", "123",String.valueOf(Role.ADMINISTRATOR));
     }
 
     private void createRepairShopExperts() {

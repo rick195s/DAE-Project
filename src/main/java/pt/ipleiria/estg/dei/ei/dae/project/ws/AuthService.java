@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.Auth;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.ConfirmPassword;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
@@ -50,5 +51,14 @@ public class AuthService {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok(UserDTO.from(user)).build();
+    }
+
+    @PUT
+    @Authenticated
+    @Path("/updatePassword")
+    public Response updatePassword(@Valid ConfirmPassword confirmPassword) {
+        String userEmail = securityContext.getUserPrincipal().getName();
+        userBean.updatePassword(userEmail, confirmPassword);
+        return Response.ok().build();
     }
 }

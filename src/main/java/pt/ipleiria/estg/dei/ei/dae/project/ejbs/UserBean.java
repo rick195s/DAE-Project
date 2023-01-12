@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import org.hibernate.Hibernate;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.ConfirmPassword;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Hasher;
@@ -9,8 +10,11 @@ import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +27,9 @@ public class UserBean {
 
     @Inject
     private Hasher hasher;
+
+    @Context
+    private SecurityContext securityContext;
 
     public void create(String name, String email, String password, String role) {
         User user = new User(name, email, hasher.hash(password), role);
@@ -106,5 +113,29 @@ public class UserBean {
 
         entityManager.merge(user);
         return Response.status(Response.Status.OK).entity(userDTO.from(user)).build();
+    }
+
+    public void updatePassword(String userEmail, ConfirmPassword confirmPassword) {
+        User user = findUserByEmail(userEmail);
+        if (user == null) {
+            throw new EntityNotFoundException("User don't exists");
+        }
+
+        //verify if user password is not equal to old password
+        if (!user.getPassword().equals(hasher.hash(confirmPassword.getOldPassword()))) {
+            throw new IllegalArgumentException("Old password is incorrect"); //TODO: criar um exception mapper para este erro
+        }
+        //verify if new password is not equal to confirm password
+        if (!confirmPassword.getNewPassword().equals(confirmPassword.getConfirmNewPassword())) {
+            throw new IllegalArgumentException("New password and confirm password are not equal"); //TODO: criar um exception mapper para este erro
+        }
+
+        //verify if old password is  equal to new password
+        if (confirmPassword.getOldPassword().equals(confirmPassword.getNewPassword())) {
+            throw new IllegalArgumentException("Old password and new password are equal"); //TODO: criar um exception mapper para este erro
+        }
+
+        user.setPassword(hasher.hash(confirmPassword.getNewPassword()));
+        entityManager.merge(user);
     }
 }
