@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 
 import java.io.Serializable;
@@ -8,6 +9,7 @@ import java.util.stream.Collectors;
 
 public class ClientDTO extends UserDTO implements Serializable {
 
+    @JsonProperty("nif_nipc")
     int NIF_NIPC;
 
     public ClientDTO(int id, String name, String email, String role, int NIF_NIPC) {

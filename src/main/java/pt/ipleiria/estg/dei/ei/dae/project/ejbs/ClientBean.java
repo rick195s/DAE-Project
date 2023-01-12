@@ -18,8 +18,12 @@ public class ClientBean {
     @Inject
     private Hasher hasher;
 
-    public void create(String name, String email, String password, String role, int NIF_NIPC) {
-        Client client = new Client(name, email, hasher.hash(password), Role.valueOf(role), NIF_NIPC);
+    public void create(String name, String email, String password, int NIF_NIPC) {
+        if (NIF_NIPC < 100000000 || NIF_NIPC > 999999999) {
+            throw new IllegalArgumentException("NIF/NIPC must have 9 digits");
+        }
+
+        Client client = new Client(name, email, hasher.hash(password), Role.CLIENT, NIF_NIPC);
         entityManager.persist(client);
     }
 
