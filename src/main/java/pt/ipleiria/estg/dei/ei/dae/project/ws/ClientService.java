@@ -15,17 +15,15 @@ import java.util.stream.Collectors;
 @Path("clients") // relative url web path for this service
 @Produces({MediaType.APPLICATION_JSON}) // injects header “Content-Type: application/json”
 @Consumes({MediaType.APPLICATION_JSON}) // injects header “Accept: application/json”
-@Authenticated
-@RolesAllowed({"ADMINISTRATOR", "CLIENT"})
 public class ClientService {
     @EJB
     private ClientBean clientBean;
 
-    @GET // means: to call this endpoint, we need to use the HTTP GET method
+    @GET
     @Authenticated
     @RolesAllowed({"ADMINISTRATOR"})
-    @Path("/") // means: the relative url path is “/api/students/all”
-    public List<ClientDTO> getAllUsersWS() {
+    @Path("/")
+    public List<ClientDTO> getAllClientsWS() {
         return ClientDTO.clientFrom(clientBean.getAllClients());
     }
 }

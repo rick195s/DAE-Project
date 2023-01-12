@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.security;
 
 import org.jboss.resteasy.core.ResourceMethodInvoker;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.ErrorDTO;
 
 import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
@@ -13,7 +14,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -22,8 +22,8 @@ import java.util.HashSet;
 @Authenticated
 @Priority(Priorities.AUTHORIZATION)
 public class AuthorizationFilter implements ContainerRequestFilter {
-    private static final Response ACCESS_DENIED = Response.status(401).entity("Access denied for this resource").build();
-    private static final Response ACCESS_FORBIDDEN = Response.status(403).entity("Access forbidden for this resource").build();
+    private static final Response ACCESS_DENIED = Response.status(401).entity(new ErrorDTO("Access denied for this resource")).build();
+    private static final Response ACCESS_FORBIDDEN = Response.status(403).entity(new ErrorDTO("Access forbidden for this resource")).build();
 
     @Context
     private SecurityContext securityContext;
