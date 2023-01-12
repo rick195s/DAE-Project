@@ -5,7 +5,9 @@ import pt.ipleiria.estg.dei.ei.dae.project.dtos.detailed.DetailedPolicyDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.PolicyBean;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyTypeDetail;
+import pt.ipleiria.estg.dei.ei.dae.project.security.Authenticated;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -18,13 +20,17 @@ public class PolicyService {
     @EJB
     private PolicyBean policyBean;
 
-    @GET // means: to call this endpoint, we need to use the HTTP GET method
-    @Path("/") // means: the relative url path is “/api/students/all”
+    @GET
+    @Authenticated
+    @RolesAllowed({"ADMINISTRATOR", "CLIENT"})
+    @Path("/")
     public List<PolicyDTO> getAllPoliciesWS() {
         return PolicyDTO.from(policyBean.getAllPolicies());
     }
 
     @GET
+    @Authenticated
+    @RolesAllowed({"ADMINISTRATOR", "CLIENT"})
     @Path("/{id}")
     public PolicyDTO getPolicyDetails(@PathParam("id") int id) {
         Policy policy = policyBean.find(id);
