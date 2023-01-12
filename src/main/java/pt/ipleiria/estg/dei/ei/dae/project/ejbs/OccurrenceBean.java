@@ -36,6 +36,9 @@ public class OccurrenceBean {
     RepairShopBean repairShopBean;
 
     @EJB
+    RepairShopExpertBean repairShopExpertBean;
+
+    @EJB
     OccurrenceFileBean occurrenceFileBean;
 
     @EJB
@@ -121,8 +124,12 @@ public class OccurrenceBean {
                         .setParameter("client", clientBean.find(user.getId()))
                         .getResultList();
             case REPAIR_SHOP_EXPERT:
-                return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesOfRepairExpert")
-                        .setParameter("repairShopId", 1)
+                RepairShopExpert repairShopExpert = repairShopExpertBean.find(user.getId());
+                if (repairShopExpert == null) {
+                    throw new EntityNotFoundException("RepairShopExpert dont exists");
+                }
+                return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesOfRepairShop")
+                        .setParameter("repairShopId", repairShopExpert.getRepairShopId())
                         .getResultList();
             /* TODO case INSURER_EXPERT:
                 return (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrencesByInsuranceCompanyId")

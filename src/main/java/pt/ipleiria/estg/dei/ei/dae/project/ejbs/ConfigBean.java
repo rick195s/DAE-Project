@@ -25,7 +25,13 @@ public class ConfigBean {
     PolicyBean policyBean;
 
     @EJB
+    RepairShopBean repairShopBean;
+
+    @EJB
     UserBean userBean;
+
+    @EJB
+    RepairShopExpertBean repairShopExpertBean;
 
     @EJB
     OccurrenceBean occurrenceBean;
@@ -63,8 +69,10 @@ public class ConfigBean {
     }
 
     private void createRepairShopExperts() {
-        for (int i = 0; i < 6; i++) {
-            userBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123",String.valueOf(Role.REPAIR_SHOP_EXPERT));
+        List<RepairShop> repairShops = repairShopBean.getAllRepairShops();
+        int max = Math.min(repairShops.size(), 20);
+        for (int i = 0; i < max; i++) {
+            repairShopExpertBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123", repairShops.get(i).getId());
         }
     }
 

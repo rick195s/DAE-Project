@@ -21,10 +21,6 @@ import java.util.Objects;
         @NamedQuery(
                 name = "getAllAdministrators",
                 query = "SELECT u FROM User u WHERE u.role = 'admin' ORDER BY u.id" // JPQL
-        ),
-        @NamedQuery(
-                name = "getAllRepairShopExperts",
-                query = "SELECT u FROM User u WHERE u.role = 'repair_shop_expert' ORDER BY u.id" // JPQL
         )
 })
 @Table(

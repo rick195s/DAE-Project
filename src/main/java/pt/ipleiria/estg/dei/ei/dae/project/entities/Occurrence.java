@@ -22,7 +22,7 @@ import java.util.List;
         ),
         // every repair shop expert can see the occurrences that are assigned to his repair shop
         @NamedQuery(
-                name = "getOccurrencesOfRepairExpert",
+                name = "getOccurrencesOfRepairShop",
                 query = "SELECT o FROM Occurrence o WHERE o.repairShopId = :repairShopId AND o.approvalType = 'APPROVED' ORDER BY o.id" // JPQL
         )
 })
