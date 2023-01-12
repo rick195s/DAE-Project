@@ -100,7 +100,7 @@ public class OccurrenceService {
 
     @POST
     @Path("/")
-    public Response createOccurrence(OccurrenceDTO occurrenceDTO) throws OccurrenceSmallDescriptionException, EntityNotFoundException {
+    public Response createOccurrence(OccurrenceDTO occurrenceDTO) throws OccurrenceSmallDescriptionException {
         Occurrence occurrence = occurrenceBean.create(
                 occurrenceDTO.getPolicyId(),
                 occurrenceDTO.getDescription(),

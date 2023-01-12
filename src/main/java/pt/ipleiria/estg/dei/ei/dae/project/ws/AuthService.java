@@ -2,8 +2,10 @@ package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.Auth;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.ConfirmPassword;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.ClientCreateDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserCreateDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserDTO;
+import pt.ipleiria.estg.dei.ei.dae.project.ejbs.ClientBean;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Authenticated;
@@ -29,6 +31,9 @@ public class AuthService {
     @EJB
     private UserBean userBean;
 
+    @EJB
+    private ClientBean clientBean;
+
     @Context
     private SecurityContext securityContext;
 
@@ -45,13 +50,9 @@ public class AuthService {
 
     @POST
     @Path("/register")
-    public Response registerUserWS(UserCreateDTO userDTO) {
-        userBean.create(
-                userDTO.getName(),
-                userDTO.getEmail(),
-                userDTO.getPassword(),
-                Role.CLIENT.toString()
-        );
+    public Response registerUserWS(ClientCreateDTO clientDTO) {
+        clientBean.create(clientDTO.getName(), clientDTO.getEmail(), clientDTO.getPassword(), clientDTO.getNIF_NIPC());
+
         return Response.status(Response.Status.CREATED).build();
     }
 

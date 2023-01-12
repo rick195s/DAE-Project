@@ -2,11 +2,8 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import com.github.javafaker.Faker;
 import pt.ipleiria.estg.dei.ei.dae.project.Supervisor;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyGateway;
-import pt.ipleiria.estg.dei.ei.dae.project.gateways.RepairShopGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.*;
 import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
@@ -54,7 +51,7 @@ public class ConfigBean {
 
     private void createClients() {
         for (int i = 0; i < 20; i++) {
-            clientBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123", String.valueOf(Role.CLIENT), ((int) faker.number().randomNumber(9, true)));
+            clientBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123", ((int) faker.number().randomNumber(9, true)));
         }
     }
 
