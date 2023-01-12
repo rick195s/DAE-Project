@@ -14,8 +14,8 @@ public class DetailedPolicyDTO extends PolicyDTO implements Serializable {
     public DetailedPolicyDTO() {
     }
 
-    public DetailedPolicyDTO(int id, int clientId, int insurerId, int policyTypeDetailId, List<OccurrenceDTO> occurrences, int policyObjectId, PolicyState state, String startDate, String endDate, PolicyTypeDetail policyTypeDetails) {
-        super(id, clientId, insurerId, policyTypeDetailId, occurrences, policyObjectId, state, startDate, endDate);
+    public DetailedPolicyDTO(int id, int clientId, int insurerId, int policyTypeDetailId, int policyObjectId, PolicyState state, String startDate, String endDate, PolicyTypeDetail policyTypeDetails) {
+        super(id, clientId, insurerId, policyTypeDetailId, policyObjectId, state, startDate, endDate);
         this.policyTypeDetails = policyTypeDetails;
     }
 
