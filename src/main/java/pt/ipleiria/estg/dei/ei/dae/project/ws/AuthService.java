@@ -1,11 +1,13 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.Auth;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserCreateDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Authenticated;
 import pt.ipleiria.estg.dei.ei.dae.project.security.TokenIssuer;
+import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
@@ -38,6 +40,18 @@ public class AuthService {
         }
 
         return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
+
+    @POST
+    @Path("/register")
+    public Response registerUserWS(UserCreateDTO userDTO) {
+        userBean.create(
+                userDTO.getName(),
+                userDTO.getEmail(),
+                userDTO.getPassword(),
+                Role.CLIENT.toString()
+        );
+        return Response.status(Response.Status.CREATED).build();
     }
 
     @GET

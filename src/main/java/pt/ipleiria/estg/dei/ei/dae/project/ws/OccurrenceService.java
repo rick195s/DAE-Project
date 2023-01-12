@@ -6,20 +6,26 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.HistoricalDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceFileDTO;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.RepairShopDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.detailed.DetailedOccurrenceDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.OccurrenceBean;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.OccurrenceFileBean;
+import pt.ipleiria.estg.dei.ei.dae.project.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.OccurrenceFile;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
+import pt.ipleiria.estg.dei.ei.dae.project.security.Authenticated;
 import pt.ipleiria.estg.dei.ei.dae.project.utils.FileUtils;
 
 
 import javax.ejb.EJB;
 import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -36,23 +42,21 @@ public class OccurrenceService {
     @EJB
     private OccurrenceFileBean occurrenceFileBean;
 
+    @EJB
+    private UserBean userBean;
+
+    @Context
+    private SecurityContext securityContext;
+
     @GET
+    @Authenticated
     @Path("/")
     public Response getOccurrencesWS() {
-        int clientId = 0;
         List<Occurrence> occurrences;
 
-        if (clientId == 1) {
-            occurrences = occurrenceBean.getOccurrencesOfClient(clientId);
-            if (occurrences != null) {
-                return Response.ok(OccurrenceDTO.from(occurrences)).build();
-            }
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity("ERROR_FINDING_OCCURRENCE")
-                    .build();
-        }
+        User user =  userBean.findUserByEmail(securityContext.getUserPrincipal().getName());
 
-        occurrences = occurrenceBean.getAllOccurrences();
+        occurrences = occurrenceBean.getAllOccurrences(user);
         if (occurrences != null) {
             return Response.ok(OccurrenceDTO.from(occurrences)).build();
         }
@@ -73,44 +77,6 @@ public class OccurrenceService {
                 .build();
     }
 
-    @PUT
-    @Path("/{id}/approved")
-    public Response ApproveOccurrence(@PathParam("id") int id) {
-        Occurrence occurrence = occurrenceBean.find(id);
-        if (occurrence != null) {
-            occurrenceBean.ApproveOccurrence(occurrence);
-            return Response.ok(toDetailedDTO(occurrence)).build();
-        }
-        return Response.status(Response.Status.NOT_FOUND)
-                .entity("ERROR_FINDING_OCCURRENCE")
-                .build();
-    }
-
-    @PUT
-    @Path("/{id}/declined")
-    public Response DeclineOccurrence(@PathParam("id") int id) {
-        Occurrence occurrence = occurrenceBean.find(id);
-        if (occurrence != null) {
-            occurrenceBean.DeclineOccurrence(occurrence);
-            return Response.ok(toDetailedDTO(occurrence)).build();
-        }
-        return Response.status(Response.Status.NOT_FOUND)
-                .entity("ERROR_FINDING_OCCURRENCE")
-                .build();
-    }
-
-    @POST
-    @Path("/")
-    public Response createOccurrence(OccurrenceDTO occurrenceDTO) throws OccurrenceSmallDescriptionException, EntityNotFoundException {
-        Occurrence occurrence = occurrenceBean.create(
-                occurrenceDTO.getPolicyId(),
-                occurrenceDTO.getDescription(),
-                occurrenceDTO.getClientId()
-        );
-
-        return Response.status(Response.Status.CREATED).entity(OccurrenceDTO.from(occurrence)).build();
-    }
-
     @GET
     @Path("{id}/files")
     @Produces(MediaType.APPLICATION_JSON)
@@ -129,6 +95,19 @@ public class OccurrenceService {
         response.header("Content-Disposition", "attachment;filename=" + occurrenceFile.getName());
 
         return response.build();
+    }
+
+
+    @POST
+    @Path("/")
+    public Response createOccurrence(OccurrenceDTO occurrenceDTO) throws OccurrenceSmallDescriptionException, EntityNotFoundException {
+        Occurrence occurrence = occurrenceBean.create(
+                occurrenceDTO.getPolicyId(),
+                occurrenceDTO.getDescription(),
+                occurrenceDTO.getClientId()
+        );
+
+        return Response.status(Response.Status.CREATED).entity(OccurrenceDTO.from(occurrence)).build();
     }
 
 
@@ -158,6 +137,35 @@ public class OccurrenceService {
         }
 
         return Response.ok(OccurrenceFileDTO.from(occurrenceFiles)).build();
+    }
+
+    @PATCH
+    @Path("/{id}/approved")
+    public Response approveOccurrence(@PathParam("id") int id) {
+        occurrenceBean.approveOccurrence(id);
+        return Response.ok(toDetailedDTO(occurrenceBean.find(id))).build();
+    }
+
+    @PATCH
+    @Path("/{id}/declined")
+    public Response declineOccurrence(@PathParam("id") int id) {
+        occurrenceBean.declineOccurrence(id);
+        return Response.ok(toDetailedDTO(occurrenceBean.find(id))).build();
+    }
+
+
+    @PATCH
+    @Path("/{id}/repair-shop/{repairShopId}")
+    public Response setOccurrenceRepairShop(@PathParam("id") int id, @PathParam("repairShopId") int repairShopId) {
+        occurrenceBean.setOccurrenceRepairShop(id, repairShopId);
+        return Response.ok(toDetailedDTO(occurrenceBean.find(id))).build();
+    }
+
+    @POST
+    @Path("/{id}/repair-shop")
+    public Response setCustomOccurrenceRepairShop(@PathParam("id") int id, RepairShopDTO repairShopDTO) {
+        occurrenceBean.setCustomOccurrenceRepairShop(id, repairShopDTO.getName(), repairShopDTO.getEmail(), repairShopDTO.getPhone());
+        return Response.ok(toDetailedDTO(occurrenceBean.find(id))).build();
     }
 
     private DetailedOccurrenceDTO toDetailedDTO(Occurrence occurrence) {

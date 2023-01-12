@@ -3,10 +3,12 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 import com.github.javafaker.Faker;
 import pt.ipleiria.estg.dei.ei.dae.project.Supervisor;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.RepairShopGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.*;
+import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -23,6 +25,12 @@ public class ConfigBean {
     ClientBean clientBean;
 
     @EJB
+    PolicyBean policyBean;
+
+    @EJB
+    UserBean userBean;
+
+    @EJB
     OccurrenceBean occurrenceBean;
 
     @Inject
@@ -35,6 +43,9 @@ public class ConfigBean {
         System.out.println("Hello Java EE!");
 
         createClients();
+        createAdmins();
+        createRepairShopExperts();
+        createInsurerExperts();
         // populateMockAPI();
 
        createOccurrences();
@@ -43,22 +54,34 @@ public class ConfigBean {
 
     private void createClients() {
         for (int i = 0; i < 20; i++) {
-            clientBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123","client", ((int) faker.number().randomNumber(9, true)));
+            clientBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123", String.valueOf(Role.CLIENT), ((int) faker.number().randomNumber(9, true)));
         }
     }
 
-    private void populateRepairShopsInAPI() {
-        RepairShopGateway repairShopGateway = new RepairShopGateway();
-        for (int i = 0; i < 20; i++) {
-            RepairShop repairShop = new RepairShop(faker.company().name(), faker.internet().emailAddress(), ((int) faker.number().randomNumber(9, true)));
-            repairShopGateway.postToMockAPI(repairShop);
+    private void createAdmins() {
+        for (int i = 0; i < 6; i++) {
+            userBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123",String.valueOf(Role.ADMINISTRATOR));
+        }
+    }
+
+    private void createRepairShopExperts() {
+        for (int i = 0; i < 6; i++) {
+            userBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123",String.valueOf(Role.REPAIR_SHOP_EXPERT));
+        }
+    }
+
+    private void createInsurerExperts() {
+        for (int i = 0; i < 6; i++) {
+            userBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123",String.valueOf(Role.INSURER_EXPERT));
         }
     }
 
     private void createOccurrences() {
-        for (int i = 0; i < 20; i++) {
+        List<Policy> policies = policyBean.getAllPolicies();
+        int max = Math.min(policies.size(), 20);
+        for (int i = 0; i < max; i++) {
             try {
-                occurrenceBean.create(1, faker.lorem().sentence(10), i+1);
+                occurrenceBean.create(policies.get(i).getId(), faker.lorem().sentence(10), i+1);
             } catch (OccurrenceSmallDescriptionException e) {
                 throw new RuntimeException(e);
             }
@@ -67,7 +90,6 @@ public class ConfigBean {
 
     private void populateMockAPI() {
         populatePoliciesInAPI();
-        populateRepairShopsInAPI();
     }
 
     private void populatePoliciesInAPI() {

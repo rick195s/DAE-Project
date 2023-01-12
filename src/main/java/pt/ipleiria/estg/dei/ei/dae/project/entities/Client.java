@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.entities;
 
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
+import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -29,7 +30,7 @@ public class Client extends User {
     private List<Occurrence> occurrences;
 
 
-    public Client(String name, String email, String password, String role, int NIF_NIPC) {
+    public Client(String name, String email, String password, Role role, int NIF_NIPC) {
         super(name, email, password, role);
         this.NIF_NIPC = NIF_NIPC;
         this.policies = new ArrayList<>();

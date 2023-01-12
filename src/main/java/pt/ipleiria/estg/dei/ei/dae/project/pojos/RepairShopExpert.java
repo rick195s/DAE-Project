@@ -1,17 +1,15 @@
 package pt.ipleiria.estg.dei.ei.dae.project.pojos;
 
-
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
+import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class RepairShopExpert extends User implements Serializable {
 
     RepairShop repairShop;
 
-    public RepairShopExpert(int id, String name, String email, String password, String role, RepairShop repairShop) {
+    public RepairShopExpert(int id, String name, String email, String password, Role role, RepairShop repairShop) {
         super(name, email, password, role);
         this.repairShop = repairShop;
     }

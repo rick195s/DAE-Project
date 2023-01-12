@@ -1,7 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
-import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
+import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -68,7 +68,7 @@ public class UserDTO implements Serializable {
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
-                Hibernate.getClass(user).getSimpleName()
+                user.getRole().toString()
         );
     }
 
