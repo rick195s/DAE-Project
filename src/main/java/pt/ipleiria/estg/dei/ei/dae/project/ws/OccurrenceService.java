@@ -26,8 +26,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -109,6 +109,38 @@ public class OccurrenceService {
 
         return Response.status(Response.Status.CREATED).entity(OccurrenceDTO.from(occurrence)).build();
     }
+
+   //Create a occurrence with a file.csv
+    @POST
+    @Path("/csv")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response createOccurrenceWithCSV(MultipartFormDataInput input) throws IOException, OccurrenceSmallDescriptionException, EntityNotFoundException {
+        Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
+        List<InputPart> inputParts = uploadForm.get("file");
+
+        for (InputPart inputPart : inputParts) {
+            try {
+                InputStream inputStream = inputPart.getBody(InputStream.class, null);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] occurrence = line.split(";");
+System.out.println(occurrence[0] + " " + occurrence[1] + " " + occurrence[2]);
+                    Occurrence occurrence1 = occurrenceBean.create(
+                            Integer.parseInt(occurrence[0]),
+                            occurrence[1],
+                            Integer.parseInt(occurrence[2])
+                    );
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return Response.status(Response.Status.CREATED).build();
+    }
+
+
 
 
     @POST
