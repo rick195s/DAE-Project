@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import pt.ipleiria.estg.dei.ei.dae.project.Supervisor;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyTypeDetail;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -30,5 +31,8 @@ public class PolicyBean {
             }
         }
         return null;
+    }
+    public PolicyTypeDetail getPolicyDetails(int id) {
+        return supervisor.getPolicyTypeDetail(id);
     }
 }

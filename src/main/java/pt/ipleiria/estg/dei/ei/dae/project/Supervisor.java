@@ -101,26 +101,8 @@ public class Supervisor {
     }
 
     private void populatePolicyTypeDetails() {
-
-        policyTypeDetails.add(new PolicyTypeDetail(1, PolicyType.ACCIDENT, PolicyObjectType.VEHICLE,
-                "Seguro que abrange o seu proprio carro e os danos causados aos outros carros"));
-
-        policyTypeDetails.add(new PolicyTypeDetail(2, PolicyType.FULL, PolicyObjectType.HOUSE,
-                "Seguro que abrange a sua casa em qualquer sobre qualquer dano ou roubo"));
-
-
-        policyTypeDetails.add(new PolicyTypeDetail(3, PolicyType.BASIC, PolicyObjectType.HOUSE,
-                "Seguro que abrange a sua casa em danos menores" +
-                        ", vidros e portas"));
-
-
-        policyTypeDetails.add(new PolicyTypeDetail(4, PolicyType.FULL, PolicyObjectType.PHONE,
-                "Seguro que abrange os danos totais causados ao seu aparelho com opcao de reparacao ou substituicao"));
-
-
-        policyTypeDetails.add(new PolicyTypeDetail(5, PolicyType.BASIC, PolicyObjectType.PHONE,
-                "Seguro que abrange os danos parciais causados ao seu aparelho com opcao de reparacao"));
-
+        PolicyTypeDetailsGateway gateway = new PolicyTypeDetailsGateway();
+        policyTypeDetails = gateway.getFromMockAPI();
     }
 
     private void populatePolicyObejcts() {
@@ -132,5 +114,18 @@ public class Supervisor {
         InsurerGateway gateway = new InsurerGateway();
         insurers = gateway.getFromMockAPI();
     }
+    public List<PolicyTypeDetail> getPolicyTypeDetails() {
+        populatePolicyTypeDetails();
+        return policyTypeDetails;
+    }
 
+
+    public PolicyTypeDetail getPolicyTypeDetail(int id) {
+        for(PolicyTypeDetail policyObject :policyTypeDetails){
+            if(policyObject.getId()==id){
+                return policyObject;
+            }
+        }
+        return null;
+    }
 }
