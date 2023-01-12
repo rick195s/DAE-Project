@@ -17,8 +17,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -68,6 +67,29 @@ public class OccurrenceBean {
 
         return occurrence;
     }
+
+
+    public void createOccurrenceWithCSV(MultipartFormDataInput input) throws OccurrenceSmallDescriptionException, IOException {
+        Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
+        List<InputPart> inputParts = uploadForm.get("file");
+
+        for (InputPart inputPart : inputParts) {
+            InputStream inputStream = inputPart.getBody(InputStream.class, null);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] occurrence = line.split(";");
+
+                create(
+                        Integer.parseInt(occurrence[0]),
+                        occurrence[1],
+                        Integer.parseInt(occurrence[2])
+                );
+
+            }
+        }
+    }
+
 
     public List<Occurrence> getAllOccurrences(User user) {
         List<Policy> policies;

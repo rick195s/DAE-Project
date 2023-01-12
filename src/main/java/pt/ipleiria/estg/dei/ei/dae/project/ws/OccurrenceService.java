@@ -115,28 +115,7 @@ public class OccurrenceService {
     @Path("/csv")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response createOccurrenceWithCSV(MultipartFormDataInput input) throws IOException, OccurrenceSmallDescriptionException, EntityNotFoundException {
-        Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
-        List<InputPart> inputParts = uploadForm.get("file");
-
-        for (InputPart inputPart : inputParts) {
-            try {
-                InputStream inputStream = inputPart.getBody(InputStream.class, null);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    String[] occurrence = line.split(";");
-
-                    occurrenceBean.create(
-                            Integer.parseInt(occurrence[0]),
-                            occurrence[1],
-                            Integer.parseInt(occurrence[2])
-                    );
-
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        occurrenceBean.createOccurrenceWithCSV(input);
         return Response.status(Response.Status.CREATED).build();
     }
 
