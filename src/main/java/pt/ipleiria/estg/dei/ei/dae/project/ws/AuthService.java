@@ -1,16 +1,14 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.Auth;
-import pt.ipleiria.estg.dei.ei.dae.project.dtos.ConfirmPassword;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.UpdatePasswordDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.ClientCreateDTO;
-import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserCreateDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.ClientBean;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Authenticated;
 import pt.ipleiria.estg.dei.ei.dae.project.security.TokenIssuer;
-import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
@@ -71,9 +69,9 @@ public class AuthService {
     @PUT
     @Authenticated
     @Path("/updatePassword")
-    public Response updatePassword(@Valid ConfirmPassword confirmPassword) {
+    public Response updatePassword(@Valid UpdatePasswordDTO updatePasswordDTO) {
         String userEmail = securityContext.getUserPrincipal().getName();
-        userBean.updatePassword(userEmail, confirmPassword);
+        userBean.updatePassword(userEmail, updatePasswordDTO);
         return Response.ok().build();
     }
 }

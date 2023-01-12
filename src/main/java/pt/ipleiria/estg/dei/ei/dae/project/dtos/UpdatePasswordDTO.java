@@ -2,7 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 
 import javax.validation.constraints.NotBlank;
 
-public class ConfirmPassword {
+public class UpdatePasswordDTO {
     @NotBlank
     private String oldPassword;
 
@@ -12,9 +12,9 @@ public class ConfirmPassword {
     @NotBlank
     private String confirmNewPassword;
 
-    public ConfirmPassword() {}
+    public UpdatePasswordDTO() {}
 
-    public ConfirmPassword(String oldPassword, String newPassword, String confirmNewPassword) {
+    public UpdatePasswordDTO(String oldPassword, String newPassword, String confirmNewPassword) {
         this.oldPassword = oldPassword;
         this.newPassword = newPassword;
         this.confirmNewPassword = confirmNewPassword;
