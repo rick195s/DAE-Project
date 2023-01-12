@@ -1,10 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import org.hibernate.Hibernate;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Historical;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.OccurrenceFile;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
@@ -16,7 +13,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,12 +35,12 @@ public class OccurrenceBean {
     @EJB
     ClientBean clientBean;
 
-    public Occurrence create(int policyId, String description, int id) throws OccurrenceSmallDescriptionException {
+    public Occurrence create(int policyId, String description, int clientId) throws OccurrenceSmallDescriptionException {
         if (description.length() < 10) {
             throw new OccurrenceSmallDescriptionException(description);
         }
 
-        Client client = clientBean.find(id);
+        Client client = clientBean.find(clientId);
         if (client == null) {
             throw new EntityNotFoundException("Client dont exists");
         }
@@ -66,11 +62,11 @@ public class OccurrenceBean {
         return occurrence;
     }
 
-    public List<Occurrence> getAllOccurrences() {
+    public List<Occurrence> getAllOccurrences(User user) {
         List<Policy> policies;
         List<Integer> ids = new ArrayList<>();
 
-        List<Occurrence> occurrences = (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrences").getResultList();
+        List<Occurrence> occurrences = getOccurrencesOfUser(user);
 
         for (Occurrence occurrence : occurrences) {
             ids.add(occurrence.getPolicyId());
@@ -85,6 +81,31 @@ public class OccurrenceBean {
             }
         }
         return occurrences;
+    }
+
+
+    public List<Occurrence> getOccurrencesOfUser(User user) {
+
+        switch (user.getRole()) {
+            case CLIENT:
+                return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesOfClient")
+                        .setParameter("client", clientBean.find(user.getId()))
+                        .getResultList();
+            case REPAIR_SHOP_EXPERT:
+                return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesOfRepairExpert")
+                        .setParameter("repairShopId", 1)
+                        .getResultList();
+            /* TODO case INSURER_EXPERT:
+                return (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrencesByInsuranceCompanyId")
+                        .setParameter("insuranceCompanyId", user.getInsuranceCompany().getId())
+                        .getResultList();*/
+            case ADMINISTRATOR:
+                return (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrences").getResultList();
+            default:
+                return new ArrayList<>();
+        }
+
+
     }
 
     public Occurrence find(int id) {
@@ -116,15 +137,6 @@ public class OccurrenceBean {
 
         Hibernate.initialize(occurrence.getOccurenceHistoricalList());
         return occurrence.getOccurenceHistoricalList();
-    }
-
-    public List<Occurrence> getOccurrencesOfClient(int id) {
-        Client client = entityManager.find(Client.class, id);
-        if (client == null) {
-            throw new IllegalArgumentException("Client dont exists");
-        }
-
-        return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesByClient").setParameter("client", client).getResultList();
     }
 
     public void approveOccurrence(int id) {
@@ -174,5 +186,21 @@ public class OccurrenceBean {
 
         entityManager.merge(occurrence);
 
+    }
+
+    public void setCustomOccurrenceRepairShop(int id, String name, String email, long phone) {
+        Occurrence occurrence = find(id);
+        if (occurrence == null) {
+            throw new EntityNotFoundException("Occurrence dont exists");
+        }
+
+        RepairShop repairShop = repairShopBean.create(name, email, phone);
+        if (repairShop == null) {
+            throw new EntityNotFoundException("Repair Shop dont exists");
+        }
+
+        occurrence.setRepairShop(repairShop);
+
+        entityManager.merge(occurrence);
     }
 }

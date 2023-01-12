@@ -12,11 +12,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Stateless
@@ -28,11 +23,8 @@ public class UserBean {
     @Inject
     private Hasher hasher;
 
-    @Context
-    private SecurityContext securityContext;
-
     public void create(String name, String email, String password, String role) {
-        User user = new User(name, email, hasher.hash(password), role);
+        User user = new User(name, email, hasher.hash(password), Role.valueOf(role));
         entityManager.persist(user);
     }
 
@@ -45,9 +37,13 @@ public class UserBean {
     }
 
     public User findUserByEmail(String email) {
-        return (User) entityManager.createNamedQuery("getUserByEmail")
-                .setParameter("email", email)
-                .getSingleResult();
+        try {
+            return (User) entityManager.createNamedQuery("getUserByEmail")
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public User findOrFail(String email) {
@@ -73,46 +69,27 @@ public class UserBean {
     }
 
 
-    public Response update(int id, UserDTO userDTO) {
+    public void update(int id, UserDTO userDTO) {
         User user = find(id);
-        String email = findUserByEmail(userDTO.getEmail()).getEmail();
-
         if (user == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new EntityNotFoundException("User with id " + id + " not found");
         }
 
         if (userDTO.getName() != null) {
             user.setName(userDTO.getName());
         }
 
-        if (userDTO.getEmail() != null) {
-            if (findUserByEmail(userDTO.getEmail()) == null || userDTO.getEmail().equals(user.getEmail())) {
-                user.setEmail(userDTO.getEmail());
-            } else {
-                return Response.status(Response.Status.CONFLICT).build();
+
+        if (userDTO.getRole() != null && !userDTO.getRole().equals("ADMINISTRATOR")) {
+            try {
+                user.setRole(Role.valueOf(userDTO.getRole()));
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Role " + userDTO.getRole() + " not found");
             }
         }
 
-
-        List<Role> roles = new ArrayList<>(Arrays.asList(Role.values()));
-
-        if (userDTO.getRole() != null) {
-            if (!userDTO.getRole().equals("ADMINISTRATOR")) {
-                //TODO: falta implementar uma resposta má caso o if dentro deste ciclo for falhe
-                for (Role role : roles) {
-                    if (role.name().equals(userDTO.getRole())) {
-                        user.setRole(String.valueOf(role));
-                    }
-                }
-
-            } else {
-                return Response.status(Response.Status.FORBIDDEN).build();
-            }
-
-        }
 
         entityManager.merge(user);
-        return Response.status(Response.Status.OK).entity(userDTO.from(user)).build();
     }
 
     public void updatePassword(String userEmail, ConfirmPassword confirmPassword) {

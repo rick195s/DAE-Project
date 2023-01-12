@@ -64,24 +64,13 @@ public class UserService {
         return Response.status(Response.Status.CREATED).entity(UserDTO.from(user)).build();
     }
 
-    @POST
-    @Path("/register")
-    public Response registerUserWS(UserCreateDTO userDTO) {
-        userBean.create(
-                userDTO.getName(),
-                userDTO.getEmail(),
-                userDTO.getPassword(),
-                Role.CLIENT.toString()
-        );
-
-        User user = userBean.findUserByEmail(userDTO.getEmail());
-
-        return Response.status(Response.Status.CREATED).entity(UserDTO.from(user)).build();
-    }
 
     @PUT
     @Path("/{id}")
     public Response updateUserWS(@PathParam("id") int id, UserDTO userDTO) {
-        return userBean.update(id, userDTO);
+        userBean.update(id, userDTO);
+
+        User user = userBean.find(id);
+        return Response.status(Response.Status.OK).entity(UserDTO.from(user)).build();
     }
 }

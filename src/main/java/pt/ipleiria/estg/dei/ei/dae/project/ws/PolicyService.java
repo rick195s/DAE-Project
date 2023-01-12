@@ -1,13 +1,13 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.PolicyDTO;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.detailed.DetailedPolicyDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.PolicyBean;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyTypeDetail;
 
 import javax.ejb.EJB;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -22,5 +22,18 @@ public class PolicyService {
     @Path("/") // means: the relative url path is “/api/students/all”
     public List<PolicyDTO> getAllPoliciesWS() {
         return PolicyDTO.from(policyBean.getAllPolicies());
+    }
+
+    @GET
+    @Path("/{id}")
+    public PolicyDTO getPolicyDetails(@PathParam("id") int id) {
+        Policy policy = policyBean.find(id);
+        PolicyTypeDetail policyTypeDetail = this.policyBean.getPolicyDetails(policy.getPolicyTypeDetailId());
+
+        if (policyTypeDetail != null) {
+            return DetailedPolicyDTO.from(policy, policyTypeDetail);
+        }else {
+            return PolicyDTO.from(policy);
+        }
     }
 }

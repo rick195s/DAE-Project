@@ -1,13 +1,11 @@
 package pt.ipleiria.estg.dei.ei.dae.project.entities;
 
-import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,8 +17,13 @@ import java.util.List;
                 query = "SELECT o FROM Occurrence o ORDER BY o.id" // JPQL
         ),
         @NamedQuery(
-                name = "getOccurrencesByClient",
+                name = "getOccurrencesOfClient",
                 query = "SELECT o FROM Occurrence o WHERE o.client = :client ORDER BY o.id" // JPQL
+        ),
+        // every repair shop expert can see the occurrences that are assigned to his repair shop
+        @NamedQuery(
+                name = "getOccurrencesOfRepairExpert",
+                query = "SELECT o FROM Occurrence o WHERE o.repairShopId = :repairShopId AND o.approvalType = 'APPROVED' ORDER BY o.id" // JPQL
         )
 })
 @Table(
