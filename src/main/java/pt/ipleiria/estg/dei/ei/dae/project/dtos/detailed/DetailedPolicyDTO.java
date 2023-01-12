@@ -1,12 +1,11 @@
 package pt.ipleiria.estg.dei.ei.dae.project.dtos.detailed;
 
-import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.PolicyDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
+import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyTypeDetail;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class DetailedPolicyDTO extends PolicyDTO implements Serializable {
     PolicyTypeDetail policyTypeDetails;
@@ -25,6 +24,20 @@ public class DetailedPolicyDTO extends PolicyDTO implements Serializable {
 
     public PolicyTypeDetail getPolicyTypeDetails() {
         return policyTypeDetails;
+    }
+
+    public static DetailedPolicyDTO from(Policy policy, PolicyTypeDetail policyTypeDetail) {
+        return new DetailedPolicyDTO(
+                policy.getId(),
+                policy.getClientId(),
+                policy.getInsurerId(),
+                policy.getPolicyTypeDetailId(),
+                policy.getPolicyObjectId(),
+                policy.getState(),
+                policy.getStartDate(),
+                policy.getEndDate(),
+                policyTypeDetail
+        );
     }
 }
 
