@@ -1,22 +1,26 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
+import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Hibernate;
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
+import pt.ipleiria.estg.dei.ei.dae.project.utils.FileUtils;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 @Stateless
 public class OccurrenceBean {
@@ -31,6 +35,9 @@ public class OccurrenceBean {
 
     @EJB
     RepairShopBean repairShopBean;
+
+    @EJB
+    OccurrenceFileBean occurrenceFileBean;
 
     @EJB
     ClientBean clientBean;
@@ -202,5 +209,29 @@ public class OccurrenceBean {
         occurrence.setRepairShop(repairShop);
 
         entityManager.merge(occurrence);
+    }
+
+    public List<OccurrenceFile> uploadFiles(int id, MultipartFormDataInput input) throws IOException {
+        Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
+
+        List<InputPart> inputParts = uploadForm.get("file");
+
+        List<OccurrenceFile> occurrenceFiles = new LinkedList<OccurrenceFile>();
+
+        FileUtils fileUtils = new FileUtils();
+
+        for (InputPart inputPart : inputParts) {
+
+            String filename = fileUtils.getFilename(inputPart.getHeaders());
+            String ext = FilenameUtils.getExtension(filename);
+            filename = FilenameUtils.removeExtension(filename) + "_" + System.currentTimeMillis() + "." + ext;
+
+            String filepath = fileUtils.upload("occurrences" + File.separator + id, filename, inputPart);
+
+            var occurrenceFile = occurrenceFileBean.create(id, filename, filepath);
+            occurrenceFiles.add(occurrenceFile);
+        }
+
+        return occurrenceFiles;
     }
 }

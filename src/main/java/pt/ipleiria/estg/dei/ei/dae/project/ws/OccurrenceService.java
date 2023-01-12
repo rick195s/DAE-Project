@@ -125,8 +125,8 @@ public class OccurrenceService {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] occurrence = line.split(";");
-System.out.println(occurrence[0] + " " + occurrence[1] + " " + occurrence[2]);
-                    Occurrence occurrence1 = occurrenceBean.create(
+
+                    occurrenceBean.create(
                             Integer.parseInt(occurrence[0]),
                             occurrence[1],
                             Integer.parseInt(occurrence[2])
@@ -148,26 +148,7 @@ System.out.println(occurrence[0] + " " + occurrence[1] + " " + occurrence[2]);
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response upload(@PathParam("id") int id, MultipartFormDataInput input) throws IOException {
-        Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
-
-        List<InputPart> inputParts = uploadForm.get("file");
-
-        var occurrenceFiles = new LinkedList<OccurrenceFile>();
-
-        FileUtils fileUtils = new FileUtils();
-
-        for (InputPart inputPart : inputParts) {
-
-            String filename = fileUtils.getFilename(inputPart.getHeaders());
-            String ext = FilenameUtils.getExtension(filename);
-            filename = FilenameUtils.removeExtension(filename) + "_" + System.currentTimeMillis() + "." + ext;
-
-            String filepath = fileUtils.upload("occurrences" + File.separator + id, filename, inputPart);
-
-            var occurrenceFile = occurrenceFileBean.create(id, filename, filepath);
-            occurrenceFiles.add(occurrenceFile);
-        }
-
+        List<OccurrenceFile> occurrenceFiles = occurrenceBean.uploadFiles(id, input);
         return Response.ok(OccurrenceFileDTO.from(occurrenceFiles)).build();
     }
 
