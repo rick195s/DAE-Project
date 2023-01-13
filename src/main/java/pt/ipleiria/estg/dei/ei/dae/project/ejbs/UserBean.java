@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.UpdatePasswordDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserDTO;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.PasswordInvalidException;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.mappers.PasswordInvalidExceptionMapper;
@@ -28,6 +29,10 @@ public class UserBean {
     public void create(String name, String email, String password, String role) {
         User user = new User(name, email, hasher.hash(password), Role.valueOf(role));
         entityManager.persist(user);
+    }
+
+    public Long count() {
+        return entityManager.createQuery("SELECT COUNT(*) FROM " + User.class.getSimpleName(), Long.class).getSingleResult();
     }
 
     public User find(int id) {
@@ -117,4 +122,5 @@ public class UserBean {
         user.setPassword(hasher.hash(updatePasswordDTO.getNewPassword()));
         entityManager.merge(user);
     }
+
 }
