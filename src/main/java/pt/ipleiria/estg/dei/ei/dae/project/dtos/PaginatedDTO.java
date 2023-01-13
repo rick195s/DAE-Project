@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-public class PaginatedDTOs<DTO> implements Serializable {
+public class PaginatedDTO<DTO> implements Serializable {
 
     public final class Metadata implements Serializable {
         private final Long count;
@@ -32,12 +32,12 @@ public class PaginatedDTOs<DTO> implements Serializable {
 
     private final Metadata metadata;
 
-    public PaginatedDTOs(long totalCount) {
+    public PaginatedDTO(long totalCount) {
         this.data = Collections.emptyList();
         this.metadata = new Metadata(0L, totalCount);
     }
 
-    public PaginatedDTOs(List<DTO> data, long totalCount, int offset) {
+    public PaginatedDTO(List<DTO> data, long totalCount, int offset) {
         this.data = data;
         this.metadata = data.isEmpty() ? new Metadata(0L, totalCount) : new Metadata((long) (offset + data.size()), totalCount);
     }

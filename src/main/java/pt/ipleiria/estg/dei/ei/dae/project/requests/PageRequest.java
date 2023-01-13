@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.requests;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.PositiveOrZero;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
@@ -13,6 +14,7 @@ public class PageRequest {
     @QueryParam("limit")
     @DefaultValue("10")
     @PositiveOrZero
+    @Max(50)
     private int limit;
 
     public int getOffset() {

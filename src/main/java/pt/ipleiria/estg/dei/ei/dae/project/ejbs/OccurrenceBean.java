@@ -19,6 +19,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -105,12 +106,22 @@ public class OccurrenceBean {
         }
     }
 
+    public Long count() {
+        return entityManager.createQuery("SELECT COUNT(*) FROM " + Occurrence.class.getSimpleName(), Long.class).getSingleResult();
+    }
 
-    public List<Occurrence> getAllOccurrences(User user) {
+
+    public List<Occurrence> getAllOccurrences(User user, int offset, int limit) {
         List<Policy> policies;
         List<Integer> ids = new ArrayList<>();
 
-        List<Occurrence> occurrences = getOccurrencesOfUser(user);
+        Query query = getOccurrencesOfUser(user);
+
+        List<Occurrence> occurrences = query != null ? (List<Occurrence>) query
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList()
+                : new ArrayList<>();
 
         for (Occurrence occurrence : occurrences) {
             ids.add(occurrence.getPolicyId());
@@ -128,37 +139,35 @@ public class OccurrenceBean {
     }
 
 
-    public List<Occurrence> getOccurrencesOfUser(User user) {
+    public Query getOccurrencesOfUser(User user) {
 
         switch (user.getRole()) {
             case CLIENT:
-                return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesOfClient")
-                        .setParameter("client", clientBean.find(user.getId()))
-                        .getResultList();
+                return entityManager.createNamedQuery("getOccurrencesOfClient")
+                        .setParameter("client", clientBean.find(user.getId()));
+
             case REPAIR_SHOP_EXPERT:
                 RepairShopExpert repairShopExpert = repairShopExpertBean.find(user.getId());
                 if (repairShopExpert == null) {
                     throw new EntityNotFoundException("RepairShopExpert dont exists");
                 }
-                return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesOfRepairShop")
-                        .setParameter("repairShopId", repairShopExpert.getRepairShopId())
-                        .getResultList();
+                return entityManager.createNamedQuery("getOccurrencesOfRepairShop")
+                        .setParameter("repairShopId", repairShopExpert.getRepairShopId());
+
             case INSURER_EXPERT:
                 InsurerExpert insurerExpert = insurerExpertBean.find(user.getId());
                 if (insurerExpert == null) {
                     throw new EntityNotFoundException("InsurerExpert dont exists");
                 }
                 List<Integer> policiesIds = insurerBean.getPoliciesIds(insurerExpert.getInsurerId());
-                return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesOfInsurerByPolicies")
-                        .setParameter("policiesIds", policiesIds)
-                        .getResultList();
+                return  entityManager.createNamedQuery("getOccurrencesOfInsurerByPolicies")
+                        .setParameter("policiesIds", policiesIds);
+
             case ADMINISTRATOR:
-                return (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrences").getResultList();
-            default:
-                return new ArrayList<>();
+                return entityManager.createNamedQuery("getAllOccurrences");
+
         }
-
-
+        return null;
     }
 
     public Occurrence find(int id) {

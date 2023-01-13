@@ -8,12 +8,13 @@ import pt.ipleiria.estg.dei.ei.dae.project.ejbs.*;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.UserDontHavePolicyException;
+import pt.ipleiria.estg.dei.ei.dae.project.requests.PageRequest;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Authenticated;
-import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -47,18 +48,27 @@ public class OccurrenceService {
     @GET
     @Authenticated
     @Path("/")
-    public Response getOccurrencesWS() {
+    public Response getOccurrencesWS(@BeanParam @Valid PageRequest pageRequest) {
         List<Occurrence> occurrences;
+
+        Long count = occurrenceBean.count();
+
+        if (pageRequest.getOffset() > count) {
+            return Response.ok(new PaginatedDTO<>(count)).build();
+        }
 
         User user =  userBean.findUserByEmail(securityContext.getUserPrincipal().getName());
 
-        occurrences = occurrenceBean.getAllOccurrences(user);
-        if (occurrences != null) {
-            return Response.ok(OccurrenceDTO.from(occurrences)).build();
+        occurrences = occurrenceBean.getAllOccurrences(user, pageRequest.getOffset(), pageRequest.getLimit());
+        if (occurrences == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(new ErrorDTO("No occurrences found."))
+                    .build();
         }
-        return Response.status(Response.Status.NOT_FOUND)
-                .entity("ERROR_FINDING_OCCURRENCE")
-                .build();
+
+        var paginatedDTO = new PaginatedDTO<>(OccurrenceDTO.from(occurrences), count, pageRequest.getOffset());
+
+        return Response.ok(paginatedDTO).build();
     }
 
     @GET
