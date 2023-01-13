@@ -14,7 +14,12 @@ import java.util.List;
         @NamedQuery(
                 name = "getAllClients",
                 query = "SELECT c FROM Client c ORDER BY c.name" // JPQL
+        ),
+        @NamedQuery(
+                name = "getClientByNIFNIPC",
+                query = "SELECT c FROM Client c WHERE c.NIF_NIPC = :nif_nipc ORDER BY c.name" // JPQL
         )
+
 })
 @Table(
         name = "clients"

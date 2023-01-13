@@ -51,11 +51,11 @@ public class Policy implements Serializable {
         this.id = id;
     }
 
-    public int getClientId() {
+    public int getClientNIFNIPC() {
         if (client == null){
             return 0;
         }
-        return client.getId();
+        return client.getNIF_NIPC();
     }
 
     public void setClient(Client client) {

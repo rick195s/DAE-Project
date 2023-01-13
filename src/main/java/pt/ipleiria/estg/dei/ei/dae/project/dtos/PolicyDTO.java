@@ -3,14 +3,13 @@ package pt.ipleiria.estg.dei.ei.dae.project.dtos;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyState;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PolicyDTO {
     int id;
 
-    int clientId;
+    int clientNIFNIPC;
 
     int insurerId;
 
@@ -26,9 +25,9 @@ public class PolicyDTO {
 
     public PolicyDTO() {}
 
-    public PolicyDTO(int id, int clientId, int insurerId, int policyTypeDetailId, int policyObjectId, PolicyState state, String startDate, String endDate) {
+    public PolicyDTO(int id, int clientNIFNIPC, int insurerId, int policyTypeDetailId, int policyObjectId, PolicyState state, String startDate, String endDate) {
         this.id = id;
-        this.clientId = clientId ;
+        this.clientNIFNIPC = clientNIFNIPC ;
         this.insurerId = insurerId;
         this.policyTypeDetailId = policyTypeDetailId;
         this.policyObjectId = policyObjectId;
@@ -45,12 +44,12 @@ public class PolicyDTO {
         this.id = id;
     }
 
-    public int getClientId() {
-        return clientId;
+    public int getClientNIFNIPC() {
+        return clientNIFNIPC;
     }
 
-    public void setClientId(int clientId) {
-        this.clientId = clientId;
+    public void setClientNIFNIPC(int clientNIFNIPC) {
+        this.clientNIFNIPC = clientNIFNIPC;
     }
 
     public int getInsurerId() {
@@ -105,7 +104,7 @@ public class PolicyDTO {
     public static PolicyDTO from(Policy policy) {
         return new PolicyDTO(
                 policy.getId(),
-                policy.getClientId(),
+                policy.getClientNIFNIPC(),
                 policy.getInsurerId(),
                 policy.getPolicyTypeDetailId(),
                 policy.getPolicyObjectId(),

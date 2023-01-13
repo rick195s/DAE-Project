@@ -29,7 +29,7 @@ public class DetailedPolicyDTO extends PolicyDTO implements Serializable {
     public static DetailedPolicyDTO from(Policy policy, PolicyTypeDetail policyTypeDetail) {
         return new DetailedPolicyDTO(
                 policy.getId(),
-                policy.getClientId(),
+                policy.getClientNIFNIPC(),
                 policy.getInsurerId(),
                 policy.getPolicyTypeDetailId(),
                 policy.getPolicyObjectId(),

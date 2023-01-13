@@ -48,7 +48,7 @@ public class PolicyGateway {
 
             Policy policyObj = new Policy(
                     policyDTOObj.getId(),
-                    new Client(policyDTOObj.getClientId()),
+                    new Client(policyDTOObj.getClientNIFNIPC()),
                     policyDTOObj.getInsurerId(),
                     policyDTOObj.getState(),
                     policyDTOObj.getPolicyTypeDetailId(),

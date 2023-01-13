@@ -2,8 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.project;
 
 import com.github.javafaker.Faker;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.ClientBean;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyObjectType;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.PolicyType;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.*;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.*;
 
@@ -42,7 +41,10 @@ public class Supervisor {
         policies = gateway.getFromMockAPI(0);
 
         for (Policy policy : policies) {
-            policy.setClient(clientBean.find(policy.getClientId()));
+            Client client = clientBean.findByNIFNIPC(policy.getClientNIFNIPC());
+            if (client != null) {
+                policy.setClient(client);
+            }
         }
     }
 

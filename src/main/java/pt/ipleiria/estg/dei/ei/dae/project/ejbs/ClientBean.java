@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Hasher;
 import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
@@ -28,11 +29,22 @@ public class ClientBean {
     }
 
     public List<Client> getAllClients() {
-        // remember, maps to: “SELECT c FROM Courses c ORDER BY c.name”
         return (List<Client>) entityManager.createNamedQuery("getAllClients").getResultList();
     }
 
     public Client find(int id) {
         return entityManager.find(Client.class, id);
+    }
+
+    public Client findByNIFNIPC(int nif_nipc) {
+
+        try {
+            return (Client) entityManager.createNamedQuery("getClientByNIFNIPC")
+                    .setParameter("nif_nipc", nif_nipc)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 }

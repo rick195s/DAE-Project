@@ -1,7 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.exceptions;
 
 public class OccurrenceSmallDescriptionException extends Exception {
-    private String description;
+    private final String description;
 
     public OccurrenceSmallDescriptionException(String description) {
         super(
