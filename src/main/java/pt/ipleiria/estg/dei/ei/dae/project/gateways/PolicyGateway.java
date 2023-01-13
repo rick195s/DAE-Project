@@ -33,10 +33,15 @@ public class PolicyGateway {
     }
 
 
-    public List<Policy> getFromMockAPI(){
+    public List<Policy> getFromMockAPI(int insurerId){
         ArrayList<Policy> policies = new ArrayList<>();
 
-        JsonArray jsonArrayPolicies = APIGateway.getDataFromAPI(URI_POLICIES);
+        String uri = URI_POLICIES;
+        if (insurerId != 0) {
+            uri += "?insurerId=" + insurerId;
+        }
+
+        JsonArray jsonArrayPolicies = APIGateway.getDataFromAPI(uri);
         jsonArrayPolicies.forEach(policy -> {
             Jsonb jsonb = JsonbBuilder.create();
             PolicyDTO policyDTOObj = jsonb.fromJson(policy.toString(), PolicyDTO.class);

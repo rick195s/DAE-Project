@@ -1,5 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.pojos;
 
+import pt.ipleiria.estg.dei.ei.dae.project.entities.InsurerExpert;
+
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;

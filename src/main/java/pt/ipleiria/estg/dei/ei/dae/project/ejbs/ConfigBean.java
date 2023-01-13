@@ -34,6 +34,12 @@ public class ConfigBean {
     RepairShopExpertBean repairShopExpertBean;
 
     @EJB
+    InsurerExpertBean insurerExpertBean;
+
+    @EJB
+    InsurerBean insurerBean;
+
+    @EJB
     OccurrenceBean occurrenceBean;
 
     @Inject
@@ -77,8 +83,10 @@ public class ConfigBean {
     }
 
     private void createInsurerExperts() {
-        for (int i = 0; i < 6; i++) {
-            userBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123",String.valueOf(Role.INSURER_EXPERT));
+        List<Insurer> insurers = insurerBean.getAllInsurers();
+        int max = Math.min(insurers.size(), 20);
+        for (int i = 0; i < max; i++) {
+            insurerExpertBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123", 1/* insurers.get(i).getId()*/);
         }
     }
 

@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.pojos;
 
 import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.RepairShopExpert;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;

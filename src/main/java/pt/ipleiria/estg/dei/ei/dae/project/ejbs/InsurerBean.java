@@ -31,4 +31,8 @@ public class InsurerBean {
     public List<RepairShop> getRepairShops(int id) {
         return supervisor.getRepairShops(id);
     }
+
+    public List<Integer> getPoliciesIds(int insurerId) {
+        return supervisor.getPoliciesIds(insurerId);
+    }
 }

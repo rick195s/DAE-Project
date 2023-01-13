@@ -39,6 +39,12 @@ public class OccurrenceBean {
     RepairShopExpertBean repairShopExpertBean;
 
     @EJB
+    InsurerBean insurerBean;
+
+    @EJB
+    InsurerExpertBean insurerExpertBean;
+
+    @EJB
     OccurrenceFileBean occurrenceFileBean;
 
     @EJB
@@ -131,10 +137,15 @@ public class OccurrenceBean {
                 return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesOfRepairShop")
                         .setParameter("repairShopId", repairShopExpert.getRepairShopId())
                         .getResultList();
-            /* TODO case INSURER_EXPERT:
-                return (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrencesByInsuranceCompanyId")
-                        .setParameter("insuranceCompanyId", user.getInsuranceCompany().getId())
-                        .getResultList();*/
+            case INSURER_EXPERT:
+                InsurerExpert insurerExpert = insurerExpertBean.find(user.getId());
+                if (insurerExpert == null) {
+                    throw new EntityNotFoundException("InsurerExpert dont exists");
+                }
+                List<Integer> policiesIds = insurerBean.getPoliciesIds(insurerExpert.getInsurerId());
+                return (List<Occurrence>) entityManager.createNamedQuery("getOccurrencesOfInsurerByPolicies")
+                        .setParameter("policiesIds", policiesIds)
+                        .getResultList();
             case ADMINISTRATOR:
                 return (List<Occurrence>) entityManager.createNamedQuery("getAllOccurrences").getResultList();
             default:

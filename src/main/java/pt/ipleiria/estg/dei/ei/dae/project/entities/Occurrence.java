@@ -20,10 +20,15 @@ import java.util.List;
                 name = "getOccurrencesOfClient",
                 query = "SELECT o FROM Occurrence o WHERE o.client = :client ORDER BY o.id" // JPQL
         ),
-        // every repair shop expert can see the occurrences that are assigned to his repair shop
+        // every repair shop expert can see the occurrences that are assigned to his repair shop (were he works)
         @NamedQuery(
                 name = "getOccurrencesOfRepairShop",
                 query = "SELECT o FROM Occurrence o WHERE o.repairShopId = :repairShopId AND o.approvalType = 'APPROVED' ORDER BY o.id" // JPQL
+        ),
+        // every insurer expert can see the occurrences that are assigned to his insurer (were he works)
+        @NamedQuery(
+                name = "getOccurrencesOfInsurerByPolicies",
+                query = "SELECT o FROM Occurrence o WHERE o.policyId IN :policiesIds ORDER BY o.id" // JPQL
         )
 })
 @Table(

@@ -12,6 +12,7 @@ import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class Supervisor {
@@ -38,7 +39,7 @@ public class Supervisor {
 
     private void refreshPoliciesViaAPI() {
         PolicyGateway gateway = new PolicyGateway();
-        policies = gateway.getFromMockAPI();
+        policies = gateway.getFromMockAPI(0);
 
         for (Policy policy : policies) {
             policy.setClient(clientBean.find(policy.getClientId()));
@@ -127,5 +128,13 @@ public class Supervisor {
             }
         }
         return null;
+    }
+
+    public List<Integer> getPoliciesIds(int insurerId) {
+        PolicyGateway gateway = new PolicyGateway();
+        policies = gateway.getFromMockAPI(insurerId);
+        return policies.stream()
+                .map(Policy::getId)
+                .collect(Collectors.toList());
     }
 }
