@@ -96,7 +96,7 @@ public class ConfigBean {
         int max = Math.min(policies.size(), 20);
         for (int i = 0; i < max; i++) {
             try {
-                occurrenceBean.create(policies.get(i).getId(), faker.lorem().sentence(10), i+1);
+                occurrenceBean.create(policies.get(i).getId(), faker.lorem().sentence(10), clientBean.findByNIFNIPC(333333333).getId());
             } catch (OccurrenceSmallDescriptionException e) {
                 throw new RuntimeException(e);
             }

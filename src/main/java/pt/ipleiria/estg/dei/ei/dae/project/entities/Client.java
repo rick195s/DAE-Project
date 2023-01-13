@@ -42,8 +42,8 @@ public class Client extends User {
         this.occurrences = new ArrayList<>();
     }
 
-    public Client(int id) {
-        this.id = id;
+    public Client(int NIF_NIPC) {
+        this.NIF_NIPC = NIF_NIPC;
         this.policies = new ArrayList<>();
         this.occurrences = new ArrayList<>();
     }

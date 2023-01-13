@@ -65,6 +65,12 @@ public class OccurrenceBean {
             throw new EntityNotFoundException("Policy dont exists");
         }
 
+        System.out.println("policy client nif: " + policy.getClientNIFNIPC());
+        System.out.println("client nif: " + client.getNIF_NIPC());
+        if (policy.getClientNIFNIPC() != client.getNIF_NIPC()) {
+            throw new EntityNotFoundException("Client dont have this policy");
+        }
+
         Occurrence occurrence = new Occurrence(policy, new RepairShop(), description, ApprovalType.WAITING_FOR_APPROVAL, Calendar.getInstance(), null, client);
 
         entityManager.persist(occurrence);
