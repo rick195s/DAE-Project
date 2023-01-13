@@ -64,7 +64,10 @@ public class OccurrenceService {
     @Authenticated
     @Path("/{id}")
     public Response getOccurrence(@PathParam("id") int id) {
-        Occurrence occurrence = occurrenceBean.find(id);
+
+        User user =  userBean.findUserByEmail(securityContext.getUserPrincipal().getName());
+
+        Occurrence occurrence = occurrenceBean.find(user, id);
         if (occurrence != null) {
             return Response.ok(toDetailedDTO(occurrence)).build();
         }

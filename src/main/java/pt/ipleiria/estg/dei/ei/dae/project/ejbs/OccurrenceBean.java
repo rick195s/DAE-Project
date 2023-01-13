@@ -71,7 +71,7 @@ public class OccurrenceBean {
         // flushing to get the generated Id
         entityManager.flush();
 
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         historicalBean.create("Occurrence Created", occurrence.getId(), formatter.format(Calendar.getInstance().getTime()), HistoricalEnum.A_AGUARDAR_APROVACAO_PELA_SEGURADORA);
 
         return occurrence;
@@ -157,14 +157,64 @@ public class OccurrenceBean {
 
     public Occurrence find(int id) {
         Occurrence occurrence = entityManager.find(Occurrence.class, id);
-        if (occurrence == null){
+        if (occurrence == null) {
             return null;
         }
 
         occurrence.setPolicy(policyBean.find(occurrence.getPolicyId()));
 
-        return  occurrence;
+        return occurrence;
     }
+
+    public Occurrence find(User user, int id) {
+        Occurrence occurrence = getOccurrenceOfUser(user, id);
+        if (occurrence == null) {
+            return null;
+        }
+
+        occurrence.setPolicy(policyBean.find(occurrence.getPolicyId()));
+
+        return occurrence;
+    }
+
+    public Occurrence getOccurrenceOfUser(User user, int id) {
+
+        switch (user.getRole()) {
+            case CLIENT:
+                return (Occurrence) entityManager.createNamedQuery("getOccurrenceOfClient")
+                        .setParameter("client", clientBean.find(user.getId()))
+                        .setParameter("id", id)
+                        .getSingleResult();
+
+            case ADMINISTRATOR:
+                return entityManager.find(Occurrence.class, id);
+
+            case REPAIR_SHOP_EXPERT:
+                RepairShopExpert repairShopExpert = repairShopExpertBean.find(user.getId());
+                if (repairShopExpert == null) {
+                    throw new EntityNotFoundException("RepairShopExpert dont exists");
+                }
+                return (Occurrence) entityManager.createNamedQuery("getOccurrenceOfRepairShopExpert")
+                .setParameter("repairShopId", repairShopExpert.getRepairShopId())
+                .setParameter("id", id)
+                .getSingleResult();
+
+            case INSURER_EXPERT:
+                InsurerExpert insurerExpert = insurerExpertBean.find(user.getId());
+                if (insurerExpert == null) {
+                    throw new EntityNotFoundException("InsurerExpert dont exists");
+                }
+                List<Integer> policiesIds = insurerBean.getPoliciesIds(insurerExpert.getInsurerId());
+                return (Occurrence) entityManager.createNamedQuery("getOccurrenceOfInsurerByPolicies")
+                        .setParameter("policiesIds", policiesIds)
+                        .setParameter("id", id)
+                        .getResultList();
+
+            default:
+                return null;
+        }
+    }
+
 
     public List<OccurrenceFile> getOccurrenceFiles(int id) {
         Occurrence occurrence = entityManager.find(Occurrence.class, id);
@@ -194,7 +244,7 @@ public class OccurrenceBean {
 
         occurrence.setApprovalType(ApprovalType.APPROVED);
 
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentData = formatter.format(Calendar.getInstance().getTime());
 
         historicalBean.create("Aprovado pela seguradora", occurrence.getId(), currentData, HistoricalEnum.APROVADO_PELA_SEGURADORA);
@@ -210,7 +260,7 @@ public class OccurrenceBean {
 
         occurrence.setApprovalType(ApprovalType.REJECTED);
 
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentData = formatter.format(Calendar.getInstance().getTime());
 
         historicalBean.create("Rejeitado pela seguradora", occurrence.getId(), currentData, HistoricalEnum.NAO_APROVADO_PELA_SEGURADORA);
