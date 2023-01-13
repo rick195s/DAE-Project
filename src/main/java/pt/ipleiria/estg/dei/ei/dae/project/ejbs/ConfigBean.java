@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 
 import com.github.javafaker.Faker;
 import pt.ipleiria.estg.dei.ei.dae.project.Supervisor;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.UserDontHavePolicyException;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyGateway;
@@ -95,9 +96,13 @@ public class ConfigBean {
     private void createOccurrences() {
         List<Policy> policies = policyBean.getAllPolicies();
         int max = Math.min(policies.size(), 20);
+        Client client =  clientBean.findByNIFNIPC(333333333);
+
         for (int i = 0; i < max; i++) {
+            int id = client != null ? client.getId() : i + 1;
+
             try {
-                occurrenceBean.create(policies.get(i).getId(), faker.lorem().sentence(10), clientBean.findByNIFNIPC(333333333).getId());
+                occurrenceBean.create(policies.get(i).getId(), faker.lorem().sentence(10), id);
             } catch (OccurrenceSmallDescriptionException | UserDontHavePolicyException e) {
                 throw new RuntimeException(e);
             }

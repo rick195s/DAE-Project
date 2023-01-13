@@ -19,7 +19,6 @@ import pt.ipleiria.estg.dei.ei.dae.project.security.Authenticated;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
-import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -99,7 +98,7 @@ public class OccurrenceService {
 
     @POST
     @Authenticated
-    @RolesAllowed({"ADMINISTRATOR", "CLIENT"})
+    @RolesAllowed({"CLIENT"})
     @Path("/")
     public Response createOccurrence(OccurrenceDTO occurrenceDTO) throws OccurrenceSmallDescriptionException, UserDontHavePolicyException {
         Occurrence occurrence = occurrenceBean.create(
