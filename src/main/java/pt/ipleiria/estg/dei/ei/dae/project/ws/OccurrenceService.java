@@ -1,10 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
-import pt.ipleiria.estg.dei.ei.dae.project.dtos.HistoricalDTO;
-import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceDTO;
-import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceFileDTO;
-import pt.ipleiria.estg.dei.ei.dae.project.dtos.RepairShopDTO;
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.*;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.detailed.DetailedOccurrenceDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.*;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.*;
@@ -70,7 +67,7 @@ public class OccurrenceService {
 
         if (!canUserSeeOccurrence(id)){
             return Response.status(Response.Status.FORBIDDEN)
-                    .entity("ERROR_FINDING_OCCURRENCE")
+                    .entity(new ErrorDTO("You dont have permission to see this occurrence"))
                     .build();
         }
 
@@ -79,7 +76,7 @@ public class OccurrenceService {
             return Response.ok(toDetailedDTO(occurrence)).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
-                .entity("ERROR_FINDING_OCCURRENCE")
+                .entity(new ErrorDTO("Occurrence not found"))
                 .build();
     }
 
