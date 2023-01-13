@@ -4,6 +4,8 @@ import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.UpdatePasswordDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
+import pt.ipleiria.estg.dei.ei.dae.project.exceptions.PasswordInvalidException;
+import pt.ipleiria.estg.dei.ei.dae.project.exceptions.mappers.PasswordInvalidExceptionMapper;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Hasher;
 import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
@@ -92,7 +94,7 @@ public class UserBean {
         entityManager.merge(user);
     }
 
-    public void updatePassword(String userEmail, UpdatePasswordDTO updatePasswordDTO) {
+    public void updatePassword(String userEmail, UpdatePasswordDTO updatePasswordDTO) throws PasswordInvalidException {
         User user = findUserByEmail(userEmail);
         if (user == null) {
             throw new EntityNotFoundException("User don't exists");
@@ -100,16 +102,16 @@ public class UserBean {
 
         //verify if user password is not equal to old password
         if (!user.getPassword().equals(hasher.hash(updatePasswordDTO.getOldPassword()))) {
-            throw new IllegalArgumentException("Old password is incorrect"); //TODO: criar um exception mapper para este erro
+            throw new PasswordInvalidException("Old password is not correct");
         }
         //verify if new password is not equal to confirm password
         if (!updatePasswordDTO.getNewPassword().equals(updatePasswordDTO.getConfirmNewPassword())) {
-            throw new IllegalArgumentException("New password and confirm password are not equal"); //TODO: criar um exception mapper para este erro
+            throw new PasswordInvalidException("New password and confirm password are not equal");
         }
 
         //verify if old password is  equal to new password
         if (updatePasswordDTO.getOldPassword().equals(updatePasswordDTO.getNewPassword())) {
-            throw new IllegalArgumentException("Old password and new password are equal"); //TODO: criar um exception mapper para este erro
+            throw new PasswordInvalidException("Old password and new password are equal");
         }
 
         user.setPassword(hasher.hash(updatePasswordDTO.getNewPassword()));

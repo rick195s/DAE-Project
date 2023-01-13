@@ -7,6 +7,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.ClientBean;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
+import pt.ipleiria.estg.dei.ei.dae.project.exceptions.PasswordInvalidException;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Authenticated;
 import pt.ipleiria.estg.dei.ei.dae.project.security.TokenIssuer;
 
@@ -69,7 +70,7 @@ public class AuthService {
     @PUT
     @Authenticated
     @Path("/updatePassword")
-    public Response updatePassword(@Valid UpdatePasswordDTO updatePasswordDTO) {
+    public Response updatePassword(@Valid UpdatePasswordDTO updatePasswordDTO) throws PasswordInvalidException {
         String userEmail = securityContext.getUserPrincipal().getName();
         userBean.updatePassword(userEmail, updatePasswordDTO);
         return Response.ok().build();

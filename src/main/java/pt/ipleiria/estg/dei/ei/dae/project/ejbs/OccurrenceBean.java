@@ -11,6 +11,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescription
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.UserDontHavePolicyException;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
+import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 import pt.ipleiria.estg.dei.ei.dae.project.utils.FileUtils;
 
 import javax.ejb.EJB;
@@ -76,7 +77,7 @@ public class OccurrenceBean {
         // flushing to get the generated Id
         entityManager.flush();
 
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         historicalBean.create("Occurrence Created", occurrence.getId(), formatter.format(Calendar.getInstance().getTime()), HistoricalEnum.A_AGUARDAR_APROVACAO_PELA_SEGURADORA);
 
         return occurrence;
@@ -162,13 +163,13 @@ public class OccurrenceBean {
 
     public Occurrence find(int id) {
         Occurrence occurrence = entityManager.find(Occurrence.class, id);
-        if (occurrence == null){
+        if (occurrence == null) {
             return null;
         }
 
         occurrence.setPolicy(policyBean.find(occurrence.getPolicyId()));
 
-        return  occurrence;
+        return occurrence;
     }
 
     public List<OccurrenceFile> getOccurrenceFiles(int id) {
@@ -199,7 +200,7 @@ public class OccurrenceBean {
 
         occurrence.setApprovalType(ApprovalType.APPROVED);
 
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentData = formatter.format(Calendar.getInstance().getTime());
 
         historicalBean.create("Aprovado pela seguradora", occurrence.getId(), currentData, HistoricalEnum.APROVADO_PELA_SEGURADORA);
@@ -215,7 +216,7 @@ public class OccurrenceBean {
 
         occurrence.setApprovalType(ApprovalType.REJECTED);
 
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentData = formatter.format(Calendar.getInstance().getTime());
 
         historicalBean.create("Rejeitado pela seguradora", occurrence.getId(), currentData, HistoricalEnum.NAO_APROVADO_PELA_SEGURADORA);

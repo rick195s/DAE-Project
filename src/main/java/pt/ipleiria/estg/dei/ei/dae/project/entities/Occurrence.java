@@ -29,7 +29,7 @@ import java.util.List;
         @NamedQuery(
                 name = "getOccurrencesOfInsurerByPolicies",
                 query = "SELECT o FROM Occurrence o WHERE o.policyId IN :policiesIds ORDER BY o.id" // JPQL
-        )
+        ),
 })
 @Table(
         name = "occurrences"
