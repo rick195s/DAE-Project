@@ -13,6 +13,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.OccurrenceFile;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
+import pt.ipleiria.estg.dei.ei.dae.project.exceptions.UserDontHavePolicyException;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Authenticated;
 
 
@@ -100,7 +101,7 @@ public class OccurrenceService {
     @Authenticated
     @RolesAllowed({"ADMINISTRATOR", "CLIENT"})
     @Path("/")
-    public Response createOccurrence(OccurrenceDTO occurrenceDTO) throws OccurrenceSmallDescriptionException {
+    public Response createOccurrence(OccurrenceDTO occurrenceDTO) throws OccurrenceSmallDescriptionException, UserDontHavePolicyException {
         Occurrence occurrence = occurrenceBean.create(
                 occurrenceDTO.getPolicyId(),
                 occurrenceDTO.getDescription(),
@@ -116,7 +117,7 @@ public class OccurrenceService {
     @RolesAllowed({"ADMINISTRATOR", "CLIENT"})
     @Path("/csv")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response createOccurrenceWithCSV(MultipartFormDataInput input) throws IOException, OccurrenceSmallDescriptionException, EntityNotFoundException {
+    public Response createOccurrenceWithCSV(MultipartFormDataInput input) throws IOException, OccurrenceSmallDescriptionException, UserDontHavePolicyException {
         occurrenceBean.createOccurrenceWithCSV(input);
         return Response.status(Response.Status.CREATED).build();
     }

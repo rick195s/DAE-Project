@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ejbs;
 import com.github.javafaker.Faker;
 import pt.ipleiria.estg.dei.ei.dae.project.Supervisor;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
+import pt.ipleiria.estg.dei.ei.dae.project.exceptions.UserDontHavePolicyException;
 import pt.ipleiria.estg.dei.ei.dae.project.gateways.PolicyGateway;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.*;
 import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
@@ -97,7 +98,7 @@ public class ConfigBean {
         for (int i = 0; i < max; i++) {
             try {
                 occurrenceBean.create(policies.get(i).getId(), faker.lorem().sentence(10), clientBean.findByNIFNIPC(333333333).getId());
-            } catch (OccurrenceSmallDescriptionException e) {
+            } catch (OccurrenceSmallDescriptionException | UserDontHavePolicyException e) {
                 throw new RuntimeException(e);
             }
         }
