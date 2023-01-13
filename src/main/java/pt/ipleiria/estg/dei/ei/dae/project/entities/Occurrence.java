@@ -20,28 +20,16 @@ import java.util.List;
                 name = "getOccurrencesOfClient",
                 query = "SELECT o FROM Occurrence o WHERE o.client = :client ORDER BY o.id" // JPQL
         ),
-        @NamedQuery(
-                name = "getOccurrenceOfClient",
-                query = "SELECT o FROM Occurrence o WHERE o.client = :client AND o.id = :id" // JPQL
-        ),
         // every repair shop expert can see the occurrences that are assigned to his repair shop (were he works)
         @NamedQuery(
                 name = "getOccurrencesOfRepairShop",
                 query = "SELECT o FROM Occurrence o WHERE o.repairShopId = :repairShopId AND o.approvalType = 'APPROVED' ORDER BY o.id" // JPQL
-        ),
-        @NamedQuery(
-                name = "getOccurrenceOfRepairShopExpert",
-                query = "SELECT o FROM Occurrence o WHERE o.repairShopId = :repairShopId AND o.id = :id AND o.approvalType = 'APPROVED' ORDER BY o.id" // JPQL
         ),
         // every insurer expert can see the occurrences that are assigned to his insurer (were he works)
         @NamedQuery(
                 name = "getOccurrencesOfInsurerByPolicies",
                 query = "SELECT o FROM Occurrence o WHERE o.policyId IN :policiesIds ORDER BY o.id" // JPQL
         ),
-        @NamedQuery(
-                name = "getOccurrenceOfInsurerByPolicies",
-                query = "SELECT o FROM Occurrence o WHERE o.policyId IN :policiesIds AND o.id = :id ORDER BY o.id" // JPQL
-        )
 })
 @Table(
         name = "occurrences"

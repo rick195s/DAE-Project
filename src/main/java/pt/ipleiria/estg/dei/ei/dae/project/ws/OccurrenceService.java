@@ -6,14 +6,11 @@ import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.OccurrenceFileDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.RepairShopDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.detailed.DetailedOccurrenceDTO;
-import pt.ipleiria.estg.dei.ei.dae.project.ejbs.OccurrenceBean;
-import pt.ipleiria.estg.dei.ei.dae.project.ejbs.OccurrenceFileBean;
-import pt.ipleiria.estg.dei.ei.dae.project.ejbs.UserBean;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.Occurrence;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.OccurrenceFile;
-import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
+import pt.ipleiria.estg.dei.ei.dae.project.ejbs.*;
+import pt.ipleiria.estg.dei.ei.dae.project.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Authenticated;
+import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 
 import javax.annotation.security.RolesAllowed;
@@ -40,6 +37,12 @@ public class OccurrenceService {
     @EJB
     private UserBean userBean;
 
+    @EJB
+    private RepairShopExpertBean repairShopExpertBean;
+
+    @EJB
+    private InsurerExpertBean insurerExpertBean;
+
     @Context
     private SecurityContext securityContext;
 
@@ -65,9 +68,13 @@ public class OccurrenceService {
     @Path("/{id}")
     public Response getOccurrence(@PathParam("id") int id) {
 
-        User user =  userBean.findUserByEmail(securityContext.getUserPrincipal().getName());
+        if (!canUserSeeOccurrence(id)){
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity("ERROR_FINDING_OCCURRENCE")
+                    .build();
+        }
 
-        Occurrence occurrence = occurrenceBean.find(user, id);
+        Occurrence occurrence = occurrenceBean.find(id);
         if (occurrence != null) {
             return Response.ok(toDetailedDTO(occurrence)).build();
         }
@@ -185,5 +192,36 @@ public class OccurrenceService {
 
         return detailedOccurrenceDTO;
     }
+
+
+    private boolean canUserSeeOccurrence(int occurrenceId) {
+        Occurrence occurrence = occurrenceBean.find(occurrenceId);
+        if (occurrence == null) {
+            throw new EntityNotFoundException("Occurrence dont exists");
+        }
+
+        User user =  userBean.findUserByEmail(securityContext.getUserPrincipal().getName());
+
+        switch (user.getRole()) {
+            case CLIENT:
+                return occurrence.getClient().getId() == user.getId();
+
+            case REPAIR_SHOP_EXPERT:
+                RepairShopExpert repairShopExpert = repairShopExpertBean.find(user.getId());
+                return occurrence.getRepairShopId() == repairShopExpert.getRepairShopId();
+
+            case INSURER_EXPERT:
+                InsurerExpert insurerExpert = insurerExpertBean.find(user.getId());
+                return occurrence.getInsurerId() == insurerExpert.getInsurerId();
+
+
+            case ADMINISTRATOR:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
 
 }

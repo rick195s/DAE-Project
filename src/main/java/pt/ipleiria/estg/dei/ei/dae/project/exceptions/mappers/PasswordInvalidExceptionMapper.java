@@ -13,6 +13,6 @@ public class PasswordInvalidExceptionMapper implements ExceptionMapper<PasswordI
 
     @Override
     public Response toResponse(PasswordInvalidException e) {
-        return null;
+        return getResponse(e);
     }
 }

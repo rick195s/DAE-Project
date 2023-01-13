@@ -10,6 +10,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
+import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 import pt.ipleiria.estg.dei.ei.dae.project.utils.FileUtils;
 
 import javax.ejb.EJB;
@@ -165,56 +166,6 @@ public class OccurrenceBean {
 
         return occurrence;
     }
-
-    public Occurrence find(User user, int id) {
-        Occurrence occurrence = getOccurrenceOfUser(user, id);
-        if (occurrence == null) {
-            return null;
-        }
-
-        occurrence.setPolicy(policyBean.find(occurrence.getPolicyId()));
-
-        return occurrence;
-    }
-
-    public Occurrence getOccurrenceOfUser(User user, int id) {
-
-        switch (user.getRole()) {
-            case CLIENT:
-                return (Occurrence) entityManager.createNamedQuery("getOccurrenceOfClient")
-                        .setParameter("client", clientBean.find(user.getId()))
-                        .setParameter("id", id)
-                        .getSingleResult();
-
-            case ADMINISTRATOR:
-                return entityManager.find(Occurrence.class, id);
-
-            case REPAIR_SHOP_EXPERT:
-                RepairShopExpert repairShopExpert = repairShopExpertBean.find(user.getId());
-                if (repairShopExpert == null) {
-                    throw new EntityNotFoundException("RepairShopExpert dont exists");
-                }
-                return (Occurrence) entityManager.createNamedQuery("getOccurrenceOfRepairShopExpert")
-                .setParameter("repairShopId", repairShopExpert.getRepairShopId())
-                .setParameter("id", id)
-                .getSingleResult();
-
-            case INSURER_EXPERT:
-                InsurerExpert insurerExpert = insurerExpertBean.find(user.getId());
-                if (insurerExpert == null) {
-                    throw new EntityNotFoundException("InsurerExpert dont exists");
-                }
-                List<Integer> policiesIds = insurerBean.getPoliciesIds(insurerExpert.getInsurerId());
-                return (Occurrence) entityManager.createNamedQuery("getOccurrenceOfInsurerByPolicies")
-                        .setParameter("policiesIds", policiesIds)
-                        .setParameter("id", id)
-                        .getResultList();
-
-            default:
-                return null;
-        }
-    }
-
 
     public List<OccurrenceFile> getOccurrenceFiles(int id) {
         Occurrence occurrence = entityManager.find(Occurrence.class, id);
