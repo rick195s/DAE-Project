@@ -8,6 +8,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.ApprovalType;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.enums.HistoricalEnum;
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescriptionException;
+import pt.ipleiria.estg.dei.ei.dae.project.exceptions.UserDontHavePolicyException;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
 import pt.ipleiria.estg.dei.ei.dae.project.utils.FileUtils;
@@ -50,7 +51,7 @@ public class OccurrenceBean {
     @EJB
     ClientBean clientBean;
 
-    public Occurrence create(int policyId, String description, int clientId) throws OccurrenceSmallDescriptionException {
+    public Occurrence create(int policyId, String description, int clientId) throws OccurrenceSmallDescriptionException, UserDontHavePolicyException {
         if (description.length() < 10) {
             throw new OccurrenceSmallDescriptionException(description);
         }
@@ -66,7 +67,7 @@ public class OccurrenceBean {
         }
 
         if (policy.getClientNIFNIPC() != client.getNIF_NIPC()) {
-            throw new EntityNotFoundException("Client dont have this policy");
+            throw new UserDontHavePolicyException();
         }
 
         Occurrence occurrence = new Occurrence(policy, new RepairShop(), description, ApprovalType.WAITING_FOR_APPROVAL, Calendar.getInstance(), null, client);
@@ -82,7 +83,7 @@ public class OccurrenceBean {
     }
 
 
-    public void createOccurrenceWithCSV(MultipartFormDataInput input) throws OccurrenceSmallDescriptionException, IOException {
+    public void createOccurrenceWithCSV(MultipartFormDataInput input) throws OccurrenceSmallDescriptionException, IOException, UserDontHavePolicyException {
         Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
         List<InputPart> inputParts = uploadForm.get("file");
 
