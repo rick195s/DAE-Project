@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.*;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.detailed.DetailedOccurrenceDTO;
