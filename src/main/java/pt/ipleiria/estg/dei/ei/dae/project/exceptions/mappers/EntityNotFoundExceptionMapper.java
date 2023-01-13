@@ -18,4 +18,7 @@ public class EntityNotFoundExceptionMapper implements ExceptionMapper<EntityNotF
     protected static Response getResponse(EntityNotFoundException e) {
         return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO(e.getMessage())).build();
     }
+
+    public EntityNotFoundExceptionMapper() {
+    }
 }
