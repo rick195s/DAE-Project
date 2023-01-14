@@ -11,11 +11,11 @@ import pt.ipleiria.estg.dei.ei.dae.project.exceptions.OccurrenceSmallDescription
 import pt.ipleiria.estg.dei.ei.dae.project.exceptions.UserDontHavePolicyException;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.RepairShop;
-import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 import pt.ipleiria.estg.dei.ei.dae.project.utils.FileUtils;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
@@ -34,6 +34,9 @@ public class OccurrenceBean {
 
     @EJB
     PolicyBean policyBean;
+
+    @EJB
+    EmailBean emailBean;
 
     @EJB
     RepairShopBean repairShopBean;
@@ -233,7 +236,7 @@ public class OccurrenceBean {
         entityManager.merge(occurrence);
     }
 
-    public void setOccurrenceRepairShop(int id, int repairShopId) {
+    public void setOccurrenceRepairShop(int id, int repairShopId) throws MessagingException {
         RepairShop repairShop = repairShopBean.find(repairShopId);
         if (repairShop == null) {
             throw new EntityNotFoundException("Repair Shop dont exists");
@@ -243,6 +246,8 @@ public class OccurrenceBean {
         if (occurrence == null) {
             throw new EntityNotFoundException("Occurrence dont exists");
         }
+
+        emailBean.send(repairShop.getEmail(), "Nova ocorrência", "Foi atribuida uma nova ocorrência a sua oficina");
 
         occurrence.setRepairShop(repairShop);
 

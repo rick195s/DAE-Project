@@ -14,6 +14,7 @@ import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import javax.mail.MessagingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -59,7 +60,11 @@ public class ConfigBean {
         createInsurerExperts();
         // populateMockAPI();
 
-       createOccurrences();
+        try {
+            createOccurrences();
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -93,20 +98,23 @@ public class ConfigBean {
         }
     }
 
-    private void createOccurrences() {
+    private void createOccurrences() throws MessagingException {
         List<Policy> policies = policyBean.getAllPolicies();
         int max = Math.min(policies.size(), 20);
         Client client =  clientBean.findByNIFNIPC(333333333);
 
+        int occurrenceId = 1;
         for (int i = 0; i < max; i++) {
             int id = client != null ? client.getId() : i + 1;
 
             try {
-                occurrenceBean.create(policies.get(i).getId(), faker.lorem().sentence(10), id);
+                 occurrenceId = occurrenceBean.create(policies.get(i).getId(), faker.lorem().sentence(10), id).getId();
             } catch (OccurrenceSmallDescriptionException | UserDontHavePolicyException e) {
                 throw new RuntimeException(e);
             }
         }
+
+        occurrenceBean.setOccurrenceRepairShop(occurrenceId, repairShopBean.getAllRepairShops().get(0).getId());
     }
 
     private void populateMockAPI() {

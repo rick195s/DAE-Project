@@ -14,6 +14,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.security.Authenticated;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -173,7 +174,7 @@ public class OccurrenceService {
     @Authenticated
     @RolesAllowed({"ADMINISTRATOR", "CLIENT"})
     @Path("/{id}/repair-shop/{repairShopId}")
-    public Response setOccurrenceRepairShop(@PathParam("id") int id, @PathParam("repairShopId") int repairShopId) {
+    public Response setOccurrenceRepairShop(@PathParam("id") int id, @PathParam("repairShopId") int repairShopId) throws MessagingException {
         occurrenceBean.setOccurrenceRepairShop(id, repairShopId);
         return Response.ok(toDetailedDTO(occurrenceBean.find(id))).build();
     }
