@@ -1,5 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.project.entities;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 import javax.persistence.*;
@@ -29,6 +31,7 @@ import java.util.Objects;
 )
 
 @Inheritance(strategy=InheritanceType.JOINED)
+@Where(clause = "deleted = false")
 public class User {
     @Id
     @NotNull
@@ -46,14 +49,27 @@ public class User {
     @Enumerated(EnumType.STRING)
     protected Role role;
 
+    @Column(name = "deleted", nullable = false)
+    private Boolean deleted = false;
+
+
     public User(String name, String email, String password, Role role) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.deleted = false;
     }
 
     public User() {
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public int getId() {
