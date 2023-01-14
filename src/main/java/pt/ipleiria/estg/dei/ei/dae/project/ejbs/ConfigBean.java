@@ -68,7 +68,7 @@ public class ConfigBean {
             clientBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123", ((int) faker.number().randomNumber(9, true)));
         }
         clientBean.create("Tiago Santos", "tiago@mail.pt", "123", 333333333);
-        clientBean.find(3).setDeleted(true);
+    
     }
 
     private void createAdmins() {
