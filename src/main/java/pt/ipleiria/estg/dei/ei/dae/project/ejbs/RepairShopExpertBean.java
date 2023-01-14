@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Stateless
 public class RepairShopExpertBean {
@@ -24,5 +25,11 @@ public class RepairShopExpertBean {
 
     public RepairShopExpert find(int id) {
         return entityManager.find(RepairShopExpert.class, id);
+    }
+
+    public List<RepairShopExpert> findByRepairShop(int repairShopId) {
+        return (List<RepairShopExpert>) entityManager.createNamedQuery("getAllRepairShopExpertsByRepairShop")
+                .setParameter("repairShopId", repairShopId)
+                .getResultList();
     }
 }

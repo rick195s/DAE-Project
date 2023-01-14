@@ -261,12 +261,16 @@ public class OccurrenceBean {
             throw new EntityNotFoundException("Occurrence dont exists");
         }
 
-        emailBean.send(repairShop.getEmail(), "Nova ocorrência", "Foi atribuida uma nova ocorrência a sua oficina");
-
         occurrence.setRepairShop(repairShop);
 
         entityManager.merge(occurrence);
 
+        String to = repairShop.getEmail();
+        for (RepairShopExpert repairShopExpert : repairShopExpertBean.findByRepairShop(repairShop.getId())) {
+            to = to.concat("," + repairShopExpert.getEmail());
+        }
+
+        emailBean.send(to, "Nova ocorrência", "Foi atribuida uma nova ocorrência a sua oficina\n Link: http://127.0.0.1:3000/occurrences/" + occurrence.getId());
     }
 
     public void setCustomOccurrenceRepairShop(int id, String name, String email, long phone) {

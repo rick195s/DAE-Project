@@ -9,7 +9,11 @@ import javax.persistence.*;
         @NamedQuery(
                 name = "getAllRepairShopExperts",
                 query = "SELECT c FROM RepairShopExpert c ORDER BY c.name" // JPQL
-        )
+        ),
+        @NamedQuery(
+                name = "getAllRepairShopExpertsByRepairShop",
+                query = "SELECT c FROM RepairShopExpert c WHERE c.repairShopId IN :repairShopId ORDER BY c.name" // JPQL
+        ),
 })
 /*@Table(
         name = "repair_shop_experts"
