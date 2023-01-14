@@ -96,6 +96,8 @@ public class ConfigBean {
         for (int i = 0; i < max; i++) {
             insurerExpertBean.create(faker.name().fullName(), faker.internet().emailAddress(), "123", 1/* insurers.get(i).getId()*/);
         }
+
+        insurerExpertBean.create("Insurer Expert Example", "insurer.expert@mail.pt", "123", 1/* insurers.get(i).getId()*/);
     }
 
     private void createOccurrences() throws MessagingException {

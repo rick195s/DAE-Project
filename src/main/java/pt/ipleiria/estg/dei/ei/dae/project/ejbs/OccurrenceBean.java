@@ -231,7 +231,21 @@ public class OccurrenceBean {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentData = formatter.format(Calendar.getInstance().getTime());
 
-        historicalBean.create("Rejeitado pela seguradora", occurrence.getId(), currentData, HistoricalEnum.NAO_APROVADO_PELA_SEGURADORA);
+        historicalBean.create("Rejected by insurer", occurrence.getId(), currentData, HistoricalEnum.NAO_APROVADO_PELA_SEGURADORA);
+
+        entityManager.merge(occurrence);
+    }
+
+    public void concludeOccurrence(int id) {
+        Occurrence occurrence = find(id);
+        if (occurrence == null) {
+            throw new EntityNotFoundException("Occurrence dont exists");
+        }
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentData = formatter.format(Calendar.getInstance().getTime());
+
+        historicalBean.create("Occurrence concluded and finished by repair shop expert", occurrence.getId(), currentData, HistoricalEnum.APROVADO_PELO_EXPERT);
 
         entityManager.merge(occurrence);
     }
@@ -294,4 +308,6 @@ public class OccurrenceBean {
 
         return occurrenceFiles;
     }
+
+
 }

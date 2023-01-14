@@ -67,6 +67,10 @@ public class OccurrenceService {
                     .build();
         }
 
+        if (occurrences.isEmpty()) {
+            count = 0L;
+        }
+
         var paginatedDTO = new PaginatedDTO<>(OccurrenceDTO.from(occurrences), count, pageRequest.getOffset());
 
         return Response.ok(paginatedDTO).build();
@@ -166,6 +170,16 @@ public class OccurrenceService {
     @Path("/{id}/declined")
     public Response declineOccurrence(@PathParam("id") int id) {
         occurrenceBean.declineOccurrence(id);
+        return Response.ok(toDetailedDTO(occurrenceBean.find(id))).build();
+    }
+
+    @PATCH
+    @Authenticated
+    @RolesAllowed({"ADMINISTRATOR", "REPAIR_SHOP_EXPERT"})
+    @Path("/{id}/concluded")
+    public Response concludeOccurrence(@PathParam("id") int id) {
+        System.out.println("start conlude");
+        occurrenceBean.concludeOccurrence(id);
         return Response.ok(toDetailedDTO(occurrenceBean.find(id))).build();
     }
 
