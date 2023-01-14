@@ -25,9 +25,14 @@ public class PolicyBean {
     @PersistenceContext
     EntityManager entityManager;
 
+    public List<Policy> getAllPolicies(int NIF)
+    {
+        return supervisor.getPolicies(NIF);
+    }
+
     public List<Policy> getAllPolicies()
     {
-        return supervisor.getPolicies();
+        return getAllPolicies(0);
     }
 
     public List<Policy> findAll(List<Integer> policiesIds) {
@@ -46,42 +51,6 @@ public class PolicyBean {
     }
     public PolicyTypeDetail getPolicyDetails(int id) {
         return supervisor.getPolicyTypeDetail(id);
-    }
-    public Long count() {
-        return supervisor.getPolicies().stream().count();
-    }
-
-    public List<Policy> getAll(User user, int offset, int limit) {
-
-        List<Policy> policies;
-
-        policies = getPolicyOfClient(user);
-        for (Policy policy : policies) {
-        }
-        return policies;
-    }
-
-    private List<Policy> getPolicyOfClient(User user) {
-        List<Policy> policies = new ArrayList<>();
-        switch (user.getRole()) {
-            case CLIENT:
-                Client client = clientBean.find(user.getId());
-                if(client == null) {
-                    return new ArrayList<>();
-                }
-                for (Policy policy : supervisor.getPolicies()) {
-                    if (policy.getClientNIFNIPC() == client.getNIF_NIPC()) {
-                        policies.add(policy);
-                    }
-                }
-                return policies;
-
-            case ADMINISTRATOR:
-                policies = supervisor.getPolicies();
-                 return policies;
-        }
-        return null;
-
     }
 
 }

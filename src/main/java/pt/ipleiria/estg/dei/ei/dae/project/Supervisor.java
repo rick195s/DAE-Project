@@ -31,14 +31,19 @@ public class Supervisor {
         populatePolicyObejcts();
     }
 
-    public List<Policy> getPolicies() {
-        refreshPoliciesViaAPI();
+    public List<Policy> getPolicies(int NIF) {
+        refreshPoliciesViaAPI(NIF);
         return policies;
     }
 
-    private void refreshPoliciesViaAPI() {
+    public List<Policy> getPolicies() {
+        return getPolicies(0);
+    }
+
+
+    private void refreshPoliciesViaAPI(int NIF) {
         PolicyGateway gateway = new PolicyGateway();
-        policies = gateway.getFromMockAPI(0);
+        policies = gateway.getFromMockAPI(0, NIF);
 
         for (Policy policy : policies) {
             Client client = clientBean.findByNIFNIPC(policy.getClientNIFNIPC());
@@ -122,7 +127,7 @@ public class Supervisor {
 
     public List<Integer> getPoliciesIds(int insurerId) {
         PolicyGateway gateway = new PolicyGateway();
-        policies = gateway.getFromMockAPI(insurerId);
+        policies = gateway.getFromMockAPI(insurerId, 0);
         return policies.stream()
                 .map(Policy::getId)
                 .collect(Collectors.toList());
