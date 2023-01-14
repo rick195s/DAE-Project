@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.project.ws;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.PaginatedDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserCreateDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserDTO;
+import pt.ipleiria.estg.dei.ei.dae.project.ejbs.InsurerExpertBean;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.RepairShopExpertBean;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
@@ -27,6 +28,9 @@ public class UserService {
     @EJB
     private RepairShopExpertBean repairShopExpertBean;
 
+    @EJB
+    private InsurerExpertBean insurerExpertBean;
+
     @GET
     @Authenticated
     @RolesAllowed({"ADMINISTRATOR"})
@@ -37,7 +41,6 @@ public class UserService {
         if (pageRequest.getOffset() > count) {
             return Response.ok(new PaginatedDTO<>(count)).build();
         }
-
 
         var paginatedDTO = new PaginatedDTO<>(UserDTO.from(userBean.getAllUsers()), count, pageRequest.getOffset());
 
@@ -75,7 +78,10 @@ public class UserService {
     public Response createNewUserWS(UserCreateDTO userDTO) {
         if (userDTO.getRole().equals("REPAIR_SHOP_EXPERT")) {
             repairShopExpertBean.create(userDTO.getName(), userDTO.getEmail(), userDTO.getPassword(), userDTO.getRepairShopId());
-        }else{
+        }else if(userDTO.getRole().equals("INSURER_EXPERT")){
+            insurerExpertBean.create(userDTO.getName(), userDTO.getEmail(), userDTO.getPassword(), userDTO.getInsurerId());
+        }
+        else{
             userBean.create(
                     userDTO.getName(),
                     userDTO.getEmail(),
