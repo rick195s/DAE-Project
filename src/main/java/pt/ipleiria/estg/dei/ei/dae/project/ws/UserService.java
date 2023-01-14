@@ -3,6 +3,8 @@ package pt.ipleiria.estg.dei.ei.dae.project.ws;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.PaginatedDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserCreateDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.UserDTO;
+import pt.ipleiria.estg.dei.ei.dae.project.ejbs.InsurerExpertBean;
+import pt.ipleiria.estg.dei.ei.dae.project.ejbs.RepairShopExpertBean;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.project.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.project.requests.PageRequest;
@@ -23,6 +25,12 @@ public class UserService {
     @EJB
     private UserBean userBean;
 
+    @EJB
+    private RepairShopExpertBean repairShopExpertBean;
+
+    @EJB
+    private InsurerExpertBean insurerExpertBean;
+
     @GET
     @Authenticated
     @RolesAllowed({"ADMINISTRATOR"})
@@ -33,7 +41,6 @@ public class UserService {
         if (pageRequest.getOffset() > count) {
             return Response.ok(new PaginatedDTO<>(count)).build();
         }
-
 
         var paginatedDTO = new PaginatedDTO<>(UserDTO.from(userBean.getAllUsers()), count, pageRequest.getOffset());
 
@@ -69,12 +76,19 @@ public class UserService {
     @RolesAllowed({"ADMINISTRATOR"})
     @Path("/")
     public Response createNewUserWS(UserCreateDTO userDTO) {
-        userBean.create(
-                userDTO.getName(),
-                userDTO.getEmail(),
-                userDTO.getPassword(),
-                userDTO.getRole()
-        );
+        if (userDTO.getRole().equals("REPAIR_SHOP_EXPERT")) {
+            repairShopExpertBean.create(userDTO.getName(), userDTO.getEmail(), userDTO.getPassword(), userDTO.getRepairShopId());
+        }else if(userDTO.getRole().equals("INSURER_EXPERT")){
+            insurerExpertBean.create(userDTO.getName(), userDTO.getEmail(), userDTO.getPassword(), userDTO.getInsurerId());
+        }
+        else{
+            userBean.create(
+                    userDTO.getName(),
+                    userDTO.getEmail(),
+                    userDTO.getPassword(),
+                    userDTO.getRole()
+            );
+        }
 
         User user = userBean.findUserByEmail(userDTO.getEmail());
 

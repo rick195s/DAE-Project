@@ -1,9 +1,11 @@
 package pt.ipleiria.estg.dei.ei.dae.project.ws;
 
+import pt.ipleiria.estg.dei.ei.dae.project.dtos.InsurerDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.RepairShopDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.ejbs.InsurerBean;
 import pt.ipleiria.estg.dei.ei.dae.project.security.Authenticated;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -16,6 +18,14 @@ import java.util.List;
 public class InsurerService {
     @EJB
     private InsurerBean insurerBean;
+
+    @GET
+    @Authenticated
+    @RolesAllowed({"ADMINISTRATOR"})
+    @Path("/")
+    public List<InsurerDTO> getAllInsurersWS() {
+        return InsurerDTO.from(insurerBean.getAllInsurers());
+    }
 
     @GET
     @Authenticated
