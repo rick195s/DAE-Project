@@ -76,25 +76,15 @@ public class UserBean {
     }
 
 
-    public void update(int id, UserDTO userDTO) {
+    public void update(int id, String newName) {
         User user = find(id);
         if (user == null) {
             throw new EntityNotFoundException("User with id " + id + " not found");
         }
 
-        if (userDTO.getName() != null) {
-            user.setName(userDTO.getName());
+        if (newName != null) {
+            user.setName(newName);
         }
-
-
-        if (userDTO.getRole() != null && !userDTO.getRole().equals("ADMINISTRATOR")) {
-            try {
-                user.setRole(Role.valueOf(userDTO.getRole()));
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Role " + userDTO.getRole() + " not found");
-            }
-        }
-
 
         entityManager.merge(user);
     }
