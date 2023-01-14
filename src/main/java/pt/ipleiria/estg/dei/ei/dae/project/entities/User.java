@@ -5,7 +5,6 @@ import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
@@ -27,7 +26,6 @@ import java.util.Objects;
         name = "users",
         uniqueConstraints = @UniqueConstraint(columnNames = {"email"})
 )
-
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class User extends Versionable{
     @Id
@@ -46,14 +44,27 @@ public class User extends Versionable{
     @Enumerated(EnumType.STRING)
     protected Role role;
 
+    @Column(name = "deleted", nullable = false)
+    private Boolean deleted = false;
+
+
     public User(String name, String email, String password, Role role) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.deleted = false;
     }
 
     public User() {
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public int getId() {
