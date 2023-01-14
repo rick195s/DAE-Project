@@ -21,10 +21,10 @@ import java.util.List;
         )
 
 })
-@Table(
+/*@Table(
         name = "clients"
 )
-@PrimaryKeyJoinColumn(name = "user_id")
+@PrimaryKeyJoinColumn(name = "user_id")*/
 public class Client extends User {
     int NIF_NIPC;
 

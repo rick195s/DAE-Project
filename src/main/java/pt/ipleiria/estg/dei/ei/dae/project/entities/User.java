@@ -28,8 +28,8 @@ import java.util.Objects;
         uniqueConstraints = @UniqueConstraint(columnNames = {"email"})
 )
 
-@Inheritance(strategy=InheritanceType.JOINED)
-public class User {
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+public class User extends Versionable{
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
