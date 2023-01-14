@@ -12,7 +12,7 @@ Insurers:
 
 Insurer_repair_shops:
 
-<img src="file:///C:/Users/ricar/AppData/Roaming/marktext/images/2023-01-14-20-07-36-image.png" title="" alt="" width="1012">
+<img title="" src="file:///C:/Users/ricar/AppData/Roaming/marktext/images/2023-01-14-20-07-36-image.png" alt="" width="331">
 
 Policy_type_details:
 
@@ -25,14 +25,6 @@ Repair_shops:
 Policy_objects:
 
 <img src="file:///C:/Users/ricar/Downloads/policy_object.png" title="" alt="policy_object.png" width="322">
-
-
-
-
-
-
-
-
 
 # Wildfly + PostgreSQL with Docker & Docker Compose
 

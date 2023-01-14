@@ -5,6 +5,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.Policy;
 
 import javax.json.JsonArray;
+import javax.json.JsonValue;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import java.util.*;
@@ -33,18 +34,31 @@ public class PolicyGateway {
     }
 
 
-    public List<Policy> getFromMockAPI(int insurerId){
+    public List<Policy> getFromMockAPI(int insurerId, int NIF) {
         ArrayList<Policy> policies = new ArrayList<>();
 
-        String uri = URI_POLICIES;
+        String uri = URI_POLICIES + "?";
         if (insurerId != 0) {
-            uri += "?insurerId=" + insurerId;
+            uri += "&insurerId=" + insurerId;
+        }
+
+        if (NIF != 0) {
+            uri += "&clientNIFNIPC=" + NIF;
         }
 
         JsonArray jsonArrayPolicies = APIGateway.getDataFromAPI(uri);
-        jsonArrayPolicies.forEach(policy -> {
+        for (JsonValue policy : jsonArrayPolicies) {
             Jsonb jsonb = JsonbBuilder.create();
             PolicyDTO policyDTOObj = jsonb.fromJson(policy.toString(), PolicyDTO.class);
+
+            // we need to verify again because mockapi filtering isnt exact match, it's contains
+            if (NIF != 0 && policyDTOObj.getClientNIFNIPC() != NIF) {
+                continue;
+            }
+
+            if (insurerId != 0 && policyDTOObj.getInsurerId() != insurerId) {
+                continue;
+            }
 
             Policy policyObj = new Policy(
                     policyDTOObj.getId(),
@@ -55,10 +69,10 @@ public class PolicyGateway {
                     policyDTOObj.getPolicyObjectId(),
                     policyDTOObj.getStartDate(),
                     policyDTOObj.getEndDate()
-                );
+            );
 
             policies.add(policyObj);
-        });
+        }
 
         return policies;
     }
