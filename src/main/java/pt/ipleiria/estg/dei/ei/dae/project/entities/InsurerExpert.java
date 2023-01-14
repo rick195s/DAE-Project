@@ -11,10 +11,10 @@ import javax.persistence.*;
                 query = "SELECT c FROM InsurerExpert c ORDER BY c.name" // JPQL
         )
 })
-@Table(
+/*@Table(
         name = "insurer_experts"
 )
-@PrimaryKeyJoinColumn(name = "user_id")
+@PrimaryKeyJoinColumn(name = "user_id")*/
 public class InsurerExpert extends User {
     @Column(name = "insurer_id")
     private int insurerId;

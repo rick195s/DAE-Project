@@ -1,13 +1,10 @@
 package pt.ipleiria.estg.dei.ei.dae.project.entities;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import pt.ipleiria.estg.dei.ei.dae.project.security.enums.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
@@ -29,10 +26,8 @@ import java.util.Objects;
         name = "users",
         uniqueConstraints = @UniqueConstraint(columnNames = {"email"})
 )
-
-@Inheritance(strategy=InheritanceType.JOINED)
-@Where(clause = "deleted = false")
-public class User {
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+public class User extends Versionable{
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)

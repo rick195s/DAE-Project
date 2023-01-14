@@ -14,6 +14,7 @@ import pt.ipleiria.estg.dei.ei.dae.project.security.Authenticated;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -64,6 +65,10 @@ public class OccurrenceService {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(new ErrorDTO("No occurrences found."))
                     .build();
+        }
+
+        if (occurrences.isEmpty()) {
+            count = 0L;
         }
 
         var paginatedDTO = new PaginatedDTO<>(OccurrenceDTO.from(occurrences), count, pageRequest.getOffset());
@@ -168,12 +173,22 @@ public class OccurrenceService {
         return Response.ok(toDetailedDTO(occurrenceBean.find(id))).build();
     }
 
+    @PATCH
+    @Authenticated
+    @RolesAllowed({"ADMINISTRATOR", "REPAIR_SHOP_EXPERT"})
+    @Path("/{id}/concluded")
+    public Response concludeOccurrence(@PathParam("id") int id) {
+        System.out.println("start conlude");
+        occurrenceBean.concludeOccurrence(id);
+        return Response.ok(toDetailedDTO(occurrenceBean.find(id))).build();
+    }
+
 
     @PATCH
     @Authenticated
     @RolesAllowed({"ADMINISTRATOR", "CLIENT"})
     @Path("/{id}/repair-shop/{repairShopId}")
-    public Response setOccurrenceRepairShop(@PathParam("id") int id, @PathParam("repairShopId") int repairShopId) {
+    public Response setOccurrenceRepairShop(@PathParam("id") int id, @PathParam("repairShopId") int repairShopId) throws MessagingException {
         occurrenceBean.setOccurrenceRepairShop(id, repairShopId);
         return Response.ok(toDetailedDTO(occurrenceBean.find(id))).build();
     }
