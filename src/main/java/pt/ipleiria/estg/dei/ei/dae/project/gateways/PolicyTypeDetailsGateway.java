@@ -1,8 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.project.gateways;
 
-import pt.ipleiria.estg.dei.ei.dae.project.dtos.PolicyObjectDTO;
 import pt.ipleiria.estg.dei.ei.dae.project.dtos.PolicyTypeDetailsDTO;
-import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyObject;
 import pt.ipleiria.estg.dei.ei.dae.project.pojos.PolicyTypeDetail;
 
 import javax.json.JsonArray;

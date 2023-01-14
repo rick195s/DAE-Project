@@ -81,18 +81,6 @@ public class Supervisor {
         return null;
     }
 
-    public void addRepairShop(RepairShop repairShop) {
-        RepairShopGateway repairShopGateway = new RepairShopGateway();
-        repairShopGateway.postToMockAPI(repairShop);
-        repairShops.add(repairShop);
-    }
-    public void addPolicyObject(PolicyObject policyObject) {
-        PolicyObjectGateway policyObjectGateway = new PolicyObjectGateway();
-        policyObjectGateway.postToMockAPI(policyObject);
-        policyObjects.add(policyObject);
-    }
-
-
     private void refreshRepairShopsViaAPI() {
         RepairShopGateway repairShopGateway = new RepairShopGateway();
         repairShops = repairShopGateway.getFromMockAPI();
