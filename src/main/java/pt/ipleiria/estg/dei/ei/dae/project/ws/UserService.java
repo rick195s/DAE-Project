@@ -105,4 +105,17 @@ public class UserService {
         User user = userBean.find(id);
         return Response.status(Response.Status.OK).entity(UserDTO.from(user)).build();
     }
+
+    @DELETE
+    @Authenticated
+    @RolesAllowed({"ADMINISTRATOR"})
+    @Path("/{id}")
+    public Response DeleteUserWS(@PathParam("id") int id) {
+
+        User user = userBean.find(id);
+        userBean.delete(id);
+
+        user.setDeleted(true);
+        return Response.status(Response.Status.OK).entity(UserDTO.from(user)).build();
+    }
 }

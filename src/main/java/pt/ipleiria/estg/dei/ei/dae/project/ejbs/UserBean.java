@@ -113,4 +113,15 @@ public class UserBean {
         entityManager.merge(user);
     }
 
+    public void delete(int id) {
+        User user = find(id);
+        if (user == null) {
+            throw new EntityNotFoundException("User with id " + id + " not found");
+        }
+
+        user.setDeleted(true);
+
+        entityManager.merge(user);
+    }
+
 }
